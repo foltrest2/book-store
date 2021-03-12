@@ -11,15 +11,6 @@ public class Stack<T> implements StackInterface<T> {
 		public Node(T d){
 			data = d;
 		}
-		public T getData() {
-			return data;
-		}
-		public Node<T> getUnder(){
-			return under;
-		}
-		public void setUnder(Node<T> under){
-			this.under = under;
-		}
 	}
 
 	private Node<T> top;
@@ -28,10 +19,17 @@ public class Stack<T> implements StackInterface<T> {
 	public Stack() {
 		top = null;
 	}
+	
+	@SafeVarargs
+	public Stack(T... list) {
+		for (T element : list) {
+			this.push(element);
+		}
+	}
 
 	@Override
 	public T top() {
-		return (top == null) ? null : top.getData();
+		return (top == null) ? null : top.data;
 	}
 
 	@Override
@@ -39,9 +37,11 @@ public class Stack<T> implements StackInterface<T> {
 		if (top == null) {
 			return null;
 		}else {
-			Node<T> next = top.getUnder();
-			next = top;
-			return next.getData();
+			Node<T> deleted = top;
+			Node<T> next = top.under;
+			top = next;
+			size--;
+			return deleted.data;
 		}
 	}
 
@@ -49,11 +49,13 @@ public class Stack<T> implements StackInterface<T> {
 	public void push(T data) {
 		if (top == null) {
 			top = new Node<T>(data);
+			size++;
 		}
 		else {
 			Node<T> newNode = new Node<T>(data);
-			newNode.setUnder(top);
-			newNode = top;
+			newNode.under = top;
+			top = newNode;
+			size++;
 		}
 	}
 
