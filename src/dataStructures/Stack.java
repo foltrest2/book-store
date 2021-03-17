@@ -1,5 +1,7 @@
 package dataStructures;
 
+import java.util.EmptyStackException;
+
 public class Stack<T> implements StackInterface<T> {
 
 	@SuppressWarnings("hiding")
@@ -35,7 +37,7 @@ public class Stack<T> implements StackInterface<T> {
 	@Override
 	public T pop() {
 		if (top == null) {
-			return null;
+			throw new EmptyStackException();
 		}else {
 			Node<T> deleted = top;
 			Node<T> next = top.under;

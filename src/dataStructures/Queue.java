@@ -1,5 +1,7 @@
 package dataStructures;
 
+import exceptions.EmptyQueueException;
+
 public class Queue<T> implements QueueInterface<T> {
 
 	@SuppressWarnings("hiding")
@@ -41,9 +43,9 @@ public class Queue<T> implements QueueInterface<T> {
 	}
 
 	@Override
-	public T dequeue() {
+	public T dequeue() throws EmptyQueueException {
 		if (front == null) {
-			return null;
+			throw new EmptyQueueException();
 		}
 		else {
 			Node<T> dequeued = front;

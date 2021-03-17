@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
+import exceptions.EmptyQueueException;
+
 class QueueTest {
 
 	Queue<Integer> q;
@@ -36,23 +38,47 @@ class QueueTest {
 	@Test
 	public void dequeueTest1() {
 		setupScenary1();
-		q.dequeue();
-		assertEquals(2, q.peek(),"Fail test");
-		q.dequeue();
-		assertEquals(3, q.peek(), "Fail test");
-		q.dequeue();
-		assertEquals(4, q.peek(), "Fail test");
+		try {
+			q.dequeue();
+			assertEquals(2, q.peek(),"Fail test");
+		} catch (EmptyQueueException e) {
+			e.printStackTrace();
+		}
+		try {
+			q.dequeue();
+			assertEquals(3, q.peek(), "Fail test");
+		} catch (EmptyQueueException e) {
+			e.printStackTrace();
+		}
+		try {
+			q.dequeue();
+			assertEquals(4, q.peek(), "Fail test");
+		} catch (EmptyQueueException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Test
 	public void dequeueTest2() {
 		setupScenary1();
-		q.dequeue();
-		assertEquals(2, q.peek(),"Fail test");
-		q.dequeue();
-		assertEquals(3, q.peek(), "Fail test");
-		q.dequeue();
-		assertEquals(4, q.peek(), "Fail test");
+		try {
+			q.dequeue();
+			assertEquals(2, q.peek(),"Fail test");
+		} catch (EmptyQueueException e) {
+			e.printStackTrace();
+		}
+		try {
+			q.dequeue();
+			assertEquals(3, q.peek(), "Fail test");
+		} catch (EmptyQueueException e) {
+			e.printStackTrace();
+		}
+		try {
+			q.dequeue();
+			assertEquals(4, q.peek(), "Fail test");
+		} catch (EmptyQueueException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Test
