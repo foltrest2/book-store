@@ -22,7 +22,7 @@ public class HashTable <K, V> implements HashTableInterface<K, V> {
 
 	private Entry<?,?> [] elements;
 	private int size;
-	public static final int DEFAULT_CAPACITY = 10;
+	public static final int DEFAULT_CAPACITY = 2;
 
 	public HashTable() {
 		elements = new Entry<?,?>[DEFAULT_CAPACITY];
@@ -51,8 +51,12 @@ public class HashTable <K, V> implements HashTableInterface<K, V> {
 			elements[i] = entry;
 		}
 		else {
-			elements[i].next = entry;
-			entry.prev = elements[i];
+			Entry<?,?> current = elements[i];
+			while (current.next != null) {
+				current = current.next;		
+			}
+			current.next = entry;
+			entry.prev = current;
 		}
 	}
 
@@ -62,9 +66,14 @@ public class HashTable <K, V> implements HashTableInterface<K, V> {
 		return null;
 	}
 
+	@Override
+	public int size() {
+		return this.size;
+	}
 
 	@SuppressWarnings("unchecked")
-	public V search(K key) {
+	@Override
+	public V get(K key) {
 		Entry<?, ?> current = elements[hashFunction(key)];
 		V value = null;
 		boolean found = false;
@@ -77,16 +86,4 @@ public class HashTable <K, V> implements HashTableInterface<K, V> {
 		}
 		return value;
 	}
-
-	@Override
-	public int size() {
-		return this.size;
-	}
-
-	@Override
-	public V get(K key) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }
