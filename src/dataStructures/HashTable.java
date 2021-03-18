@@ -38,7 +38,7 @@ public class HashTable <K, V> implements HashTableInterface<K, V> {
 			size = initialCapacity;
 		}
 	}
-	
+
 	public int hashFunction(K key) {
 		return key.hashCode() % size;
 	}
@@ -58,31 +58,36 @@ public class HashTable <K, V> implements HashTableInterface<K, V> {
 
 	@Override
 	public V delete(K key) {
-		
+
 		Entry<K,V> toFind = search(key);
 		V vToDelete = null;
-		
+
 		if(toFind != null && toFind.prev == null) {
-			
-			
+
+
 			vToDelete = toFind.value;
 			toFind.value = null;
 			toFind.key = null;
-			
-			
+
+
 		}else if(toFind.getPrev() != null) {
-			
-			
+
+
 			vToDelete = toFind.value;
-			toFind.getPrev().setnext(toFind.getNext());
 			toFind.getNext().setPrev(toFind.getPrev());
-			
+
+		}else if(toFind.getPrev() != null && toFind.getNext != null) {
+
+
+			vToDelete = toFind.value;
+			toFind.getNext().setPrev(toFind.getPrev());
+
 		}
-			
-		
+
+
 		return vToDelete;
-		
-		}
+
+	}
 
 	@Override
 	public V get(K key) {
