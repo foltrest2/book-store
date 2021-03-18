@@ -18,12 +18,12 @@ public class HashTable <K, V> implements HashTableInterface<K, V> {
 		}
 	}
 
-	private Entry<?,?> [] table;
+	private Entry<?,?> [] elements;
 	private int size;
 	public static final int DEFAULT_CAPACITY = 10;
 
 	public HashTable() {
-		table = new Entry<?,?>[DEFAULT_CAPACITY];
+		elements = new Entry<?,?>[DEFAULT_CAPACITY];
 		size = DEFAULT_CAPACITY;
 	}
 
@@ -32,9 +32,13 @@ public class HashTable <K, V> implements HashTableInterface<K, V> {
 			throw new InvalidCapacityException();
 		}
 		else {
-			table = new Entry<?,?>[initialCapacity];
+			elements = new Entry<?,?>[initialCapacity];
 			size = initialCapacity;
 		}
+	}
+
+	public int hashFunction(K key) {
+		return key.hashCode() % size;
 	}
 
 	@Override
@@ -50,8 +54,16 @@ public class HashTable <K, V> implements HashTableInterface<K, V> {
 
 	@Override
 	public V get(K key) {
-		// TODO Auto-generated method stub
-		return null;
+		V returnValue = null;
+		if(key != null) {
+			Entry<K,V> localized = searchEntry(key);
+			if(localized != null) {
+				returnValue = localized.value;
+			}
+		} else {
+			return returnValue;
+		}
+		return returnValue;
 	}
 
 	@Override
