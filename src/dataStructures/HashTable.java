@@ -60,10 +60,43 @@ public class HashTable <K, V> implements HashTableInterface<K, V> {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public V delete(K key) {
-		// TODO Auto-generated method stub
-		return null;
+		int hashIndex = hashFunction(key);
+		Entry<?, ?> current = elements[hashIndex];
+		V vFound = null;
+		boolean deleted = false;
+		if(current != null) {
+			Entry<?, ?> aux = current;
+			Entry<?, ?> prev = null;
+			while(aux != null && !deleted) {
+				if(aux.key.equals(key)) {
+					if(aux.prev == null && aux.next == null) {
+						vFound = (V) aux.value;
+						elements[hashIndex] = null;
+						deleted = true;
+					} else if (aux.prev == null) {
+						vFound = (V) aux.value;
+						aux = current.next;
+						current = aux;
+						current.prev = null;
+						elements[hashIndex] = current;
+						deleted = true;
+					} else {
+						vFound = (V) aux.value;
+						prev.next = aux.next;
+						aux.next = null;
+						aux = prev.next;
+						deleted = true;
+					}
+				} else {
+					prev = aux;
+					aux = aux.next;
+				}
+			}
+		}
+		return vFound;
 	}
 
 	@Override
