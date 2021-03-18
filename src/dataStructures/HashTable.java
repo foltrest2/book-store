@@ -1,39 +1,45 @@
 package dataStructures;
 
+import exceptions.InvalidCapacityException;
+
 public class HashTable <K, V> implements HashTableInterface<K, V> {
 
-	private class Entry<K,V> {
-		
+	private static class Entry<K,V> {
+
 		private K key;
 		private V value;
-		private boolean isDeleted;
-		
+
 		public Entry(K key, V value) {
 			this.key = key;
 			this.value = value;
-			isDeleted = false;
 		}
 		public String toString() {
 			return "[ " + key + ", " + value + " ]";
 		}
 	}
-	
+
 	private Entry<?,?> [] table;
 	private int size;
-	
+	public static final int DEFAULT_CAPACITY = 10;
+
 	public HashTable() {
-		
+		table = new Entry<?,?>[DEFAULT_CAPACITY];
+		size = DEFAULT_CAPACITY;
 	}
-	
-	@Override
-	public void put(K key, V value) {
-		
+
+	public HashTable(int initialCapacity) throws InvalidCapacityException {
+		if (initialCapacity < 0) {
+			throw new InvalidCapacityException();
+		}
+		else {
+			table = new Entry<?,?>[initialCapacity];
+			size = initialCapacity;
+		}
 	}
 
 	@Override
-	public V search(K key) {
-		// TODO Auto-generated method stub
-		return null;
+	public void put(K key, V value) {
+
 	}
 
 	@Override
