@@ -38,9 +38,30 @@ public class HashTable <K, V> implements HashTableInterface<K, V> {
 
 	@Override
 	public V delete(K key) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+		
+		Entry<K,V> toFind = search(key);
+		V vToDelete = null;
+		
+		if(toFind != null && toFind.prev == null) {
+			
+			
+			vToDelete = toFind.value;
+			toFind.value = null;
+			toFind.key = null;
+			
+			
+		}else if(toFind.prev != null) {
+			
+			
+			vToDelete = toFind.value;
+			toFind.
+			
+		}
+			
+		
+		
+		
+		}
 
 	@Override
 	public V get(K key) {
