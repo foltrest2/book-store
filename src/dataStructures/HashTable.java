@@ -70,16 +70,17 @@ public class HashTable <K, V> implements HashTableInterface<K, V> {
 			toFind.key = null;
 			
 			
-		}else if(toFind.prev != null) {
+		}else if(toFind.getPrev() != null) {
 			
 			
 			vToDelete = toFind.value;
-			toFind.
+			toFind.getPrev().setnext(toFind.getNext());
+			toFind.getNext().setPrev(toFind.getPrev());
 			
 		}
 			
 		
-		
+		return vToDelete;
 		
 		}
 
