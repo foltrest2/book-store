@@ -9,7 +9,14 @@ public class Shelve {
 	
 	public Shelve(String ind, int slots) {
 		indicator = ind;
-		this.slots = new HashTable<>(slots);
+		this.slots = new HashTable<String, Book>(slots);
+	}
+	public Shelve(int slots) {
+		this.slots = new HashTable<String, Book>(slots);
+	}
+	
+	public void addBook(String ISBN, Book book) {
+		slots.put(ISBN, book);
 	}
 	
 	public HashTable<String, Book> getSlots() {
