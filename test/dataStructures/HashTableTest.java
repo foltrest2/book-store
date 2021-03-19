@@ -126,18 +126,4 @@ class HashTableTest {
 		ht.put(123, "tumaxd");
 	}
 	
-	@Test
-	public void deleteReturnEntryTest1() {
-		setupScenary4();
-		assertEquals("tuma1", ht.get(123), "Fail test");
-		assertEquals("tuma2", ht.get(345), "Fail test");
-		assertEquals("tuma3", ht.get(678), "Fail test");
-		assertEquals("tuma4", ht.get(91011), "Fail test");
-		assertEquals("tuma5", ht.get(111213), "Fail test");
-		assertTrue(ht.contains(123));
-		assertEquals("tuma5", ht.deleteReturnsEntry(123), "Fail test");
-		assertTrue(!ht.contains(123));
-		
-	}
-	
 }
