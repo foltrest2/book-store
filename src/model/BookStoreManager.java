@@ -5,21 +5,27 @@ import dataStructures.*;
 
 public class BookStoreManager {
 
-	private HashTable<String, Integer> shelves;
+	
+	
 	private Queue<Client> clientsQueue;
 	private List<Client> initialClientsList;
+	private ArrayList<Shelve> shelvesOnStore;
 	private int cashiers;
 
 
 	public BookStoreManager() {
 		initialClientsList = new ArrayList<>();
-		shelves = new HashTable<>();
+		shelvesOnStore = new ArrayList<>();
 		clientsQueue = new Queue<>();
 	}
 
 	public void addClient(String id, int priorityTime) {
 		Client toAdd = new Client(id, priorityTime);
 		initialClientsList.add(toAdd);
+	}
+	
+	public void addShelveQuantity(String indicator, int slots ) {
+		shelvesOnStore.add(new Shelve(indicator, slots));
 	}
 
 	public int getCashiers() {
@@ -71,4 +77,6 @@ public class BookStoreManager {
 		for (int i = 0; i < n; ++i)
 			arr[i] = output[i];
 	}
+	
+	
 }

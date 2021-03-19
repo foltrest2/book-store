@@ -2,22 +2,22 @@ package model;
 
 public class Book {
 
+	private String title;
+	private String initialChapters;
+	private String criticsAndReviews;
 	private String ISBNCode;
 	private double price;
-	private int booksQuantity;
-	
-	public Book(String iSBNCode, double price, int booksQuantity) {
-		ISBNCode = iSBNCode;
+	private String shelveIndicator;
+
+	public Book(String title, String initialChapters, String criticsAndReviews, String iSBNCode, double price, String shelveIndicator) {
+		this.title = title;
+		this.initialChapters = initialChapters;
+		this.criticsAndReviews = criticsAndReviews;
+		this.ISBNCode = iSBNCode;
 		this.price = price;
-		this.booksQuantity = booksQuantity;
+		this.shelveIndicator = shelveIndicator;
 	}
-	
-	public Book(String iSBNCode, double price) {
-		ISBNCode = iSBNCode;
-		this.price = price;
-		this.booksQuantity = 0;
-	}
-	
+
 	public String getISBNCode() {
 		return ISBNCode;
 	}
@@ -34,11 +34,19 @@ public class Book {
 		this.price = price;
 	}
 
-	public int getBooksQuantity() {
-		return booksQuantity;
+	public String getTitle() {
+		return title;
 	}
 
-	public void setBooksQuantity(int booksQuantity) {
-		this.booksQuantity = booksQuantity;
+	public String getInitialChapters() {
+		return initialChapters;
+	}
+
+	public String getCriticsAndReviews() {
+		return criticsAndReviews;
+	}
+
+	public String getShelveIndicator() {
+		return shelveIndicator;
 	}
 }
