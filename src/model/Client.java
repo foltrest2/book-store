@@ -9,10 +9,10 @@ public class Client {
 	private String id;
 	private int priorityTime;
 	private double pricePaid;
-	private Stack<ArrayList<Shelve>> books;
+	private Stack<Book> books;
 	private List<String> initialBooksList;
 
-	public Client(String id, int priorityTime, double pricePaid, Stack<ArrayList<Shelve>> books) {
+	public Client(String id, int priorityTime, double pricePaid, Stack<Book> books) {
 		initialBooksList = new ArrayList<>();
 		this.id = id;
 		this.priorityTime = priorityTime;
@@ -50,11 +50,11 @@ public class Client {
 		this.priorityTime = priorityTime;
 	}
 
-	public Stack<ArrayList<Shelve>> getBooks() {
+	public Stack<Book> getBooks() {
 		return books;
 	}
 
-	public void setBooks(Stack<ArrayList<Shelve>> books) {
+	public void setBooks(Stack<Book> books) {
 		this.books = books;
 	}
 
