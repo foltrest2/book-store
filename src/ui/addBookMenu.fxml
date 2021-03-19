@@ -36,7 +36,7 @@
             </Label>
             <TextField fx:id="checkersTxt" layoutX="172.0" layoutY="153.0">
                <effect>
-                  <InnerShadow>
+                  <InnerShadow color="RED">
                      <input>
                         <Lighting>
                            <bumpInput>
@@ -52,7 +52,7 @@
             </TextField>
             <TextField fx:id="ShelvesTxt" layoutX="172.0" layoutY="188.0">
                <effect>
-                  <InnerShadow>
+                  <InnerShadow color="#ff0202">
                      <input>
                         <Lighting>
                            <bumpInput>
@@ -73,7 +73,7 @@
             </Label>
             <TextField fx:id="BooksNumberTxt" layoutX="437.0" layoutY="188.0" onAction="#next">
                <effect>
-                  <InnerShadow>
+                  <InnerShadow color="#f20808">
                      <input>
                         <Lighting>
                            <bumpInput>
@@ -94,7 +94,7 @@
             </Label>
             <Button layoutX="247.0" layoutY="246.0" mnemonicParsing="false" onAction="#AddBI1" prefHeight="25.0" prefWidth="75.0" text="Add">
                <effect>
-                  <DropShadow />
+                  <DropShadow color="#3e06f8" />
                </effect>
                <font>
                   <Font name="Poor Richard" size="12.0" />
@@ -102,7 +102,7 @@
             </Button>
             <Button fx:id="nextButton" layoutX="453.0" layoutY="313.0" mnemonicParsing="false" onAction="#next" prefHeight="49.0" prefWidth="127.0" text="Next">
                <effect>
-                  <DropShadow />
+                  <DropShadow color="#1c07ff" />
                </effect>
                <font>
                   <Font name="Poor Richard" size="24.0" />

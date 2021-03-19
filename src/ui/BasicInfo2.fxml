@@ -19,7 +19,7 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="399.0" prefWidth="602.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <AnchorPane fx:id="menuPane" layoutY="-2.0" prefHeight="399.0" prefWidth="600.0">
+      <AnchorPane fx:id="menuPane" prefHeight="399.0" prefWidth="614.0">
          <children>
             <Label layoutX="121.0" layoutY="44.0" prefHeight="55.0" prefWidth="374.0" text="Basic Information II(Books)" textAlignment="CENTER" textFill="#ff4800" textOverrun="CENTER_WORD_ELLIPSIS">
                <font>
@@ -34,9 +34,9 @@
                   <Font name="Papyrus" size="12.0" />
                </font>
             </Label>
-            <TextField fx:id="ShelveCodeTxt" layoutX="172.0" layoutY="153.0">
+            <TextField fx:id="ShelveCodeTxt" layoutX="151.0" layoutY="153.0">
                <effect>
-                  <InnerShadow>
+                  <InnerShadow color="#1404ff">
                      <input>
                         <Lighting>
                            <bumpInput>
@@ -50,9 +50,9 @@
                   </InnerShadow>
                </effect>
             </TextField>
-            <TextField fx:id="PriceTxt" layoutX="172.0" layoutY="188.0">
+            <TextField fx:id="PriceTxt" layoutX="151.0" layoutY="187.0">
                <effect>
-                  <InnerShadow>
+                  <InnerShadow color="#3700ff">
                      <input>
                         <Lighting>
                            <bumpInput>
@@ -71,9 +71,9 @@
                   <Font name="Papyrus" size="12.0" />
                </font>
             </Label>
-            <TextField fx:id="QuantityTxt" layoutX="437.0" layoutY="188.0">
+            <TextField fx:id="QuantityTxt" layoutX="151.0" layoutY="221.0">
                <effect>
-                  <InnerShadow>
+                  <InnerShadow color="#4200f8">
                      <input>
                         <Lighting>
                            <bumpInput>
@@ -87,14 +87,14 @@
                   </InnerShadow>
                </effect>
             </TextField>
-            <Label layoutX="347.0" layoutY="180.0" prefHeight="41.0" prefWidth="90.0" text="Quantity">
+            <Label layoutX="64.0" layoutY="213.0" prefHeight="41.0" prefWidth="90.0" text="Quantity">
                <font>
                   <Font name="Papyrus" size="12.0" />
                </font>
             </Label>
-            <Button layoutX="247.0" layoutY="246.0" mnemonicParsing="false" onAction="#addBI2" prefHeight="25.0" prefWidth="75.0" text="Add">
+            <Button layoutX="225.0" layoutY="325.0" mnemonicParsing="false" onAction="#addBI2" prefHeight="25.0" prefWidth="75.0" text="Add">
                <effect>
-                  <DropShadow />
+                  <DropShadow color="#f20606" />
                </effect>
                <font>
                   <Font name="Poor Richard" size="12.0" />
@@ -102,12 +102,96 @@
             </Button>
             <Button fx:id="nextButton" layoutX="453.0" layoutY="313.0" mnemonicParsing="false" onAction="#next" prefHeight="49.0" prefWidth="127.0" text="Next">
                <effect>
-                  <DropShadow />
+                  <DropShadow color="#ee0202" />
                </effect>
                <font>
                   <Font name="Poor Richard" size="24.0" />
                </font>
             </Button>
+            <TextField fx:id="ShelveCodeTxt1" layoutX="437.0" layoutY="153.0">
+               <effect>
+                  <InnerShadow color="#0026ff">
+                     <input>
+                        <Lighting>
+                           <bumpInput>
+                              <Shadow />
+                           </bumpInput>
+                           <light>
+                              <Light.Distant />
+                           </light>
+                        </Lighting>
+                     </input>
+                  </InnerShadow>
+               </effect>
+            </TextField>
+            <TextField fx:id="ShelveCodeTxt2" layoutX="437.0" layoutY="187.0">
+               <effect>
+                  <InnerShadow color="#1500ff">
+                     <input>
+                        <Lighting>
+                           <bumpInput>
+                              <Shadow />
+                           </bumpInput>
+                           <light>
+                              <Light.Distant />
+                           </light>
+                        </Lighting>
+                     </input>
+                  </InnerShadow>
+               </effect>
+            </TextField>
+            <Label layoutX="385.0" layoutY="138.0" prefHeight="55.0" prefWidth="59.0" text="Title">
+               <font>
+                  <Font name="Papyrus" size="12.0" />
+               </font>
+            </Label>
+            <Label layoutX="347.0" layoutY="172.0" prefHeight="55.0" prefWidth="90.0" text="Initial Chapters">
+               <font>
+                  <Font name="Papyrus" size="12.0" />
+               </font>
+            </Label>
+            <TextField fx:id="ShelveCodeTxt21" layoutX="437.0" layoutY="221.0">
+               <effect>
+                  <InnerShadow color="#2b00ff">
+                     <input>
+                        <Lighting>
+                           <bumpInput>
+                              <Shadow />
+                           </bumpInput>
+                           <light>
+                              <Light.Distant />
+                           </light>
+                        </Lighting>
+                     </input>
+                  </InnerShadow>
+               </effect>
+            </TextField>
+            <Label layoutX="377.0" layoutY="206.0" prefHeight="55.0" prefWidth="90.0" text="Review">
+               <font>
+                  <Font name="Papyrus" size="12.0" />
+               </font>
+            </Label>
+            <Label layoutX="45.0" layoutY="251.0" prefHeight="41.0" prefWidth="90.0" text="Shelve Indicator">
+               <font>
+                  <Font name="Papyrus" size="12.0" />
+               </font>
+            </Label>
+            <TextField fx:id="QuantityTxt1" layoutX="151.0" layoutY="259.0">
+               <effect>
+                  <InnerShadow color="#000cee">
+                     <input>
+                        <Lighting>
+                           <bumpInput>
+                              <Shadow />
+                           </bumpInput>
+                           <light>
+                              <Light.Distant />
+                           </light>
+                        </Lighting>
+                     </input>
+                  </InnerShadow>
+               </effect>
+            </TextField>
          </children>
          <effect>
             <Blend>
