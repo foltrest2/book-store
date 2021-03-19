@@ -27,6 +27,29 @@ public class BookStoreManager {
 	public void addShelveQuantity(String indicator, int slots ) {
 		shelvesOnStore.add(new Shelve(indicator, slots));
 	}
+	
+    public Shelve binarySearch(String k) throws InvalidCharacterException {
+		boolean found = false;
+		int toFindShelve = convertirCadenaANatural(k);
+		Shelve shelveFound = null;
+		int i = 0;
+		int j = shelvesOnStore.size() - 1;
+		int m=0;
+		while (i <= j && !found) {
+			m = (i + j) / 2;
+			if (convertirCadenaANatural(shelvesOnStore.get(m).getIndicator()) == toFindShelve) {
+				found = true;
+				shelveFound = shelvesOnStore.get(m);
+			} else {
+				if (convertirCadenaANatural(shelvesOnStore.get(m).getIndicator()) > toFindShelve) {
+					j = m - 1;
+				} else {
+					i = m + 1;
+				}
+			}
+		}
+		return shelveFound;
+	}
 
 	public int getCashiers() {
 		return cashiers;
