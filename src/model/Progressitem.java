@@ -1,16 +1,12 @@
 package model;
 
 public class Progressitem {
-public final static int MAX = 382;
-	
 
-	
+public final static int MAX = 300;
+
 	private int numberOfProgress;
-	
-	
 	private boolean isLoading;
-	
-	
+
 	public Progressitem() {
 		numberOfProgress = 0;
 		isLoading = true;
