@@ -27,7 +27,7 @@ public class BookStoreManager {
 		initialClientsList.add(toAdd);
 	}
 
-	public boolean addShelveQuantity(String indicator, int slots) throws InvalidCharacterException {
+	public boolean addShelve(String indicator, int slots) throws InvalidCharacterException {
 		boolean shelveAdded = false;
 		if (binaryShelveSearch(indicator) == null) {
 			shelveAdded = true;
