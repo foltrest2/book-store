@@ -1,5 +1,8 @@
 package model;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import dataStructures.*;
 
@@ -26,6 +29,35 @@ public class BookStoreManager {
 	
 	public void addShelveQuantity(String indicator, int slots ) {
 		shelvesOnStore.add(new Shelve(indicator, slots));
+	}
+	
+	public boolean binarySearchShelve(String indicator) {
+		boolean found = false;
+		for (int i = 0; i < shelvesOnStore.size(); i++) {
+			
+		}
+		return found;
+	}
+	
+    public static String binarySearch(int[] array, int k) {
+		boolean found = false;
+		int i = 0;
+		int j = array.length - 1;
+		int m=0;
+		String info = "";
+		while (i <= j && !found) {
+			m = (i + j) / 2;
+			if (array[m] == k) {
+				found = true;
+			} else {
+				if (array[m] > k) {
+					j = m - 1;
+				} else {
+					i = m + 1;
+				}
+			}
+		}
+		return info;
 	}
 
 	public int getCashiers() {

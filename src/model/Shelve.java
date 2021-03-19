@@ -2,7 +2,7 @@ package model;
 
 import dataStructures.HashTable;
 
-public class Shelve {
+public class Shelve{
 	
 	private String indicator;
 	private HashTable<String, Book> slots;
