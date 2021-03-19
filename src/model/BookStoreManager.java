@@ -5,19 +5,19 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import dataStructures.*;
+import exceptions.InvalidCharacterException;
 
 public class BookStoreManager {
-
 	
-	
+	private ArrayList<Shelve> shelves;
 	private Queue<Client> clientsQueue;
 	private List<Client> initialClientsList;
 	private ArrayList<Shelve> shelvesOnStore;
 	private int cashiers;
-
-
+	
 	public BookStoreManager() {
 		initialClientsList = new ArrayList<>();
+		shelves = new ArrayList<>();
 		shelvesOnStore = new ArrayList<>();
 		clientsQueue = new Queue<>();
 	}
@@ -26,8 +26,8 @@ public class BookStoreManager {
 		Client toAdd = new Client(id, priorityTime);
 		initialClientsList.add(toAdd);
 	}
-	
-	public void addShelveQuantity(String indicator, int slots ) {
+
+	public void addShelveQuantity(String indicator, int slots) {
 		shelvesOnStore.add(new Shelve(indicator, slots));
 	}
 	
@@ -68,6 +68,22 @@ public class BookStoreManager {
 		this.cashiers = cashiers;
 	}
 
+	public ArrayList<Shelve> getShelves() {
+		return shelves;
+	}
+
+	public void setShelves(ArrayList<Shelve> shelves) {
+		this.shelves = shelves;
+	}
+
+	public List<Client> getInitialClientsList() {
+		return initialClientsList;
+	}
+
+	public void setInitialClientsList(List<Client> initialClientsList) {
+		this.initialClientsList = initialClientsList;
+	}
+
 	public Queue<Client> getClientsQueue() {
 		return clientsQueue;
 	}
@@ -76,38 +92,49 @@ public class BookStoreManager {
 		this.clientsQueue = clientsQueue;
 	}
 
-	public void sort(char arr[]) {
-		int n = arr.length;
-
-		// The output character array that will have sorted arr
-		char output[] = new char[n];
-
-		// Create a count array to store count of inidividul
-		// characters and initialize count array as 0
-		int count[] = new int[256];
-		for (int i = 0; i < 256; ++i)
-			count[i] = 0;
-
-		// store count of each character
-		for (int i = 0; i < n; ++i)
-			++count[arr[i]];
-
-		// Change count[i] so that count[i] now contains actual
-		// position of this character in output array
-		for (int i = 1; i <= 255; ++i)
-			count[i] += count[i - 1];
-
-		// Build the output character array
-		// To make it stable we are operating in reverse order.
-		for (int i = n - 1; i >= 0; i--) {
-			output[count[arr[i]] - 1] = arr[i];
-			--count[arr[i]];
+	public void sort(ArrayList<String> arr) {
+		int n = arr.size();
+		int[] A = new int[n]; // 1
+        int k = 0; // 1
+        for (int i = 0; i < n; i++) { // n+1
+            int value =  0;// n
+            A[i] = value; // n
+            if (k < value) // n
+                k = value; // n
+        }
+        int[] C = new int[k + 1]; // 1
+        for (int i = 0; i <= k; i++) // k+2
+            C[i] = 0; // k+1
+        for (int i = 0; i < n; i++) // n+1
+            C[A[i]] = C[A[i]] + 1; // n
+        for (int i = 1; i <= k; i++) { // k+1
+            C[i] = C[i] + C[i - 1]; // k
+        }
+        int[] B = new int[n]; // 1
+        for (int i = n - 1; i >= 0; i--) { // n+1
+            B[C[A[i]] - 1] = A[i]; // n
+            C[A[i]] = C[A[i]] - 1; // n
+        }
+        for (int i = 0; i < B.length; i++) { // n+1
+            
+        }		
+	}
+	public static int convertirCadenaANatural(String x) throws InvalidCharacterException{
+		int result = 0;
+		int cont = 0;
+		for (int i = x.length()-1; i >= 0; i--) {
+			if (x.charAt(i) > 127) {
+				throw new InvalidCharacterException();
+			}
+			else {
+				char y = x.charAt(i);
+				System.out.println((int)y);
+				result += y*Math.pow(128, cont);
+				cont++;
+				System.out.println(result);
+			}
 		}
-
-		// Copy the output array to arr, so that arr now
-		// contains sorted characters
-		for (int i = 0; i < n; ++i)
-			arr[i] = output[i];
+		return result;
 	}
 	
 	
