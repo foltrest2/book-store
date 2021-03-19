@@ -60,12 +60,12 @@ public class BookStoreManager {
 		this.clientsQueue = clientsQueue;
 	}
 
-	public void sort(ArrayList<String> arr) {
-		int n = arr.size();
+	public void CountingSort(ArrayList<String> isbnList) throws InvalidCharacterException {
+		int n = isbnList.size();
 		int[] A = new int[n]; // 1
         int k = 0; // 1
         for (int i = 0; i < n; i++) { // n+1
-            int value =  0;// n
+            int value =  Integer.parseInt(isbnList.get(i));// n
             A[i] = value; // n
             if (k < value) // n
                 k = value; // n
@@ -84,7 +84,7 @@ public class BookStoreManager {
             C[A[i]] = C[A[i]] - 1; // n
         }
         for (int i = 0; i < B.length; i++) { // n+1
-            
+            System.out.println(B[i]);
         }		
 	}
 	public static int convertirCadenaANatural(String x) throws InvalidCharacterException{
@@ -104,6 +104,5 @@ public class BookStoreManager {
 		}
 		return result;
 	}
-	
 	
 }
