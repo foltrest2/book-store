@@ -24,11 +24,27 @@ public class BookStoreManager {
 		initialClientsList.add(toAdd);
 	}
 
-	public void addShelveQuantity(String indicator, int slots ) {
-		shelvesOnStore.add(new Shelve(indicator, slots));
+	public boolean addShelveQuantity(String indicator, int slots) throws InvalidCharacterException {
+		boolean shelveAdded = false;
+		if (binaryShelveSearch(indicator) == null) {
+			shelveAdded = true;
+			shelvesOnStore.add(new Shelve(indicator, slots));
+		}
+		return shelveAdded;
 	}
 	
-    public Shelve binarySearch(String k) throws InvalidCharacterException {
+	public boolean addBokPerShelve(String title, String initialChapters, String criticsAndReviews, String iSBNCode, double price, String shelveIndicator, int booksQuantity) throws InvalidCharacterException {
+		boolean bookAdded = false;
+		Shelve shelveToAddBook = binaryShelveSearch(shelveIndicator);
+		if (shelveToAddBook != null) {
+			Book bookToAdd = new Book(title, initialChapters, criticsAndReviews, iSBNCode, price, shelveIndicator);
+			shelveToAddBook.addBook(iSBNCode, bookToAdd, booksQuantity);
+			bookAdded = true;
+		}
+		return bookAdded;
+	}
+	
+    public Shelve binaryShelveSearch(String k) throws InvalidCharacterException {
 		boolean found = false;
 		int toFindShelve = convertirCadenaANatural(k);
 		Shelve shelveFound = null;
