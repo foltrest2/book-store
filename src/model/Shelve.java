@@ -2,7 +2,7 @@ package model;
 
 import dataStructures.HashTable;
 
-public class Shelve {
+public class Shelve implements Comparable<Shelve>{
 	
 	private String indicator;
 	private HashTable<String, Book> slots;
@@ -26,6 +26,11 @@ public class Shelve {
 
 	public void setIndicator(String ind) {
 		indicator = ind;
+	}
+
+	@Override
+	public int compareTo(Shelve arg0) {
+		return 0;
 	}
 
 }

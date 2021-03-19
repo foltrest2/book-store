@@ -5,15 +5,14 @@ import dataStructures.*;
 
 public class BookStoreManager {
 	
-	private HashTable<String, Integer> shelves;
+	private LinkedList<Shelve> shelves;
 	private Queue<Client> clientsQueue;
 	private List<Client> initialClientsList;
 	private int cashiers;
 	
-	
 	public BookStoreManager() {
 		initialClientsList = new ArrayList<>();
-		shelves = new HashTable<>();
+		shelves = new LinkedList<>();
 		clientsQueue = new Queue<>();
 	}
 
@@ -22,12 +21,30 @@ public class BookStoreManager {
 		initialClientsList.add(toAdd);
 	}
 
+	
+	
 	public int getCashiers() {
 		return cashiers;
 	}
 
 	public void setCashiers(int cashiers) {
 		this.cashiers = cashiers;
+	}
+
+	public LinkedList<Shelve> getShelves() {
+		return shelves;
+	}
+
+	public void setShelves(LinkedList<Shelve> shelves) {
+		this.shelves = shelves;
+	}
+
+	public List<Client> getInitialClientsList() {
+		return initialClientsList;
+	}
+
+	public void setInitialClientsList(List<Client> initialClientsList) {
+		this.initialClientsList = initialClientsList;
 	}
 
 	public Queue<Client> getClientsQueue() {
