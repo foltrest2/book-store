@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 class HashTableTest {
 
 	HashTable<Integer, String> ht;
-	
+	HashTable<Integer, String> ht2 = new HashTable<>(11);
 	
 	public void setupScenary1() {
 		ht = new HashTable<>();
@@ -25,6 +25,21 @@ class HashTableTest {
 		ht.put(6, "tuma6");
 		ht.put(8, "tuma8");
 		ht.put(10, "tuma10");
+	}
+	public void setupScenary3() {
+		ht.put(2, "tuma2");
+		ht.put(4, "tuma4");
+		ht.put(6, "tuma6");
+		ht.put(8, "tuma8");
+		ht.put(10, "tuma10");
+	}
+	public void setupScenary4() {
+		ht = new HashTable<>();
+		ht.put(123, "tuma1");
+		ht.put(345, "tuma2");
+		ht.put(678, "tuma3");
+		ht.put(91011, "tuma4");
+		ht.put(111213, "tuma5");
 	}
 	
 	@Test
@@ -88,4 +103,41 @@ class HashTableTest {
 		assertEquals("tuma16", ht.delete(16), "Fail test");
 		assertNull(ht.get(16));
 	}
+	
+	@Test
+	public void hashTest1() {
+		setupScenary4();
+		assertEquals("tuma1", ht.get(123), "Fail test");
+		assertEquals("tuma2", ht.get(345), "Fail test");
+		assertEquals("tuma3", ht.get(678), "Fail test");
+		assertEquals("tuma4", ht.get(91011), "Fail test");
+		assertEquals("tuma5", ht.get(111213), "Fail test");
+	}
+	
+	@Test
+	public void containsTest1() {
+		setupScenary4();
+		assertEquals("tuma1", ht.get(123), "Fail test");
+		assertEquals("tuma2", ht.get(345), "Fail test");
+		assertEquals("tuma3", ht.get(678), "Fail test");
+		assertEquals("tuma4", ht.get(91011), "Fail test");
+		assertEquals("tuma5", ht.get(111213), "Fail test");
+		assertTrue(ht.contains(123));
+		ht.put(123, "tumaxd");
+	}
+	
+	@Test
+	public void deleteReturnEntryTest1() {
+		setupScenary4();
+		assertEquals("tuma1", ht.get(123), "Fail test");
+		assertEquals("tuma2", ht.get(345), "Fail test");
+		assertEquals("tuma3", ht.get(678), "Fail test");
+		assertEquals("tuma4", ht.get(91011), "Fail test");
+		assertEquals("tuma5", ht.get(111213), "Fail test");
+		assertTrue(ht.contains(123));
+		assertEquals("tuma5", ht.deleteReturnsEntry(123), "Fail test");
+		assertTrue(!ht.contains(123));
+		
+	}
+	
 }

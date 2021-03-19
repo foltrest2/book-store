@@ -1,7 +1,5 @@
 package dataStructures;
 
-import exceptions.InvalidCapacityException;
-
 public class HashTable <K, V> implements HashTableInterface<K, V> {
 
 	private static class Entry<K,V> {
@@ -22,16 +20,16 @@ public class HashTable <K, V> implements HashTableInterface<K, V> {
 
 	private Entry<?,?> [] elements;
 	private int size;
-	public static final int DEFAULT_CAPACITY = 2;
+	public static final int DEFAULT_CAPACITY = 11;
 
 	public HashTable() {
 		elements = new Entry<?,?>[DEFAULT_CAPACITY];
 		size = DEFAULT_CAPACITY;
 	}
 
-	public HashTable(int initialCapacity) throws InvalidCapacityException  {
+	public HashTable(int initialCapacity)  {
 		if (initialCapacity < 0) {
-			throw new InvalidCapacityException();
+			throw new IllegalArgumentException("xd bro?");
 		}
 		else {
 			elements = new Entry<?,?>[initialCapacity];
@@ -40,23 +38,25 @@ public class HashTable <K, V> implements HashTableInterface<K, V> {
 	}
 
 	public int hashFunction(K key) {
-		return key.hashCode() % size;
+		return key.hashCode() % this.size;
 	}
 
 	@Override
 	public void put(K key, V value) {
-		Entry<K,V> entry = new Entry<>(key, value);
-		int i = hashFunction(key);
-		if (elements[i] == null) {
-			elements[i] = entry;
-		}
-		else {
-			Entry<?,?> current = elements[i];
-			while (current.next != null) {
-				current = current.next;		
+		if(!contains(key)) {
+			Entry<K,V> entry = new Entry<>(key, value);
+			int i = hashFunction(key);
+			if (elements[i] == null) {
+				elements[i] = entry;
 			}
-			current.next = entry;
-			entry.prev = current;
+			else {
+				Entry<?,?> current = elements[i];
+				while (current.next != null) {
+					current = current.next;		
+				}
+				current.next = entry;
+				entry.prev = current;
+			}
 		}
 	}
 
@@ -103,6 +103,19 @@ public class HashTable <K, V> implements HashTableInterface<K, V> {
 	public int size() {
 		return this.size;
 	}
+
+	public boolean contains(K key) {
+		Entry<?, ?> current = elements[hashFunction(key)];
+		boolean found = false;
+		while (current != null && !found) {
+			if (current.key.equals(key)) {
+				found = true;
+			}
+			current = current.next;
+		}
+		return found;
+	}
+
 
 	@SuppressWarnings("unchecked")
 	@Override
