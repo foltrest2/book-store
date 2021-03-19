@@ -9,11 +9,13 @@ public class BookStoreManager {
 	private ArrayList<Shelve> shelves;
 	private Queue<Client> clientsQueue;
 	private List<Client> initialClientsList;
+	private ArrayList<Shelve> shelvesOnStore;
 	private int cashiers;
 	
 	public BookStoreManager() {
 		initialClientsList = new ArrayList<>();
 		shelves = new ArrayList<>();
+		shelvesOnStore = new ArrayList<>();
 		clientsQueue = new Queue<>();
 	}
 
@@ -21,7 +23,11 @@ public class BookStoreManager {
 		Client toAdd = new Client(id, priorityTime);
 		initialClientsList.add(toAdd);
 	}
-	
+
+	public void addShelveQuantity(String indicator, int slots ) {
+		shelvesOnStore.add(new Shelve(indicator, slots));
+	}
+
 	public int getCashiers() {
 		return cashiers;
 	}
@@ -98,4 +104,6 @@ public class BookStoreManager {
 		}
 		return result;
 	}
+	
+	
 }
