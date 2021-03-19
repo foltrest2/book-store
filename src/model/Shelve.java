@@ -6,13 +6,12 @@ public class Shelve {
 	
 	private String indicator;
 	private HashTable<String, Book> slots;
+	private HashTable<String, Integer> booksExistence;
 	
 	public Shelve(String ind, int slots) {
 		indicator = ind;
 		this.slots = new HashTable<String, Book>(slots);
-	}
-	public Shelve(int slots) {
-		this.slots = new HashTable<String, Book>(slots);
+		this.booksExistence =  new HashTable<String, Integer>(slots);
 	}
 	
 	public void addBook(String ISBN, Book book) {
@@ -23,10 +22,6 @@ public class Shelve {
 		return slots;
 	}
 
-	public void setSlots(HashTable<String, Book> slots) {
-		this.slots = slots;
-	}
-
 	public String getIndicator() {
 		return indicator;
 	}
@@ -35,4 +30,9 @@ public class Shelve {
 		indicator = ind;
 	}
 
+	public HashTable<String, Integer> getBooksExistence() {
+		return booksExistence;
+	}
+
+	
 }
