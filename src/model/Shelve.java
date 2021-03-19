@@ -5,12 +5,21 @@ import dataStructures.HashTable;
 public class Shelve {
 	
 	private String indicator;
-	private HashTable<String, Book> books;
+	private HashTable<String, Book> slots;
 	
-	public Shelve(String ind) {
+	public Shelve(String ind, int slots) {
 		indicator = ind;
+		this.slots = new HashTable<>(slots);
 	}
 	
+	public HashTable<String, Book> getSlots() {
+		return slots;
+	}
+
+	public void setSlots(HashTable<String, Book> slots) {
+		this.slots = slots;
+	}
+
 	public String getIndicator() {
 		return indicator;
 	}
