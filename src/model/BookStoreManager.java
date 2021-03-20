@@ -307,7 +307,11 @@ public class BookStoreManager {
 
 	// ************* Queue algorithms *********************************
 	
-	
+	public void clientsToQueue(List <Client> clientsToQueue) {
+		for (int i = 0; i < clientsToQueue.size(); i++) {
+			clientsQueue.enqueue(clientsToQueue.get(i));
+		}	
+	}
 	
 	// **************** Getters and setters *********************** 
 
