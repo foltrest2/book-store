@@ -22,7 +22,7 @@ public class Client {
 
 	public void addBookCodeToInitialList(String ISBN) {
 		initialBooksList.add(ISBN);
-	}
+	} 
 	
 	public void increasePriorityTime() {
 		priorityTime = priorityTime + toPayBooks.size();

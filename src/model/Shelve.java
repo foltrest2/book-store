@@ -25,7 +25,7 @@ public class Shelve implements Comparable<Shelve>{
 	public String getIndicator() {
 		return indicator;
 	}
-
+	
 	public void setIndicator(String ind) {
 		indicator = ind;
 	}

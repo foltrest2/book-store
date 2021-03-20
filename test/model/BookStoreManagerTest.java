@@ -10,7 +10,7 @@ public class BookStoreManagerTest {
 
 	private BookStoreManager bs = new BookStoreManager();
 	public void setupScenary_1() throws InvalidCharacterException{
-		
+
 		bs.addShelve("A", 4);
 		bs.addShelve("B", 5);
 		bs.addShelve("C", 5);
@@ -25,13 +25,13 @@ public class BookStoreManagerTest {
 		bs.addBookPerShelve("El dia y la noche2", "Capitulo 1: Erase una vez la luna y el sol...", "Buenisimo", "123", 50000, "A", 4);
 		bs.addBookPerShelve("El dia y la noche3", "Capitulo 1: Erase una vez la luna y el sol...", "Buenisimo", "456", 50000, "B", 3);
 	}
-	
+
 	public void setupScenary_3() throws InvalidCharacterException{
 		bs.addClient("1234");
 		bs.addClient("1234");
 		bs.addClient("1235");
 		bs.addClient("1236");
-		
+
 	}
 
 	public void setupScenary_4() throws InvalidCharacterException {
@@ -57,7 +57,7 @@ public class BookStoreManagerTest {
 		bs.booksToBag(bs.getInitialClientsList().get(1));
 		bs.booksToBag(bs.getInitialClientsList().get(2));
 	}
-	
+
 	public void setupScenary_5() throws InvalidCharacterException {
 		bs.addShelve("A", 3);
 		bs.addShelve("B", 2);
@@ -69,7 +69,7 @@ public class BookStoreManagerTest {
 		bs.getInitialClientsList().get(0).addBookCodeToInitialList("9485");
 		bs.getInitialClientsList().get(0).addBookCodeToInitialList("1654");
 	}
-	
+
 	@Test
 	public void testAddingAndSearchingShelve() throws InvalidCharacterException{
 		setupScenary_1();
@@ -85,7 +85,7 @@ public class BookStoreManagerTest {
 		assertEquals("Fail test SEARCHING THIRD STUDENT", "El dia y la noche", bs.binaryShelveSearch("C").getSlots().get("767").getTitle());
 		assertEquals("Fail test SEARCHING THIRD STUDENT", new Integer(3), bs.binaryShelveSearch("C").getBooksExistence().get("767"));
 	}
-	
+
 	@Test
 	public void testCountingSort() throws InvalidCharacterException{
 		setupScenary_2();
@@ -99,11 +99,11 @@ public class BookStoreManagerTest {
 		assertEquals("Fail test", "456", sortedBooks.get(1));
 		assertEquals("Fail test", "767", sortedBooks.get(2));
 	}
-	
+
 	@Test
 
 	public void testInsertionSort() throws InvalidCharacterException{
-		
+
 		setupScenary_2();
 		ArrayList<String> ns = new ArrayList<>();
 		ns.add("767");
@@ -131,7 +131,7 @@ public class BookStoreManagerTest {
 		assertEquals("Fail test", "457", ns.get(9));
 		assertEquals("Fail test", "767", ns.get(10));
 		assertEquals("Fail test", "987", ns.get(11));
-		
+
 	}
 
 	public void testAddingClient() throws InvalidCharacterException{
@@ -142,7 +142,7 @@ public class BookStoreManagerTest {
 		assertEquals("Fail test", 2, bs.getInitialClientsList().get(1).getPriorityTime());
 		assertEquals("Fail test", 3, bs.getInitialClientsList().get(2).getPriorityTime());
 	}
-	
+
 	@Test
 	public void heapSortTest() throws InvalidCharacterException {
 		setupScenary_5();
@@ -151,7 +151,7 @@ public class BookStoreManagerTest {
 		assertEquals("Test failed", "9485", sorted.get(1));
 		assertEquals("Test failed", "6545", sorted.get(2));
 	}
-	
+
 	@Test
 	public void booksToBagTest() throws InvalidCharacterException {
 		setupScenary_4();
@@ -159,5 +159,4 @@ public class BookStoreManagerTest {
 		assertEquals("Test failed", "767", bs.getInitialClientsList().get(1).getBooks().top().getISBNCode());
 		assertEquals("Test failed", "123", bs.getInitialClientsList().get(2).getBooks().top().getISBNCode());
 	}
-
 }
