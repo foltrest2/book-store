@@ -2,7 +2,6 @@ package ui;
 
 import java.io.File;
 import java.io.IOException;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -53,7 +52,6 @@ public class BookStoreGUI {
 	@FXML
 	private TextField ClientsNumberTxt;
 
-
 	@FXML
 	private TextField IDTxt;
 
@@ -75,7 +73,6 @@ public class BookStoreGUI {
 	}
 
 	@FXML
-
 	public void toLoadProgressFigure() throws IOException {
 		
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("progressBar.fxml"));
@@ -90,81 +87,67 @@ public class BookStoreGUI {
 		new ProgressLoadingThread(pi,this).start();
 	}
 
-	@FXML
-	void AddBI1(ActionEvent event) {
-
-	}
 
 
-	@FXML
-	void addBI2(ActionEvent event) {
+    @FXML
+    void AddBI1(ActionEvent event) {
 
-	}
+    }
+   
+    @FXML
+    void addBI2(ActionEvent event) {
 
-	@FXML
-	void addBI3(ActionEvent event) {
-
-	}
-
-	public void loadBasicInfo1() throws IOException {
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("addBookMenu.fxml"));
+    }
+    
+    @FXML
+    void addBI3(ActionEvent event) {
+    }
+    public void loadBasicInfo1() throws IOException {
+    	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("addBookMenu.fxml"));
 		fxmlLoader.setController(this);
 		Parent basicinfo1 = fxmlLoader.load();
 		basePane.setCenter(basicinfo1);
-		s= 1;
-
-
-	}
-
-	public void loadBasicInfo2() throws IOException {
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("BasicInfo2.fxml"));
+		 s= 1;  	
+    }
+    
+    public void loadBasicInfo2() throws IOException {
+    	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("BasicInfo2.fxml"));
 		fxmlLoader.setController(this);
 		Parent basicinfo2 = fxmlLoader.load();
 		basePane.setCenter(basicinfo2);
-		s= 2;
-
-
-	}
-	public void loadBasicInfo3() throws IOException {
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("BasicInfo3.fxml"));
-
+		 s= 2;   	
+    }
+    public void loadBasicInfo3() throws IOException {
+    	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("BasicInfo3.fxml"));
 		fxmlLoader.setController(this);
 		Parent basicinfo3 = fxmlLoader.load();
 		basePane.setCenter(basicinfo3);
-		s= 3;
-
-	}
-
-	public void loadSimulation() throws IOException {
-		
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Show.fxml"));
+		 s= 3;
+   }
+    
+    public void loadSimulation() throws IOException {
+    	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Show.fxml"));
 		fxmlLoader.setController(this);
 		Parent basicinfo3 = fxmlLoader.load();
 		basePane.setCenter(basicinfo3);
-		s = 4;
-	}
+		s = 4; 	
+    } 
+    
+    @FXML
+    void next(ActionEvent event) throws IOException {
+    	if(s == 1) {	
+    		loadBasicInfo2();
+    	}else if(s ==2) {
+    		loadBasicInfo3();
+    	}else if(s== 3) {
+    		loadSimulation();
+    	}else {
+    		loadBasicInfo1();	
+    	}
+    }
+    
+    public void updateBar() {
 
-	@FXML
-	void next(ActionEvent event) throws IOException {
-
-		if(s == 1) {
-			
-			loadBasicInfo2();
-		}else if(s ==2) {
-
-			loadBasicInfo3();
-
-		}else if(s== 3) {
-
-			loadSimulation();
-
-		}else {
-
-			loadBasicInfo1();
-		}
-	}
-
-	public void updateBar() {
 		percentprogresslabel.setText((pi.getNumberOfProgress()/3)+"%");
 		progressfigure.setWidth(pi.getNumberOfProgress());
 		if(pi.isLoading()==false) {
