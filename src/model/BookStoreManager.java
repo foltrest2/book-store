@@ -1,16 +1,17 @@
 package model;
+
 import java.util.ArrayList;
 import java.util.List;
 import dataStructures.*;
 import exceptions.InvalidCharacterException;
 
 public class BookStoreManager {
-	
+
 	private Queue<Client> clientsQueue;
 	private List<Client> initialClientsList;
 	private ArrayList<Shelve> shelvesOnStore;
 	private int cashiers;
-	
+
 	public BookStoreManager() {
 		initialClientsList = new ArrayList<>();
 		shelvesOnStore = new ArrayList<>();
@@ -41,14 +42,14 @@ public class BookStoreManager {
 		}
 		return bookAdded;
 	}
-	
-    public Shelve binaryShelveSearch(String k) throws InvalidCharacterException {
+
+	public Shelve binaryShelveSearch(String k) throws InvalidCharacterException {
 		boolean found = false;
 		int toFindShelve = radix128(k);
 		Shelve shelveFound = null;
 		int i = 0;
 		int j = shelvesOnStore.size() - 1;
-		int m=0;
+		int m = 0;
 		while (i <= j && !found) {
 			m = (i + j) / 2;
 			if (radix128(shelvesOnStore.get(m).getIndicator()) == toFindShelve) {
@@ -166,7 +167,17 @@ public class BookStoreManager {
 		}
 		return result;
 	}
-
+	
+	public Book bookOfShelve(String isbn) {
+		Book shelve = null;
+		for (int i = 0; i < shelvesOnStore.size(); i++) {
+			if (shelvesOnStore.get(i).getSlots().contains(isbn)) {
+				shelve = shelvesOnStore.get(i).getSlots().get(isbn);
+			}
+		}
+		return shelve;
+	}
+	
 	public int getCashiers() {
 		return cashiers;
 	}
@@ -194,5 +205,4 @@ public class BookStoreManager {
 	public ArrayList<Shelve> getShelvesOnStore() {
 		return shelvesOnStore;
 	}
-
 }
