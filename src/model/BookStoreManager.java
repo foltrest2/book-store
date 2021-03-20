@@ -17,10 +17,11 @@ public class BookStoreManager {
 	public BookStoreManager() {
 		initialClientsList = new ArrayList<>();
 		shelvesOnStore = new ArrayList<>();
-		clientsQueue = new Queue<>();
+		clientsQueue = new Queue<>(); 
 	}
 
-	public boolean addClient(String id) { 
+	public boolean addClient(String id) {
+
 		boolean clientAdded = false;
 		if(searchClient(id) == null) {
 			int priorityTime = timer+=1;
@@ -89,9 +90,11 @@ public class BookStoreManager {
 
 	public Book bookWithGivenIsbn(String isbn) {
 		Book shelve = null;
-		for (int i = 0; i < shelvesOnStore.size(); i++) {
+		boolean found = false;
+		for (int i = 0; i < shelvesOnStore.size() && !found; i++) {
 			if (shelvesOnStore.get(i).getSlots().contains(isbn)) {
 				shelve = shelvesOnStore.get(i).getSlots().get(isbn);
+				found = true;
 			}
 		}
 		return shelve;
@@ -209,11 +212,86 @@ public class BookStoreManager {
 		}
 	}
 
-	public void booksToBag(Client client) {
+	public String booksToBag(Client client) throws InvalidCharacterException {
+		String info = "";
+
 		for (int i = 0; i < client.getInitialBooksList().size(); i++) {
-			client.getToPayBooks().push(bookWithGivenIsbn(client.getInitialBooksList().get(i)));
+			String isbnToFind = client.getInitialBooksList().get(i);
+			if(bookWithGivenIsbn(isbnToFind) != null && existenceWithGivenIsbn(isbnToFind).get(isbnToFind) != 0) {
+				Book save =	bookWithGivenIsbn(isbnToFind);
+				client.getToPayBooks().push(bookWithGivenIsbn(isbnToFind));
+				int value = existenceWithGivenIsbn(isbnToFind).get(isbnToFind);
+				existenceWithGivenIsbn(isbnToFind).delete(isbnToFind);
+				addBookPerShelve(save.getTitle(), save.getInitialChapters(), save.getCriticsAndReviews(), save.getISBNCode(), save.getPrice(), save.getShelveIndicator(), value-1);
+			} else {
+				info += "Book\nISBN code: "+isbnToFind+"\nTitle: "+bookWithGivenIsbn(isbnToFind).getTitle()+"\nThere have no more existence!";
+			}
 		}
 		client.increasePriorityTime();
+		return info;
+	}
+
+	public List<Client> clientCountingSort(List<Client> clientList) throws InvalidCharacterException {
+		Client [] clients = new Client[clientList.size()];
+		for (int i = 0; i < clientList.size(); i++) {
+			clients[i] = clientList.get(i);
+		}
+		int[] counts = new int[100000000];
+
+		for (int i = 0; i < clients.length; i++) {
+			counts[clients[i].getPriorityTime()]++;
+		}
+
+		int sumTillLast = 0;
+		for (int i = 0; i < counts.length; i++) {
+			int currentElement = counts[i];
+			counts[i] = sumTillLast;
+			sumTillLast = sumTillLast + currentElement;
+		}
+		Client[] outputArray = new Client[clients.length];
+		ArrayList<Client> sortedClients = new ArrayList<>();
+
+		for (int i = 0; i < clients.length; i++) {
+			int positionOfInsert = counts[clients[i].getPriorityTime()];
+			outputArray[positionOfInsert] = clients[i];
+			counts[clients[i].getPriorityTime()]++;
+		}
+		for (int i = 0; i < outputArray.length; i++) {
+			sortedClients.add(outputArray[i]);
+		}
+		return sortedClients;
+	}
+
+	public HashTable<String,Integer> existenceWithGivenIsbn(String isbn) {
+		boolean found = false;
+		HashTable<String, Integer> existenceShelve = null;
+		for (int i = 0; i < shelvesOnStore.size() && !found; i++) {
+			if (shelvesOnStore.get(i).getSlots().contains(isbn)) {
+				existenceShelve = shelvesOnStore.get(i).getBooksExistence();
+				found = true;
+			}
+		}
+		return existenceShelve;
+	}
+
+	public void timerReset() {
+		timer = 0;
+	}
+
+	public static int radix128(String x) throws InvalidCharacterException{
+		int result = 0;
+		int cont = 0;
+		for (int i = x.length()-1; i >= 0; i--) {
+			if (x.charAt(i) > 127) {
+				throw new InvalidCharacterException();
+			}
+			else {
+				char y = x.charAt(i);
+				result += y*Math.pow(128, cont);
+				cont++;
+			}
+		}
+		return result;
 	}
 
 	public int getCashiers() {
@@ -252,23 +330,5 @@ public class BookStoreManager {
 			}
 		}
 		return shelve;
-	}
-
-	public static int radix128(String x) throws InvalidCharacterException{
-		int result = 0;
-		int cont = 0;
-		for (int i = x.length()-1; i >= 0; i--) {
-			if (x.charAt(i) > 127) {
-				throw new InvalidCharacterException();
-			}
-			else {
-				char y = x.charAt(i);
-				System.out.println((int)y);
-				result += y*Math.pow(128, cont);
-				cont++;
-				System.out.println(result);
-			}
-		}
-		return result;
 	}
 }

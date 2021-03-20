@@ -3,14 +3,17 @@ package model;
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.ArrayList;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import exceptions.InvalidCharacterException;
 
 public class BookStoreManagerTest {
 
-	private BookStoreManager bs = new BookStoreManager();
+	private BookStoreManager bs;
+
 	public void setupScenary_1() throws InvalidCharacterException{
 
+		bs = new BookStoreManager();
 		bs.addShelve("A", 4);
 		bs.addShelve("B", 5);
 		bs.addShelve("C", 5);
@@ -18,6 +21,7 @@ public class BookStoreManagerTest {
 	}
 
 	public void setupScenary_2() throws InvalidCharacterException{
+		bs = new BookStoreManager();
 		bs.addShelve("A", 4);
 		bs.addShelve("B", 5);
 		bs.addShelve("C", 5);
@@ -27,6 +31,8 @@ public class BookStoreManagerTest {
 	}
 
 	public void setupScenary_3() throws InvalidCharacterException{
+		bs = new BookStoreManager();
+		bs.timerReset();
 		bs.addClient("1234");
 		bs.addClient("1234");
 		bs.addClient("1235");
@@ -35,6 +41,8 @@ public class BookStoreManagerTest {
 	}
 
 	public void setupScenary_4() throws InvalidCharacterException {
+		bs = new BookStoreManager();
+		bs.timerReset();
 		bs.addClient("123");
 		bs.addClient("456");
 		bs.addClient("798");
@@ -59,6 +67,9 @@ public class BookStoreManagerTest {
 	}
 
 	public void setupScenary_5() throws InvalidCharacterException {
+		bs = new BookStoreManager();
+		bs.timerReset();
+		bs.addClient("123");
 		bs.addShelve("A", 3);
 		bs.addShelve("B", 2);
 		bs.addShelve("C", 1);
@@ -68,6 +79,60 @@ public class BookStoreManagerTest {
 		bs.getInitialClientsList().get(0).addBookCodeToInitialList("6545");
 		bs.getInitialClientsList().get(0).addBookCodeToInitialList("9485");
 		bs.getInitialClientsList().get(0).addBookCodeToInitialList("1654");
+	}
+
+	public void setupScenary_6() throws InvalidCharacterException {
+		bs = new BookStoreManager();
+		bs.timerReset();
+		bs.addClient("123");
+		bs.addClient("456");
+		bs.addClient("798");
+		bs.addShelve("A", 4);
+		bs.addShelve("B", 5);
+		bs.addShelve("C", 5);
+		bs.addBookPerShelve("El dia y la noche1", "Capitulo 1: Erase una vez la luna y el sol...", "Buenisimo", "767", 50000, "C", 5);
+		bs.addBookPerShelve("El dia y la noche2", "Capitulo 1: Erase una vez la luna y el sol...", "Buenisimo", "123", 50000, "A", 6);
+		bs.addBookPerShelve("El dia y la noche3", "Capitulo 1: Erase una vez la luna y el sol...", "Buenisimo", "456", 50000, "B", 4);
+		bs.getInitialClientsList().get(0).addBookCodeToInitialList("767");
+		bs.getInitialClientsList().get(0).addBookCodeToInitialList("123");
+		bs.getInitialClientsList().get(0).addBookCodeToInitialList("456");
+		bs.getInitialClientsList().get(1).addBookCodeToInitialList("456");
+		bs.getInitialClientsList().get(2).addBookCodeToInitialList("456");
+		bs.getInitialClientsList().get(2).addBookCodeToInitialList("767");
+		bs.getInitialClientsList().get(2).addBookCodeToInitialList("123");
+		bs.booksToBag(bs.getInitialClientsList().get(0));
+		bs.booksToBag(bs.getInitialClientsList().get(1));
+		bs.booksToBag(bs.getInitialClientsList().get(2));
+	}
+
+	public void setupScenary_7() throws InvalidCharacterException {
+		bs = new BookStoreManager();
+		bs.timerReset();
+		bs.addClient("123");
+		bs.addClient("456");
+		bs.addClient("798");
+		bs.addClient("534");
+		bs.addClient("239");
+		bs.addShelve("A", 4);
+		bs.addShelve("B", 5);
+		bs.addShelve("C", 5);
+		bs.addBookPerShelve("El dia y la noche1", "Capitulo 1: Erase una vez la luna y el sol...", "Buenisimo", "767", 50000, "C", 5);
+		bs.addBookPerShelve("El dia y la noche2", "Capitulo 1: Erase una vez la luna y el sol...", "Buenisimo", "123", 50000, "A", 6);
+		bs.addBookPerShelve("El dia y la noche3", "Capitulo 1: Erase una vez la luna y el sol...", "Buenisimo", "456", 50000, "B", 4);
+		bs.getInitialClientsList().get(0).addBookCodeToInitialList("767");
+		bs.getInitialClientsList().get(0).addBookCodeToInitialList("123");
+		bs.getInitialClientsList().get(0).addBookCodeToInitialList("456");
+		bs.getInitialClientsList().get(1).addBookCodeToInitialList("456");
+		bs.getInitialClientsList().get(2).addBookCodeToInitialList("456");
+		bs.getInitialClientsList().get(2).addBookCodeToInitialList("767");
+		bs.getInitialClientsList().get(2).addBookCodeToInitialList("123");
+		bs.getInitialClientsList().get(3).addBookCodeToInitialList("456");
+		bs.getInitialClientsList().get(4).addBookCodeToInitialList("456");
+		bs.booksToBag(bs.getInitialClientsList().get(0));
+		bs.booksToBag(bs.getInitialClientsList().get(1));
+		bs.booksToBag(bs.getInitialClientsList().get(2));
+		bs.booksToBag(bs.getInitialClientsList().get(3));
+		bs.booksToBag(bs.getInitialClientsList().get(4));
 	}
 
 	@Test
@@ -103,7 +168,6 @@ public class BookStoreManagerTest {
 	@Test
 
 	public void testInsertionSort() throws InvalidCharacterException{
-
 		setupScenary_2();
 		ArrayList<String> ns = new ArrayList<>();
 		ns.add("767");
@@ -158,5 +222,34 @@ public class BookStoreManagerTest {
 		assertEquals("Test failed", "456", bs.getInitialClientsList().get(0).getBooks().top().getISBNCode());
 		assertEquals("Test failed", "767", bs.getInitialClientsList().get(1).getBooks().top().getISBNCode());
 		assertEquals("Test failed", "123", bs.getInitialClientsList().get(2).getBooks().top().getISBNCode());
+	}
+
+	@Test
+	public void sortingClientsTest() throws InvalidCharacterException {
+		setupScenary_6();
+		List<Client> sortedClients = new ArrayList<>();
+		sortedClients = bs.clientCountingSort(bs.getInitialClientsList());
+		assertEquals("Test failed", "456", sortedClients.get(0).getId());
+		assertEquals("Test failed", "123", sortedClients.get(1).getId());
+		assertEquals("Test failed", "798", sortedClients.get(2).getId());
+		assertEquals("Test failed", 3, sortedClients.get(0).getPriorityTime());
+		assertEquals("Test failed", 4, sortedClients.get(1).getPriorityTime());
+		assertEquals("Test failed", 6, sortedClients.get(2).getPriorityTime());
+	}
+
+	@Test
+	public void decreaseBooksQuantityTest() throws InvalidCharacterException {
+		setupScenary_6();
+		assertEquals("Test failed", new Integer(3), bs.getShelvesOnStore().get(2).getBooksExistence().get("767"));
+		assertEquals("Test failed", new Integer(4), bs.getShelvesOnStore().get(0).getBooksExistence().get("123"));
+		assertEquals("Test failed", new Integer(1), bs.getShelvesOnStore().get(1).getBooksExistence().get("456"));
+	}
+
+	@Test
+	public void decreaseBooksQuantityTest_2() throws InvalidCharacterException {
+		setupScenary_7();
+		assertEquals("Test failed", new Integer(3), bs.getShelvesOnStore().get(2).getBooksExistence().get("767"));
+		assertEquals("Test failed", new Integer(4), bs.getShelvesOnStore().get(0).getBooksExistence().get("123"));
+		assertEquals("Test failed", new Integer(0), bs.getShelvesOnStore().get(1).getBooksExistence().get("456"));
 	}
 }

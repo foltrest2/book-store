@@ -154,7 +154,7 @@ public class BookStoreGUI {
 			try {
 				loadBasicInfo1();
 			} catch (IOException e) {
-				e.printStackTrace();
+				e.printStackTrace(); 
 			}
 		}
 	}
