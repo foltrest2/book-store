@@ -7,7 +7,7 @@ import dataStructures.*;
 import exceptions.InvalidCharacterException;
 
 public class BookStoreManager {
-	
+
 	private Queue<Client> clientsQueue;
 	private List<Client> initialClientsList;
 	private ArrayList<Shelve> shelvesOnStore;
@@ -20,7 +20,7 @@ public class BookStoreManager {
 		shelvesOnStore = new ArrayList<>();
 		clientsQueue = new Queue<>();
 	}
-	
+
 	public boolean addClient(String id) {
 		boolean clientAdded = false;
 		if(searchClient(id) == null) {
@@ -90,56 +90,58 @@ public class BookStoreManager {
 
 	public Book bookWithGivenIsbn(String isbn) {
 		Book shelve = null;
-		for (int i = 0; i < shelvesOnStore.size(); i++) {
+		boolean found = false;
+		for (int i = 0; i < shelvesOnStore.size() && !found; i++) {
 			if (shelvesOnStore.get(i).getSlots().contains(isbn)) {
 				shelve = shelvesOnStore.get(i).getSlots().get(isbn);
+				found = true;
 			}
 		}
 		return shelve;
 	}
 
-    public ArrayList<String> countingSort(ArrayList<String> isbnList) throws InvalidCharacterException {
+	public ArrayList<String> countingSort(ArrayList<String> isbnList) throws InvalidCharacterException {
 
-        Book [] books = new Book[isbnList.size()];
-        for (int i = 0; i < isbnList.size(); i++) {
-            books[i] = bookWithGivenIsbn(isbnList.get(i));
-        }
+		Book [] books = new Book[isbnList.size()];
+		for (int i = 0; i < isbnList.size(); i++) {
+			books[i] = bookWithGivenIsbn(isbnList.get(i));
+		}
 
-        int[] counts = new int[127];
+		int[] counts = new int[127];
 
-        for (int i = 0; i < books.length; i++) {
-            counts[radix128(books[i].getShelveIndicator())]++;
-        }
-        int sumTillLast = 0;
-        for (int i = 0; i < counts.length; i++) {
-            int currentElement = counts[i];
-            counts[i] = sumTillLast;
-            sumTillLast = sumTillLast + currentElement;
-        }
+		for (int i = 0; i < books.length; i++) {
+			counts[radix128(books[i].getShelveIndicator())]++;
+		}
+		int sumTillLast = 0;
+		for (int i = 0; i < counts.length; i++) {
+			int currentElement = counts[i];
+			counts[i] = sumTillLast;
+			sumTillLast = sumTillLast + currentElement;
+		}
 
-        Book[] outputArray = new Book[books.length]; 
-        ArrayList<String> sortedBooks = new ArrayList<>(); 
+		Book[] outputArray = new Book[books.length]; 
+		ArrayList<String> sortedBooks = new ArrayList<>(); 
 
-        for (int i = 0; i < books.length; i++) {
-            int positionOfInsert = counts[radix128(books[i].getShelveIndicator())];
-            outputArray[positionOfInsert] = books[i];
-            counts[radix128(books[i].getShelveIndicator())]++;
-        }
-        for (int i = 0; i < outputArray.length; i++) {
-            sortedBooks.add(outputArray[i].getISBNCode());
-        }
-        return sortedBooks;
-    }
-	
+		for (int i = 0; i < books.length; i++) {
+			int positionOfInsert = counts[radix128(books[i].getShelveIndicator())];
+			outputArray[positionOfInsert] = books[i];
+			counts[radix128(books[i].getShelveIndicator())]++;
+		}
+		for (int i = 0; i < outputArray.length; i++) {
+			sortedBooks.add(outputArray[i].getISBNCode());
+		}
+		return sortedBooks;
+	}
+
 	public boolean binarySearchShelve(String indicator) {
 		boolean found = false; 
 		for (int i = 0; i < shelvesOnStore.size(); i++) {
-			
+
 		}
 		return found;
 	}
-	
-    public static String binarySearch(int[] array, int k) {
+
+	public static String binarySearch(int[] array, int k) {
 		boolean found = false;
 		int i = 0;
 		int j = array.length - 1;
@@ -158,7 +160,7 @@ public class BookStoreManager {
 			}
 		}
 		return info;
-    }
+	}
 
 	public ArrayList<String> heapSort(List<String> list) {
 		Book [] books = new Book[list.size()];
@@ -197,32 +199,35 @@ public class BookStoreManager {
 			heapify(array, SizeofHeap, largestelement);
 		}
 	}
-	
+
 	public void insertionSort(ArrayList<String> arr) {
-	    for (int j = 1; j < arr.size(); j++) {
-	        String current = arr.get(j);
-	        int i = j-1;
-	        while ((i > -1) && (arr.get(i).compareTo(current)>0)) {
-	            arr.set(i+1,arr.get(i));
-	            i--;
-	        }
-	        arr.set(i+1, current);
-	    }
+		for (int j = 1; j < arr.size(); j++) {
+			String current = arr.get(j);
+			int i = j-1;
+			while ((i > -1) && (arr.get(i).compareTo(current)>0)) {
+				arr.set(i+1,arr.get(i));
+				i--;
+			}
+			arr.set(i+1, current);
+		}
 	}
 
-	public void booksToBag(Client client) {
+	public String booksToBag(Client client) throws InvalidCharacterException {
+		String info = "";
 		for (int i = 0; i < client.getInitialBooksList().size(); i++) {
 			String isbnToFind = client.getInitialBooksList().get(i);
 			if(bookWithGivenIsbn(isbnToFind) != null && existenceWithGivenIsbn(isbnToFind).get(isbnToFind) != 0) {
-				existenceWithGivenIsbn(isbnToFind);
+				Book save =	bookWithGivenIsbn(isbnToFind);
 				client.getToPayBooks().push(bookWithGivenIsbn(isbnToFind));
 				int value = existenceWithGivenIsbn(isbnToFind).get(isbnToFind);
 				existenceWithGivenIsbn(isbnToFind).delete(isbnToFind);
-				existenceWithGivenIsbn(isbnToFind).put(isbnToFind, value-1);
+				addBookPerShelve(save.getTitle(), save.getInitialChapters(), save.getCriticsAndReviews(), save.getISBNCode(), save.getPrice(), save.getShelveIndicator(), value-1);
+			} else {
+				info += "Book\nISBN code: "+isbnToFind+"\nTitle: "+bookWithGivenIsbn(isbnToFind).getTitle()+"\nThere have no more existence!";
 			}
-
 		}
 		client.increasePriorityTime();
+		return info;
 	}
 
 	public List<Client> clientCountingSort(List<Client> clientList) throws InvalidCharacterException {
@@ -257,10 +262,12 @@ public class BookStoreManager {
 	}
 
 	public HashTable<String,Integer> existenceWithGivenIsbn(String isbn) {
+		boolean found = false;
 		HashTable<String, Integer> existenceShelve = null;
-		for (int i = 0; i < shelvesOnStore.size(); i++) {
+		for (int i = 0; i < shelvesOnStore.size() && !found; i++) {
 			if (shelvesOnStore.get(i).getSlots().contains(isbn)) {
 				existenceShelve = shelvesOnStore.get(i).getBooksExistence();
+				found = true;
 			}
 		}
 		return existenceShelve;
