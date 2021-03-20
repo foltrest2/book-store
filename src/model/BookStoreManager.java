@@ -22,7 +22,7 @@ public class BookStoreManager {
 	public boolean addClient(String id) {
 		boolean clientAdded = false;
 		if(searchClient(id) == null) {
-			int priorityTime = timer+=1;
+			int priorityTime = timer++;
 			Client toAdd = new Client(id, priorityTime);	
 			initialClientsList.add(toAdd);
 		}
@@ -165,11 +165,28 @@ public class BookStoreManager {
 	}
 	
 	public void booksToBag(Client client) {
-		for (int i = 0; i < client.getInitialBooksList().size(); i++) {
-			client.getToPayBooks().push(bookWithGivenIsbn(client.getInitialBooksList().get(i)));
-		}
-		client.increasePriorityTime();
-	}
+        for (int i = 0; i < client.getInitialBooksList().size(); i++) {
+            String isbnToFind = client.getInitialBooksList().get(i);
+            if(bookWithGivenIsbn(isbnToFind) != null && existenceWithGivenIsbn(isbnToFind).get(isbnToFind) != 0) {
+                existenceWithGivenIsbn(isbnToFind);
+                client.getToPayBooks().push(bookWithGivenIsbn(isbnToFind));
+                int value = existenceWithGivenIsbn(isbnToFind).get(isbnToFind);
+                existenceWithGivenIsbn(isbnToFind).delete(isbnToFind);
+                existenceWithGivenIsbn(isbnToFind).put(isbnToFind, value-1);
+            }
+        }
+        client.increasePriorityTime();
+    }
+	
+	public HashTable<String,Integer> existenceWithGivenIsbn(String isbn) {
+        HashTable<String, Integer> existenceShelve = null;
+        for (int i = 0; i < shelvesOnStore.size(); i++) {
+            if (shelvesOnStore.get(i).getSlots().contains(isbn)) {
+                existenceShelve = shelvesOnStore.get(i).getBooksExistence();
+            }
+        }
+        return existenceShelve;
+    }
 	
 	public int radix128(String x) throws InvalidCharacterException{
 		int result = 0;

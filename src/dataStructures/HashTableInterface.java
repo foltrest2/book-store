@@ -6,5 +6,6 @@ public interface HashTableInterface<K, V> {
 	public V delete(K key);
 	public V get(K key);
 	public int size();
+	public void replaceValue(K key, V value);
 	
 }
