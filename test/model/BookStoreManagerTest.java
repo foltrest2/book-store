@@ -27,10 +27,18 @@ public class BookStoreManagerTest {
 		bs.addBookPerShelve("El dia y la noche2", "Capitulo 1: Erase una vez la luna y el sol...", "Buenisimo", "123", 50000, "A", 4);
 		bs.addBookPerShelve("El dia y la noche3", "Capitulo 1: Erase una vez la luna y el sol...", "Buenisimo", "456", 50000, "B", 3);
 	}
+	
+	public void setupScenary_3() throws InvalidCharacterException{
+		bs.addClient("1234");
+		bs.addClient("1234");
+		bs.addClient("1235");
+		bs.addClient("1236");
+
+	}
 
 	public void setupScenary_4() {
-		bs.addClient("123", 0);
-		bs.addClient("456", 1);
+		bs.addClient("123");
+		bs.addClient("456");
 	}
 	
 	@Test
@@ -61,5 +69,15 @@ public class BookStoreManagerTest {
 		assertEquals("Fail test", "123", sortedBooks.get(0));
 		assertEquals("Fail test", "456", sortedBooks.get(1));
 		assertEquals("Fail test", "767", sortedBooks.get(2));
+	}
+	
+	@Test
+	public void testAddingClient() throws InvalidCharacterException{
+		setupScenary_3();
+		assertEquals("Fail test", "1234", bs.getInitialClientsList().get(0).getId());
+		assertEquals("Fail test", 3, bs.getInitialClientsList().size());
+		assertEquals("Fail test", 1, bs.getInitialClientsList().get(0).getPriorityTime());
+		assertEquals("Fail test", 2, bs.getInitialClientsList().get(1).getPriorityTime());
+		assertEquals("Fail test", 3, bs.getInitialClientsList().get(2).getPriorityTime());
 	}
 }

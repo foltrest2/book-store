@@ -11,6 +11,7 @@ public class BookStoreManager {
 	private List<Client> initialClientsList;
 	private ArrayList<Shelve> shelvesOnStore;
 	private int cashiers;
+	private static int timer = 0;
 
 	public BookStoreManager() {
 		initialClientsList = new ArrayList<>();
@@ -18,9 +19,26 @@ public class BookStoreManager {
 		clientsQueue = new Queue<>();
 	}
 
-	public void addClient(String id, int priorityTime) {
-		Client toAdd = new Client(id, priorityTime);
-		initialClientsList.add(toAdd);
+	public boolean addClient(String id) {
+		boolean clientAdded = false;
+		if(searchClient(id) == null) {
+			int priorityTime = timer+=1;
+			Client toAdd = new Client(id, priorityTime);	
+			initialClientsList.add(toAdd);
+		}
+		return clientAdded;
+	}
+
+	public Client searchClient(String id) {
+		boolean found = false;
+		Client clientFound = null;
+		for (int i = 0; i < initialClientsList.size() && !found; i++) {
+			if(initialClientsList.get(i).getId().equals(id)) {
+				found = true;
+				clientFound = initialClientsList.get(i);
+			}	
+		}
+		return clientFound;
 	}
 
 	public boolean addShelve(String indicator, int slots) throws InvalidCharacterException {
@@ -31,7 +49,7 @@ public class BookStoreManager {
 		}
 		return shelveAdded;
 	}
-	
+
 	public boolean addBookPerShelve(String title, String initialChapters, String criticsAndReviews, String iSBNCode, double price, String shelveIndicator, int booksQuantity) throws InvalidCharacterException {
 		boolean bookAdded = false;
 		Shelve shelveToAddBook = binaryShelveSearch(shelveIndicator);
