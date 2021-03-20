@@ -1,5 +1,8 @@
 package model;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import dataStructures.*;
 import exceptions.InvalidCharacterException;
@@ -24,8 +27,76 @@ public class BookStoreManager {
 		initialClientsList.add(toAdd);
 	}
 
-	public void addShelveQuantity(String indicator, int slots ) {
-		shelvesOnStore.add(new Shelve(indicator, slots));
+	public boolean addShelve(String indicator, int slots) throws InvalidCharacterException {
+		boolean shelveAdded = false;
+		if (binaryShelveSearch(indicator) == null) {
+			shelveAdded = true;
+			shelvesOnStore.add(new Shelve(indicator, slots));
+		}
+		return shelveAdded;
+	}
+	
+	public boolean addBokPerShelve(String title, String initialChapters, String criticsAndReviews, String iSBNCode, double price, String shelveIndicator, int booksQuantity) throws InvalidCharacterException {
+		boolean bookAdded = false;
+		Shelve shelveToAddBook = binaryShelveSearch(shelveIndicator);
+		if (shelveToAddBook != null) {
+			Book bookToAdd = new Book(title, initialChapters, criticsAndReviews, iSBNCode, price, shelveIndicator);
+			shelveToAddBook.addBook(iSBNCode, bookToAdd, booksQuantity);
+			bookAdded = true;
+		}
+		return bookAdded;
+	}
+	
+    public Shelve binaryShelveSearch(String k) throws InvalidCharacterException {
+		boolean found = false;
+		int toFindShelve = convertirCadenaANatural(k);
+		Shelve shelveFound = null;
+		int i = 0;
+		int j = shelvesOnStore.size() - 1;
+		int m=0;
+		while (i <= j && !found) {
+			m = (i + j) / 2;
+			if (convertirCadenaANatural(shelvesOnStore.get(m).getIndicator()) == toFindShelve) {
+				found = true;
+				shelveFound = shelvesOnStore.get(m);
+			} else {
+				if (convertirCadenaANatural(shelvesOnStore.get(m).getIndicator()) > toFindShelve) {
+					j = m - 1;
+				} else {
+					i = m + 1;
+				}
+			}
+		}
+		return shelveFound;
+	}
+	
+	public boolean binarySearchShelve(String indicator) {
+		boolean found = false;
+		for (int i = 0; i < shelvesOnStore.size(); i++) {
+			
+		}
+		return found;
+	}
+	
+    public static String binarySearch(int[] array, int k) {
+		boolean found = false;
+		int i = 0;
+		int j = array.length - 1;
+		int m=0;
+		String info = "";
+		while (i <= j && !found) {
+			m = (i + j) / 2;
+			if (array[m] == k) {
+				found = true;
+			} else {
+				if (array[m] > k) {
+					j = m - 1;
+				} else {
+					i = m + 1;
+				}
+			}
+		}
+		return info;
 	}
 
 	public int getCashiers() {
