@@ -152,6 +152,37 @@ public class BookStoreManager {
 		return shelvesOnStore;
 	}
 
+	public ArrayList<Client> clientCountingSort(ArrayList<Client> clientList) throws InvalidCharacterException {
+		Client [] clients = new Client[clientList.size()];
+		for (int i = 0; i < clientList.size(); i++) {
+			clients[i] = clientList.get(i);
+		}
+		int[] counts = new int[127];
+
+		for (int i = 0; i < clients.length; i++) {
+			counts[Integer.parseInt(clients[i].getId())]++;
+		}
+
+		int sumTillLast = 0;
+		for (int i = 0; i < counts.length; i++) {
+			int currentElement = counts[i];
+			counts[i] = sumTillLast;
+			sumTillLast = sumTillLast + currentElement;
+		}
+		Client[] outputArray = new Client[clients.length];
+		ArrayList<Client> sortedClients = new ArrayList<>();
+
+		for (int i = 0; i < clients.length; i++) {
+			int positionOfInsert = counts[Integer.parseInt(clients[i].getId())];
+			outputArray[positionOfInsert] = clients[i];
+			counts[Integer.parseInt(clients[i].getId())]++;
+		}
+		for (int i = 0; i < outputArray.length; i++) {
+			sortedClients.add(outputArray[i]);
+		}
+		return sortedClients;
+	}
+	
 	public ArrayList<String> countingSort(ArrayList<String> isbnList) throws InvalidCharacterException {
 		Book [] books = new Book[isbnList.size()];
 		for (int i = 0; i < isbnList.size(); i++) {
@@ -202,10 +233,8 @@ public class BookStoreManager {
 			}
 			else {
 				char y = x.charAt(i);
-				System.out.println((int)y);
 				result += y*Math.pow(128, cont);
 				cont++;
-				System.out.println(result);
 			}
 		}
 		return result;
