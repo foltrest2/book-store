@@ -127,10 +127,10 @@ public class BookStoreManager {
         return sortedBooks;
     }
 	
-	public ArrayList<String> heapSort(ArrayList<String> isbnList) {
-		Book [] books = new Book[isbnList.size()];
-		for (int i = 0; i < isbnList.size(); i++) {
-			books[i] = bookWithGivenIsbn(isbnList.get(i));
+	public ArrayList<String> heapSort(List<String> list) {
+		Book [] books = new Book[list.size()];
+		for (int i = 0; i < list.size(); i++) {
+			books[i] = bookWithGivenIsbn(list.get(i));
 		}
 		int size = books.length; 
 		for (int i = size / 2 - 1; i >= 0; i--)
@@ -168,7 +168,7 @@ public class BookStoreManager {
 		for (int i = 0; i < client.getInitialBooksList().size(); i++) {
 			client.getToPayBooks().push(bookWithGivenIsbn(client.getInitialBooksList().get(i)));
 		}
-
+		client.increasePriorityTime();
 	}
 	
 	public int radix128(String x) throws InvalidCharacterException{

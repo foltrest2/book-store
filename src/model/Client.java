@@ -14,6 +14,7 @@ public class Client {
 
 	public Client(String id, int priorityTime) {
 		initialBooksList = new ArrayList<>();
+		toPayBooks = new Stack<>(); 
 		this.id = id;
 		this.priorityTime = priorityTime;
 		this.pricePaid = 0;
