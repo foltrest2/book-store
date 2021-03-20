@@ -17,7 +17,6 @@ import thread.ProgressLoadingThread;
 
 public class BookStoreGUI {
 	
-	
 	private BookStoreManager b;
 	private Progressitem pi;
 	private int s;
@@ -71,18 +70,12 @@ public class BookStoreGUI {
     
     public void toLoadProgressFigure() throws IOException {
     	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("progressBar.fxml"));
-
 		fxmlLoader.setController(this);
-
 		Parent progressPane = fxmlLoader.load();
-
 		basePane.getChildren().clear();
 		basePane.setCenter(progressPane); 	
 		pi.setLoading(true);
 		new ProgressLoadingThread(pi,this).start();
-		
-
-
 	}
     
     @FXML
@@ -103,96 +96,46 @@ public class BookStoreGUI {
     
     public void loadBasicInfo1() throws IOException {
     	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("addBookMenu.fxml"));
-
 		fxmlLoader.setController(this);
-
 		Parent basicinfo1 = fxmlLoader.load();
-
-
-
 		basePane.setCenter(basicinfo1);
-		 s= 1;
-       
-    	
+		 s= 1;  	
     }
     
     public void loadBasicInfo2() throws IOException {
     	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("BasicInfo2.fxml"));
-
 		fxmlLoader.setController(this);
-
 		Parent basicinfo2 = fxmlLoader.load();
-
-
-
 		basePane.setCenter(basicinfo2);
-		 s= 2;
-       
-    	
+		 s= 2;   	
     }
     public void loadBasicInfo3() throws IOException {
     	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("BasicInfo3.fxml"));
-
 		fxmlLoader.setController(this);
-
 		Parent basicinfo3 = fxmlLoader.load();
-
-
-
 		basePane.setCenter(basicinfo3);
 		 s= 3;
-       
-    	
-    }
+   }
     
     public void loadSimulation() throws IOException {
     	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Show.fxml"));
-
 		fxmlLoader.setController(this);
-
 		Parent basicinfo3 = fxmlLoader.load();
-
-
-
 		basePane.setCenter(basicinfo3);
-		s = 4;
-		 
-       
-    	
-    }
-    
-    
+		s = 4; 	
+    } 
     
     @FXML
     void next(ActionEvent event) throws IOException {
-
-    	
-    	if(s == 1) {
-    		
-    		
+    	if(s == 1) {	
     		loadBasicInfo2();
-    		
-    		
-    		
     	}else if(s ==2) {
-    		
     		loadBasicInfo3();
-    		
     	}else if(s== 3) {
-    		
     		loadSimulation();
-    		
     	}else {
-    		
-    		loadBasicInfo1();
-    		
+    		loadBasicInfo1();	
     	}
-    	
-    	
-    
-    	
-    	
-    	
     }
     
     public void updateBar() {
@@ -213,21 +156,5 @@ public class BookStoreGUI {
     	loadBasicInfo1();
     	
     }
-
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
 }

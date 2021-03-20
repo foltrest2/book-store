@@ -13,14 +13,13 @@ public class Main extends Application {
 	private static BookStoreManager bookStore = new BookStoreManager();
 
 	public Main() {
-		bookStore = new BookStoreManager();
 		initialInterfaceGUI = new BookStoreGUI(bookStore);
 	}
 
 	public static void main(String[] args) {
 				launch(args);
 	}
-		
+
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("basePane.fxml"));

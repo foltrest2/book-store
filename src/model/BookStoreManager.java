@@ -31,7 +31,7 @@ public class BookStoreManager {
 		}
 		return shelveAdded;
 	}
-
+	
 	public boolean addBookPerShelve(String title, String initialChapters, String criticsAndReviews, String iSBNCode, double price, String shelveIndicator, int booksQuantity) throws InvalidCharacterException {
 		boolean bookAdded = false;
 		Shelve shelveToAddBook = binaryShelveSearch(shelveIndicator);
@@ -64,6 +64,46 @@ public class BookStoreManager {
 			}
 		}
 		return shelveFound;
+	}
+	
+	public ArrayList<String> sort(ArrayList<String> isbnList) {
+		Book [] books = new Book[isbnList.size()];
+		for (int i = 0; i < isbnList.size(); i++) {
+			books[i] = bookOfShelve(isbnList.get(i));
+		}
+		int size = books.length; 
+		for (int i = size / 2 - 1; i >= 0; i--)
+			heapify(books, size, i);
+		for (int i=size-1; i>=0; i--) {
+			Book x = books[0];
+			books[0] = books[i];
+			books[i] = x;
+			heapify(books, i, 0);
+		}
+		ArrayList<String> isbnSorted = new ArrayList<>();
+		for (int i = 0; i < books.length; i++) {
+			isbnSorted.add(books[i].getISBNCode());
+		}
+		return isbnSorted;
+	}
+
+	void heapify(Book array[], int SizeofHeap, int i) {
+		int largestelement = i; // Set largest element as root
+		int leftChild  = 2*i + 1; // index of left child = 2*i + 1
+		int rightChild  = 2*i + 2; //index of right child  = 2*i + 2
+		// left child is greater than root
+		if (leftChild  < SizeofHeap && array[leftChild].getShelveIndicator().compareTo(array[largestelement].getShelveIndicator()) > 0)
+			largestelement = leftChild ;
+		//right child is greater than largest
+		if (rightChild  < SizeofHeap && array[rightChild].getShelveIndicator().compareTo(array[largestelement].getShelveIndicator()) > 0)
+			largestelement = rightChild ;
+		// If largestelement is not root
+		if (largestelement != i) {
+			Book temp = array[i];
+			array[i] = array[largestelement];
+			array[largestelement] = temp;
+			heapify(array, SizeofHeap, largestelement);
+		}
 	}
 
 	public int getCashiers() {
@@ -152,6 +192,4 @@ public class BookStoreManager {
 		}
 		return result;
 	}
-
-
 }

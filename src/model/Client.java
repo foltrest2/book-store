@@ -12,21 +12,6 @@ public class Client {
 	private Stack<Book> toPayBooks;
 	private List<String> initialBooksList;
 
-	public Client(String id, int priorityTime, double pricePaid, Stack<Book> books) {
-		initialBooksList = new ArrayList<>();
-		this.id = id;
-		this.priorityTime = priorityTime;
-		this.pricePaid = pricePaid;
-		this.toPayBooks = books;
-	}
-
-	public Client(String id, int priorityTime, double pricePaid) {
-		initialBooksList = new ArrayList<>();
-		this.id = id;
-		this.priorityTime = priorityTime;
-		this.pricePaid = pricePaid;
-	}
-
 	public Client(String id, int priorityTime) {
 		initialBooksList = new ArrayList<>();
 		this.id = id;
@@ -38,26 +23,10 @@ public class Client {
 		initialBooksList.add(ISBN);
 	}
 	
-	public void addBookToStack(Book toAdd) {
-		toPayBooks.push(toAdd);
+	public Stack<Book> getToPayBooks() {
+		return toPayBooks;
 	}
-	
-	public boolean isEmptyBookStack() {
-		return toPayBooks.isEmpty();
-	}
-	
-	public Book topBookStack() {
-		return toPayBooks.top();
-	}
-	
-	public int bookStackSize() {
-		return toPayBooks.size();
-	}
-	
-	public Book popBookStack() {
-		return toPayBooks.pop();
-	}
-	
+
 	public String getId() {
 		return id;
 	}
