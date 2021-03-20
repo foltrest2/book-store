@@ -6,17 +6,19 @@ public final static int MAX = 300;
 
 	private int numberOfProgress;
 	private boolean isLoading;
+<<<<<<< HEAD
 
+=======
+	
+>>>>>>> Alejandro
 	public Progressitem() {
 		numberOfProgress = 0;
 		isLoading = true;
 	}
 	
-	
 	public int getNumberOfProgress() {
 		return numberOfProgress;
 	}
-	
 	
 	public void advance() {
 		if(numberOfProgress>=MAX) {
@@ -26,11 +28,9 @@ public final static int MAX = 300;
 		}
 	}
 	
-	
 	public void setLoading(boolean act) {
 		isLoading = act;
 	}
-	
 	
 	public boolean isLoading() {
 		return isLoading;
