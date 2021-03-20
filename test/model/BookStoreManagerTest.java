@@ -17,7 +17,6 @@ public class BookStoreManagerTest {
 		bs.addShelve("B", 5);
 		bs.addShelve("C", 5);
 		bs.addBookPerShelve("El dia y la noche", "Capitulo 1: Erase una vez la luna y el sol...", "Buenisimo", "767", 50000, "C", 3);
-
 	}
 
 	public void setupScenary_2() throws InvalidCharacterException{
@@ -29,6 +28,11 @@ public class BookStoreManagerTest {
 		bs.addBookPerShelve("El dia y la noche3", "Capitulo 1: Erase una vez la luna y el sol...", "Buenisimo", "456", 50000, "B", 3);
 	}
 
+	public void setupScenary_4() {
+		bs.addClient("123", 0);
+		bs.addClient("456", 1);
+	}
+	
 	@Test
 	public void testAddingAndSearchingShelve() throws InvalidCharacterException{
 		setupScenary_1();
