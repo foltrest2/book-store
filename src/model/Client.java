@@ -23,6 +23,10 @@ public class Client {
 		initialBooksList.add(ISBN);
 	}
 	
+	public void increasePriorityTime() {
+		priorityTime = priorityTime + toPayBooks.size();
+	}
+	
 	public Stack<Book> getToPayBooks() {
 		return toPayBooks;
 	}
