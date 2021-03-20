@@ -13,17 +13,34 @@ public class BookStoreManager {
 	private ArrayList<Shelve> shelvesOnStore;
 	private int cashiers;
 	Comparator<String> comp;
+	private static int timer = 0;
 
 	public BookStoreManager() {
 		initialClientsList = new ArrayList<>();
 		shelvesOnStore = new ArrayList<>();
 		clientsQueue = new Queue<>();
 	}
+	
+	public boolean addClient(String id) {
+		boolean clientAdded = false;
+		if(searchClient(id) == null) {
+			int priorityTime = timer+=1;
+			Client toAdd = new Client(id, priorityTime);	
+			initialClientsList.add(toAdd);
+		}
+		return clientAdded;
+	}
 
-
-	public void addClient(String id, int priorityTime) {
-		Client toAdd = new Client(id, priorityTime);
-		initialClientsList.add(toAdd);
+	public Client searchClient(String id) {
+		boolean found = false;
+		Client clientFound = null;
+		for (int i = 0; i < initialClientsList.size() && !found; i++) {
+			if(initialClientsList.get(i).getId().equals(id)) {
+				found = true;
+				clientFound = initialClientsList.get(i);
+			}	
+		}
+		return clientFound;
 	}
 
 	public boolean addShelve(String indicator, int slots) throws InvalidCharacterException {
@@ -70,6 +87,49 @@ public class BookStoreManager {
 		}
 		return shelveFound;
 	}
+    
+    public Book bookWithGivenIsbn(String isbn) {
+        Book shelve = null;
+        for (int i = 0; i < shelvesOnStore.size(); i++) {
+            if (shelvesOnStore.get(i).getSlots().contains(isbn)) {
+                shelve = shelvesOnStore.get(i).getSlots().get(isbn);
+            }
+        }
+        return shelve;
+    }
+
+    public ArrayList<String> countingSort(ArrayList<String> isbnList) throws InvalidCharacterException {
+
+        Book [] books = new Book[isbnList.size()];
+        for (int i = 0; i < isbnList.size(); i++) {
+            books[i] = bookWithGivenIsbn(isbnList.get(i));
+        }
+
+        int[] counts = new int[127];
+
+        for (int i = 0; i < books.length; i++) {
+            counts[radix128(books[i].getShelveIndicator())]++;
+        }
+        int sumTillLast = 0;
+        for (int i = 0; i < counts.length; i++) {
+            int currentElement = counts[i];
+            counts[i] = sumTillLast;
+            sumTillLast = sumTillLast + currentElement;
+        }
+
+        Book[] outputArray = new Book[books.length]; 
+        ArrayList<String> sortedBooks = new ArrayList<>(); 
+
+        for (int i = 0; i < books.length; i++) {
+            int positionOfInsert = counts[radix128(books[i].getShelveIndicator())];
+            outputArray[positionOfInsert] = books[i];
+            counts[radix128(books[i].getShelveIndicator())]++;
+        }
+        for (int i = 0; i < outputArray.length; i++) {
+            sortedBooks.add(outputArray[i].getISBNCode());
+        }
+        return sortedBooks;
+    }
 	
 	public boolean binarySearchShelve(String indicator) {
 		boolean found = false; 
@@ -100,10 +160,11 @@ public class BookStoreManager {
 		return info;
     }
 
-	public ArrayList<String> sort(ArrayList<String> isbnList) {
-		Book [] books = new Book[isbnList.size()];
-		for (int i = 0; i < isbnList.size(); i++) {
-			books[i] = bookOfShelve(isbnList.get(i));
+	public ArrayList<String> heapSort(List<String> list) {
+		Book [] books = new Book[list.size()];
+		for (int i = 0; i < list.size(); i++) {
+			books[i] = bookWithGivenIsbn(list.get(i));
+
 		}
 		int size = books.length; 
 		for (int i = size / 2 - 1; i >= 0; i--)
@@ -122,16 +183,13 @@ public class BookStoreManager {
 	}
 
 	void heapify(Book array[], int SizeofHeap, int i) {
-		int largestelement = i; // Set largest element as root
-		int leftChild  = 2*i + 1; // index of left child = 2*i + 1
-		int rightChild  = 2*i + 2; //index of right child  = 2*i + 2
-		// left child is greater than root
+		int largestelement = i; 
+		int leftChild  = 2*i + 1; 
+		int rightChild  = 2*i + 2; 
 		if (leftChild  < SizeofHeap && array[leftChild].getShelveIndicator().compareTo(array[largestelement].getShelveIndicator()) > 0)
 			largestelement = leftChild ;
-		//right child is greater than largest
 		if (rightChild  < SizeofHeap && array[rightChild].getShelveIndicator().compareTo(array[largestelement].getShelveIndicator()) > 0)
 			largestelement = rightChild ;
-		// If largestelement is not root
 		if (largestelement != i) {
 			Book temp = array[i];
 			array[i] = array[largestelement];
@@ -140,6 +198,7 @@ public class BookStoreManager {
 		}
 	}
 	
+
 	public void insertionSort(ArrayList<String> arr) {
 	    for (int j = 1; j < arr.size(); j++) {
 	        String current = arr.get(j);
@@ -152,6 +211,14 @@ public class BookStoreManager {
 	    }
 	}
 
+
+	public void booksToBag(Client client) {
+		for (int i = 0; i < client.getInitialBooksList().size(); i++) {
+			client.getToPayBooks().push(bookWithGivenIsbn(client.getInitialBooksList().get(i)));
+		}
+		client.increasePriorityTime();
+	}
+	
 	public int getCashiers() {
 		return cashiers;
 	}
@@ -178,37 +245,6 @@ public class BookStoreManager {
 
 	public ArrayList<Shelve> getShelvesOnStore() {
 		return shelvesOnStore;
-	}
-
-	public ArrayList<String> countingSort(ArrayList<String> isbnList) throws InvalidCharacterException {
-		Book [] books = new Book[isbnList.size()];
-		for (int i = 0; i < isbnList.size(); i++) {
-			books[i] = bookOfShelve(isbnList.get(i));
-		}
-		int[] counts = new int[127];
-
-		for (int i = 0; i < books.length; i++) {
-			counts[radix128(books[i].getShelveIndicator())]++;
-		}
-
-		int sumTillLast = 0;
-		for (int i = 0; i < counts.length; i++) {
-			int currentElement = counts[i];
-			counts[i] = sumTillLast;
-			sumTillLast = sumTillLast + currentElement;
-		}
-		Book[] outputArray = new Book[books.length];
-		ArrayList<String> sortedBooks = new ArrayList<>();
-
-		for (int i = 0; i < books.length; i++) {
-			int positionOfInsert = counts[radix128(books[i].getShelveIndicator())];
-			outputArray[positionOfInsert] = books[i];
-			counts[radix128(books[i].getShelveIndicator())]++;
-		}
-		for (int i = 0; i < outputArray.length; i++) {
-			sortedBooks.add(outputArray[i].getISBNCode());
-		}
-		return sortedBooks;
 	}
 
 	public Book bookOfShelve(String isbn) {
@@ -238,5 +274,4 @@ public class BookStoreManager {
 		}
 		return result;
 	}
-
 }

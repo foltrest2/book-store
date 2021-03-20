@@ -14,6 +14,7 @@ public class Client {
 
 	public Client(String id, int priorityTime) {
 		initialBooksList = new ArrayList<>();
+		toPayBooks = new Stack<>(); 
 		this.id = id;
 		this.priorityTime = priorityTime;
 		this.pricePaid = 0;
@@ -21,6 +22,10 @@ public class Client {
 
 	public void addBookCodeToInitialList(String ISBN) {
 		initialBooksList.add(ISBN);
+	}
+	
+	public void increasePriorityTime() {
+		priorityTime = priorityTime + toPayBooks.size();
 	}
 	
 	public Stack<Book> getToPayBooks() {
