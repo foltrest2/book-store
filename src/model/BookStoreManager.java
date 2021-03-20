@@ -1,16 +1,17 @@
 package model;
-
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import dataStructures.*;
 import exceptions.InvalidCharacterException;
 
 public class BookStoreManager {
-
+	
 	private Queue<Client> clientsQueue;
 	private List<Client> initialClientsList;
 	private ArrayList<Shelve> shelvesOnStore;
 	private int cashiers;
+	Comparator<String> comp;
 	private static int timer = 0;
 
 	public BookStoreManager() {
@@ -18,7 +19,7 @@ public class BookStoreManager {
 		shelvesOnStore = new ArrayList<>();
 		clientsQueue = new Queue<>();
 	}
-
+	
 	public boolean addClient(String id) {
 		boolean clientAdded = false;
 		if(searchClient(id) == null) {
@@ -51,6 +52,7 @@ public class BookStoreManager {
 	}
 
 	public boolean addBookPerShelve(String title, String initialChapters, String criticsAndReviews, String iSBNCode, double price, String shelveIndicator, int booksQuantity) throws InvalidCharacterException {
+
 		boolean bookAdded = false;
 		Shelve shelveToAddBook = binaryShelveSearch(shelveIndicator);
 		if (shelveToAddBook != null) {
@@ -75,6 +77,7 @@ public class BookStoreManager {
 				shelveFound = shelvesOnStore.get(m);
 			} else {
 				if (radix128(shelvesOnStore.get(m).getIndicator()) > toFindShelve) {
+
 					j = m - 1;
 				} else {
 					i = m + 1;
@@ -83,16 +86,16 @@ public class BookStoreManager {
 		}
 		return shelveFound;
 	}
-    
-    public Book bookWithGivenIsbn(String isbn) {
-        Book shelve = null;
-        for (int i = 0; i < shelvesOnStore.size(); i++) {
-            if (shelvesOnStore.get(i).getSlots().contains(isbn)) {
-                shelve = shelvesOnStore.get(i).getSlots().get(isbn);
-            }
-        }
-        return shelve;
-    }
+
+	public Book bookWithGivenIsbn(String isbn) {
+		Book shelve = null;
+		for (int i = 0; i < shelvesOnStore.size(); i++) {
+			if (shelvesOnStore.get(i).getSlots().contains(isbn)) {
+				shelve = shelvesOnStore.get(i).getSlots().get(isbn);
+			}
+		}
+		return shelve;
+	}
 
     public ArrayList<String> countingSort(ArrayList<String> isbnList) throws InvalidCharacterException {
 
@@ -113,8 +116,8 @@ public class BookStoreManager {
             sumTillLast = sumTillLast + currentElement;
         }
 
-        Book[] outputArray = new Book[books.length];
-        ArrayList<String> sortedBooks = new ArrayList<>();
+        Book[] outputArray = new Book[books.length]; 
+        ArrayList<String> sortedBooks = new ArrayList<>(); 
 
         for (int i = 0; i < books.length; i++) {
             int positionOfInsert = counts[radix128(books[i].getShelveIndicator())];
@@ -127,10 +130,40 @@ public class BookStoreManager {
         return sortedBooks;
     }
 	
+	public boolean binarySearchShelve(String indicator) {
+		boolean found = false; 
+		for (int i = 0; i < shelvesOnStore.size(); i++) {
+			
+		}
+		return found;
+	}
+	
+    public static String binarySearch(int[] array, int k) {
+		boolean found = false;
+		int i = 0;
+		int j = array.length - 1;
+		int m=0;
+		String info = "";
+		while (i <= j && !found) {
+			m = (i + j) / 2;
+			if (array[m] == k) {
+				found = true;
+			} else {
+				if (array[m] > k) {
+					j = m - 1;
+				} else {
+					i = m + 1;
+				}
+			}
+		}
+		return info;
+    }
+
 	public ArrayList<String> heapSort(List<String> list) {
 		Book [] books = new Book[list.size()];
 		for (int i = 0; i < list.size(); i++) {
 			books[i] = bookWithGivenIsbn(list.get(i));
+
 		}
 		int size = books.length; 
 		for (int i = size / 2 - 1; i >= 0; i--)
@@ -164,6 +197,18 @@ public class BookStoreManager {
 		}
 	}
 	
+	public void insertionSort(ArrayList<String> arr) {
+	    for (int j = 1; j < arr.size(); j++) {
+	        String current = arr.get(j);
+	        int i = j-1;
+	        while ((i > -1) && (arr.get(i).compareTo(current)>0)) {
+	            arr.set(i+1,arr.get(i));
+	            i--;
+	        }
+	        arr.set(i+1, current);
+	    }
+	}
+
 	public void booksToBag(Client client) {
         for (int i = 0; i < client.getInitialBooksList().size(); i++) {
             String isbnToFind = client.getInitialBooksList().get(i);
@@ -187,8 +232,43 @@ public class BookStoreManager {
         }
         return existenceShelve;
     }
-	
-	public int radix128(String x) throws InvalidCharacterException{
+
+	public List<Client> clientCountingSort(List<Client> clientList) throws InvalidCharacterException {
+		Client [] clients = new Client[clientList.size()];
+		for (int i = 0; i < clientList.size(); i++) {
+			clients[i] = clientList.get(i);
+		}
+		int[] counts = new int[100000000];
+
+		for (int i = 0; i < clients.length; i++) {
+			counts[clients[i].getPriorityTime()]++;
+		}
+
+		int sumTillLast = 0;
+		for (int i = 0; i < counts.length; i++) {
+			int currentElement = counts[i];
+			counts[i] = sumTillLast;
+			sumTillLast = sumTillLast + currentElement;
+		}
+		Client[] outputArray = new Client[clients.length];
+		ArrayList<Client> sortedClients = new ArrayList<>();
+
+		for (int i = 0; i < clients.length; i++) {
+			int positionOfInsert = counts[clients[i].getPriorityTime()];
+			outputArray[positionOfInsert] = clients[i];
+			counts[clients[i].getPriorityTime()]++;
+		}
+		for (int i = 0; i < outputArray.length; i++) {
+			sortedClients.add(outputArray[i]);
+		}
+		return sortedClients;
+	}
+
+	public void timerReset() {
+		timer = 0;
+	}
+
+	public static int radix128(String x) throws InvalidCharacterException{
 		int result = 0;
 		int cont = 0;
 		for (int i = x.length()-1; i >= 0; i--) {
@@ -203,17 +283,7 @@ public class BookStoreManager {
 		}
 		return result;
 	}
-	
-	public Book bookOfShelve(String isbn) {
-		Book shelve = null;
-		for (int i = 0; i < shelvesOnStore.size(); i++) {
-			if (shelvesOnStore.get(i).getSlots().contains(isbn)) {
-				shelve = shelvesOnStore.get(i).getSlots().get(isbn);
-			}
-		}
-		return shelve;
-	}
-	
+
 	public int getCashiers() {
 		return cashiers;
 	}
@@ -240,5 +310,15 @@ public class BookStoreManager {
 
 	public ArrayList<Shelve> getShelvesOnStore() {
 		return shelvesOnStore;
+	}
+
+	public Book bookOfShelve(String isbn) {
+		Book shelve = null;
+		for (int i = 0; i < shelvesOnStore.size(); i++) {
+			if (shelvesOnStore.get(i).getSlots().contains(isbn)) {
+				shelve = shelvesOnStore.get(i).getSlots().get(isbn);
+			}
+		}
+		return shelve;
 	}
 }
