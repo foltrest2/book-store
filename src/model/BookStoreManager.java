@@ -168,6 +168,7 @@ public class BookStoreManager {
 		for (int i = 0; i < client.getInitialBooksList().size(); i++) {
 			client.getToPayBooks().push(bookWithGivenIsbn(client.getInitialBooksList().get(i)));
 		}
+
 	}
 	
 	public int radix128(String x) throws InvalidCharacterException{

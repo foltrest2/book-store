@@ -39,6 +39,8 @@ public class BookStoreManagerTest {
 	public void setupScenary_4() {
 		bs.addClient("123");
 		bs.addClient("456");
+		bs.addClient("798");
+		
 	}
 	
 	@Test
