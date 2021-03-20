@@ -65,7 +65,7 @@ public class BookStoreManager {
 		return shelveFound;
 	}
     
-    public Book bookOfShelve(String isbn) {
+    public Book bookWithGivenIsbn(String isbn) {
         Book shelve = null;
         for (int i = 0; i < shelvesOnStore.size(); i++) {
             if (shelvesOnStore.get(i).getSlots().contains(isbn)) {
@@ -79,18 +79,14 @@ public class BookStoreManager {
 
         Book [] books = new Book[isbnList.size()];
         for (int i = 0; i < isbnList.size(); i++) {
-            books[i] = bookOfShelve(isbnList.get(i));
+            books[i] = bookWithGivenIsbn(isbnList.get(i));
         }
 
-        int[] counts = new int[127];//indexes 0 to 4
+        int[] counts = new int[127];
 
-        //prepare counts array
         for (int i = 0; i < books.length; i++) {
             counts[radix128(books[i].getShelveIndicator())]++;
         }
-
-        //Now make every element in counts array the sum of all the elements to the left of it.
-
         int sumTillLast = 0;
         for (int i = 0; i < counts.length; i++) {
             int currentElement = counts[i];
@@ -100,9 +96,6 @@ public class BookStoreManager {
 
         Book[] outputArray = new Book[books.length];
         ArrayList<String> sortedBooks = new ArrayList<>();
-
-        //Now insert elements into output array
-        //based on their indexes in the counts array
 
         for (int i = 0; i < books.length; i++) {
             int positionOfInsert = counts[radix128(books[i].getShelveIndicator())];
@@ -115,10 +108,10 @@ public class BookStoreManager {
         return sortedBooks;
     }
 	
-	public ArrayList<String> sort(ArrayList<String> isbnList) {
+	public ArrayList<String> heapSort(ArrayList<String> isbnList) {
 		Book [] books = new Book[isbnList.size()];
 		for (int i = 0; i < isbnList.size(); i++) {
-			books[i] = bookOfShelve(isbnList.get(i));
+			books[i] = bookWithGivenIsbn(isbnList.get(i));
 		}
 		int size = books.length; 
 		for (int i = size / 2 - 1; i >= 0; i--)
@@ -137,21 +130,24 @@ public class BookStoreManager {
 	}
 
 	void heapify(Book array[], int SizeofHeap, int i) {
-		int largestelement = i; // Set largest element as root
-		int leftChild  = 2*i + 1; // index of left child = 2*i + 1
-		int rightChild  = 2*i + 2; //index of right child  = 2*i + 2
-		// left child is greater than root
+		int largestelement = i; 
+		int leftChild  = 2*i + 1; 
+		int rightChild  = 2*i + 2; 
 		if (leftChild  < SizeofHeap && array[leftChild].getShelveIndicator().compareTo(array[largestelement].getShelveIndicator()) > 0)
 			largestelement = leftChild ;
-		//right child is greater than largest
 		if (rightChild  < SizeofHeap && array[rightChild].getShelveIndicator().compareTo(array[largestelement].getShelveIndicator()) > 0)
 			largestelement = rightChild ;
-		// If largestelement is not root
 		if (largestelement != i) {
 			Book temp = array[i];
 			array[i] = array[largestelement];
 			array[largestelement] = temp;
 			heapify(array, SizeofHeap, largestelement);
+		}
+	}
+	
+	public void booksToBag(Client client) {
+		for (int i = 0; i < client.getInitialBooksList().size(); i++) {
+			client.getToPayBooks().push(bookWithGivenIsbn(client.getInitialBooksList().get(i)));
 		}
 	}
 	
