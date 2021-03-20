@@ -133,37 +133,17 @@ public class BookStoreManager {
 
 	public void booksToBag(Client client) {
 		for (int i = 0; i < client.getInitialBooksList().size(); i++) {
-			client.getToPayBooks().push(bookWithGivenIsbn(client.getInitialBooksList().get(i)));
+			String isbnToFind = client.getInitialBooksList().get(i);
+			if(bookWithGivenIsbn(isbnToFind) != null && existenceWithGivenIsbn(isbnToFind).get(isbnToFind) != 0) {
+				existenceWithGivenIsbn(isbnToFind);
+				client.getToPayBooks().push(bookWithGivenIsbn(isbnToFind));
+				int value = existenceWithGivenIsbn(isbnToFind).get(isbnToFind);
+				existenceWithGivenIsbn(isbnToFind).delete(isbnToFind);
+				existenceWithGivenIsbn(isbnToFind).put(isbnToFind, value-1);
+			}
+
 		}
 		client.increasePriorityTime();
-	}
-
-	public int getCashiers() {
-		return cashiers;
-	}
-
-	public void setCashiers(int cashiers) {
-		this.cashiers = cashiers;
-	}
-
-	public List<Client> getInitialClientsList() {
-		return initialClientsList;
-	}
-
-	public void setInitialClientsList(List<Client> initialClientsList) {
-		this.initialClientsList = initialClientsList;
-	}
-
-	public Queue<Client> getClientsQueue() {
-		return clientsQueue;
-	}
-
-	public void setClientsQueue(Queue<Client> clientsQueue) {
-		this.clientsQueue = clientsQueue;
-	}
-
-	public ArrayList<Shelve> getShelvesOnStore() {
-		return shelvesOnStore;
 	}
 
 	public List<Client> clientCountingSort(List<Client> clientList) throws InvalidCharacterException {
@@ -200,7 +180,7 @@ public class BookStoreManager {
 	public ArrayList<String> countingSort(ArrayList<String> isbnList) throws InvalidCharacterException {
 		Book [] books = new Book[isbnList.size()];
 		for (int i = 0; i < isbnList.size(); i++) {
-			books[i] = bookOfShelve(isbnList.get(i));
+			books[i] = bookWithGivenIsbn(isbnList.get(i));
 		}
 		int[] counts = new int[127];
 
@@ -228,20 +208,20 @@ public class BookStoreManager {
 		return sortedBooks;
 	}
 
-	public Book bookOfShelve(String isbn) {
-		Book shelve = null;
+	public HashTable<String,Integer> existenceWithGivenIsbn(String isbn) {
+		HashTable<String, Integer> existenceShelve = null;
 		for (int i = 0; i < shelvesOnStore.size(); i++) {
 			if (shelvesOnStore.get(i).getSlots().contains(isbn)) {
-				shelve = shelvesOnStore.get(i).getSlots().get(isbn);
+				existenceShelve = shelvesOnStore.get(i).getBooksExistence();
 			}
 		}
-		return shelve;
+		return existenceShelve;
 	}
 
 	public void timerReset() {
 		timer = 0;
 	}
-	
+
 	public static int radix128(String x) throws InvalidCharacterException{
 		int result = 0;
 		int cont = 0;
@@ -256,5 +236,33 @@ public class BookStoreManager {
 			}
 		}
 		return result;
+	}
+
+	public int getCashiers() {
+		return cashiers;
+	}
+
+	public void setCashiers(int cashiers) {
+		this.cashiers = cashiers;
+	}
+
+	public List<Client> getInitialClientsList() {
+		return initialClientsList;
+	}
+
+	public void setInitialClientsList(List<Client> initialClientsList) {
+		this.initialClientsList = initialClientsList;
+	}
+
+	public Queue<Client> getClientsQueue() {
+		return clientsQueue;
+	}
+
+	public void setClientsQueue(Queue<Client> clientsQueue) {
+		this.clientsQueue = clientsQueue;
+	}
+
+	public ArrayList<Shelve> getShelvesOnStore() {
+		return shelvesOnStore;
 	}
 }
