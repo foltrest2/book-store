@@ -21,7 +21,7 @@ public class BookStoreManager {
 	}
 	
 	// ******* Adding algorithms **************
-	
+
 	public boolean addClient(String id) {
 		boolean clientAdded = false;
 		if(searchClient(id) == null) {
@@ -55,7 +55,7 @@ public class BookStoreManager {
 	}
 
 	// ******* Sorting algorithms *************
-	
+
 	public ArrayList<String> countingSort(ArrayList<String> isbnList) throws InvalidCharacterException {
 
 		Book [] books = new Book[isbnList.size()];
@@ -83,7 +83,7 @@ public class BookStoreManager {
 			outputArray[positionOfInsert] = books[i];
 			counts[radix128(books[i].getShelveIndicator())]++;
 		}
-		for (int i = 0; i < outputArray.length; i++) {
+		for (int i = 0; i < shelvesOnStore.size(); i++) {
 			sortedBooks.add(outputArray[i].getISBNCode());
 		}
 		return sortedBooks;
@@ -127,7 +127,7 @@ public class BookStoreManager {
 		}
 	}
 
-	public void insertionSort(ArrayList<String> arr) {
+	public ArrayList<String> insertionSort(ArrayList<String> arr) {
 		for (int j = 1; j < arr.size(); j++) {
 			String current = arr.get(j);
 			int i = j-1;
@@ -137,8 +137,9 @@ public class BookStoreManager {
 			}
 			arr.set(i+1, current);
 		}
+		return arr;
 	}
-	
+
 	public List<Client> clientCountingSort(List<Client> clientList) throws InvalidCharacterException {
 		Client [] clients = new Client[clientList.size()];
 		for (int i = 0; i < clientList.size(); i++) {
@@ -216,7 +217,7 @@ public class BookStoreManager {
 		}
 		return shelveFound;
 	}
-	
+
 	public HashTable<String,Integer> existenceWithGivenIsbn(String isbn) {
 		boolean found = false;
 		HashTable<String, Integer> existenceShelve = null;
@@ -228,17 +229,7 @@ public class BookStoreManager {
 		}
 		return existenceShelve;
 	}
-	
-	public Book bookOfShelve(String isbn) {
-		Book shelve = null;
-		for (int i = 0; i < shelvesOnStore.size(); i++) {
-			if (shelvesOnStore.get(i).getSlots().contains(isbn)) {
-				shelve = shelvesOnStore.get(i).getSlots().get(isbn);
-			}
-		}
-		return shelve;
-	}
-	
+
 	public Book bookWithGivenIsbn(String isbn) {
 		Book shelve = null;
 		boolean found = false;
@@ -262,25 +253,15 @@ public class BookStoreManager {
 		}
 		return clientFound;
 	}
-	
-	// ********** Auxiliar algorithms ***********************
 
-	public String booksToBag(Client client) throws InvalidCharacterException {
-		String info = "";
-		for (int i = 0; i < client.getInitialBooksList().size(); i++) {
-			String isbnToFind = client.getInitialBooksList().get(i);
-			if(bookWithGivenIsbn(isbnToFind) != null && existenceWithGivenIsbn(isbnToFind).get(isbnToFind) != 0) {
-				Book save =	bookWithGivenIsbn(isbnToFind);
-				client.getToPayBooks().push(bookWithGivenIsbn(isbnToFind));
-				int value = existenceWithGivenIsbn(isbnToFind).get(isbnToFind);
-				existenceWithGivenIsbn(isbnToFind).delete(isbnToFind);
-				addBookPerShelve(save.getTitle(), save.getInitialChapters(), save.getCriticsAndReviews(), save.getISBNCode(), save.getPrice(), save.getShelveIndicator(), value-1);
-			} else {
-				info += "Book\nISBN code: "+isbnToFind+"\nTitle: "+bookWithGivenIsbn(isbnToFind).getTitle()+"\nThere have no more existence!";
-			}
+	// *************** Auxiliar algorithms ***********************
+
+	public void booksToBag(Client client) throws InvalidCharacterException {
+		for (int i = 0; i < client.getClientBooksList().size(); i++) {
+			Book bookToAdd = bookWithGivenIsbn(client.getClientBooksList().get(i));
+			client.getBooks().push(bookToAdd);
 		}
 		client.increasePriorityTime();
-		return info;
 	}
 
 	public void timerReset() {
@@ -302,31 +283,30 @@ public class BookStoreManager {
 		}
 		return result;
 	}
-	
-	public String createClientesQueue(int option) {
-		String info = "";
-		switch (option) {
-		case 1:
-			
-			break;
-			
-		case 2:
-			
-			break;
-			
-		case 3:
-			
-			break;
 
-		default:
-			info += "Please Select a sorting algorithm";
-			break;
+	public String addAndCheckBooksToClientBookList(Client client, String isbnCode) throws InvalidCharacterException{
+		String info = "";
+		Book book = bookWithGivenIsbn(isbnCode);
+		if (book != null) {
+			Shelve bookShelve =	binaryShelveSearch(book.getShelveIndicator());
+			boolean added = false;
+			for (int i = 0; i <bookShelve.getBooksExistence().size() && !added; i++) {
+				if(bookShelve.getBooksExistence().get(isbnCode) > 0) {
+					client.addInitialBooksList(isbnCode);
+					int value = bookShelve.getBooksExistence().get(isbnCode) - 1; //Less one due previous added
+					bookShelve.getBooksExistence().delete(isbnCode);
+					addBookPerShelve(book.getTitle(), book.getInitialChapters(), book.getCriticsAndReviews(), book.getISBNCode(), book.getPrice(), book.getShelveIndicator(), value);
+					added = true;
+				} else {
+					info += "Book\nISBN code: "+isbnCode+"\nTitle: "+bookWithGivenIsbn(isbnCode).getTitle()+"\nThere have no more existence!\n";
+				}
+			}
 		}
 		return info;
 	}
-	
+
 	// **************** Getters and setters *********************** 
-	
+
 	public int getCashiers() {
 		return cashiers;
 	}
