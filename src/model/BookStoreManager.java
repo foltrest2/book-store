@@ -8,16 +8,14 @@ import dataStructures.*;
 import exceptions.InvalidCharacterException;
 
 public class BookStoreManager {
-	
-	private ArrayList<Shelve> shelves;
+
 	private Queue<Client> clientsQueue;
 	private List<Client> initialClientsList;
 	private ArrayList<Shelve> shelvesOnStore;
 	private int cashiers;
-	
+
 	public BookStoreManager() {
 		initialClientsList = new ArrayList<>();
-		shelves = new ArrayList<>();
 		shelvesOnStore = new ArrayList<>();
 		clientsQueue = new Queue<>();
 	}
@@ -35,8 +33,8 @@ public class BookStoreManager {
 		}
 		return shelveAdded;
 	}
-	
-	public boolean addBokPerShelve(String title, String initialChapters, String criticsAndReviews, String iSBNCode, double price, String shelveIndicator, int booksQuantity) throws InvalidCharacterException {
+
+	public boolean addBookPerShelve(String title, String initialChapters, String criticsAndReviews, String iSBNCode, double price, String shelveIndicator, int booksQuantity) throws InvalidCharacterException {
 		boolean bookAdded = false;
 		Shelve shelveToAddBook = binaryShelveSearch(shelveIndicator);
 		if (shelveToAddBook != null) {
@@ -46,21 +44,21 @@ public class BookStoreManager {
 		}
 		return bookAdded;
 	}
-	
-    public Shelve binaryShelveSearch(String k) throws InvalidCharacterException {
+
+	public Shelve binaryShelveSearch(String k) throws InvalidCharacterException {
 		boolean found = false;
-		int toFindShelve = convertirCadenaANatural(k);
+		int toFindShelve = radix128(k);
 		Shelve shelveFound = null;
 		int i = 0;
 		int j = shelvesOnStore.size() - 1;
-		int m=0;
+		int m = 0;
 		while (i <= j && !found) {
 			m = (i + j) / 2;
-			if (convertirCadenaANatural(shelvesOnStore.get(m).getIndicator()) == toFindShelve) {
+			if (radix128(shelvesOnStore.get(m).getIndicator()) == toFindShelve) {
 				found = true;
 				shelveFound = shelvesOnStore.get(m);
 			} else {
-				if (convertirCadenaANatural(shelvesOnStore.get(m).getIndicator()) > toFindShelve) {
+				if (radix128(shelvesOnStore.get(m).getIndicator()) > toFindShelve) {
 					j = m - 1;
 				} else {
 					i = m + 1;
@@ -69,35 +67,6 @@ public class BookStoreManager {
 		}
 		return shelveFound;
 	}
-	
-	public boolean binarySearchShelve(String indicator) {
-		boolean found = false;
-		for (int i = 0; i < shelvesOnStore.size(); i++) {
-			
-		}
-		return found;
-	}
-	
-    public static String binarySearch(int[] array, int k) {
-		boolean found = false;
-		int i = 0;
-		int j = array.length - 1;
-		int m=0;
-		String info = "";
-		while (i <= j && !found) {
-			m = (i + j) / 2;
-			if (array[m] == k) {
-				found = true;
-			} else {
-				if (array[m] > k) {
-					j = m - 1;
-				} else {
-					i = m + 1;
-				}
-			}
-		}
-		return info;
-	}
 
 	public int getCashiers() {
 		return cashiers;
@@ -105,14 +74,6 @@ public class BookStoreManager {
 
 	public void setCashiers(int cashiers) {
 		this.cashiers = cashiers;
-	}
-
-	public ArrayList<Shelve> getShelves() {
-		return shelves;
-	}
-
-	public void setShelves(ArrayList<Shelve> shelves) {
-		this.shelves = shelves;
 	}
 
 	public List<Client> getInitialClientsList() {
@@ -131,34 +92,61 @@ public class BookStoreManager {
 		this.clientsQueue = clientsQueue;
 	}
 
-	public void sort(ArrayList<String> arr) {
-		int n = arr.size();
-		int[] A = new int[n]; // 1
-        int k = 0; // 1
-        for (int i = 0; i < n; i++) { // n+1
-            int value =  0;// n
-            A[i] = value; // n
-            if (k < value) // n
-                k = value; // n
-        }
-        int[] C = new int[k + 1]; // 1
-        for (int i = 0; i <= k; i++) // k+2
-            C[i] = 0; // k+1
-        for (int i = 0; i < n; i++) // n+1
-            C[A[i]] = C[A[i]] + 1; // n
-        for (int i = 1; i <= k; i++) { // k+1
-            C[i] = C[i] + C[i - 1]; // k
-        }
-        int[] B = new int[n]; // 1
-        for (int i = n - 1; i >= 0; i--) { // n+1
-            B[C[A[i]] - 1] = A[i]; // n
-            C[A[i]] = C[A[i]] - 1; // n
-        }
-        for (int i = 0; i < B.length; i++) { // n+1
-            
-        }		
+	public ArrayList<Shelve> getShelvesOnStore() {
+		return shelvesOnStore;
 	}
-	public static int convertirCadenaANatural(String x) throws InvalidCharacterException{
+
+	public ArrayList<String> countingSort(ArrayList<String> isbnList) throws InvalidCharacterException {
+
+		Book [] books = new Book[isbnList.size()];
+		for (int i = 0; i < isbnList.size(); i++) {
+			books[i] = bookOfShelve(isbnList.get(i));
+		}
+
+		int[] counts = new int[127];//indexes 0 to 4
+
+		//prepare counts array
+		for (int i = 0; i < books.length; i++) {
+			counts[radix128(books[i].getShelveIndicator())]++;
+		}
+
+		//Now make every element in counts array the sum of all the elements to the left of it.
+
+		int sumTillLast = 0;
+		for (int i = 0; i < counts.length; i++) {
+			int currentElement = counts[i];
+			counts[i] = sumTillLast;
+			sumTillLast = sumTillLast + currentElement;
+		}
+
+		Book[] outputArray = new Book[books.length];
+		ArrayList<String> sortedBooks = new ArrayList<>();
+
+		//Now insert elements into output array
+		//based on their indexes in the counts array
+
+		for (int i = 0; i < books.length; i++) {
+			int positionOfInsert = counts[radix128(books[i].getShelveIndicator())];
+			outputArray[positionOfInsert] = books[i];
+			counts[radix128(books[i].getShelveIndicator())]++;
+		}
+		for (int i = 0; i < outputArray.length; i++) {
+			sortedBooks.add(outputArray[i].getISBNCode());
+		}
+		return sortedBooks;
+	}
+
+	public Book bookOfShelve(String isbn) {
+		Book shelve = null;
+		for (int i = 0; i < shelvesOnStore.size(); i++) {
+			if (shelvesOnStore.get(i).getSlots().contains(isbn)) {
+				shelve = shelvesOnStore.get(i).getSlots().get(isbn);
+			}
+		}
+		return shelve;
+	}
+
+	public static int radix128(String x) throws InvalidCharacterException{
 		int result = 0;
 		int cont = 0;
 		for (int i = x.length()-1; i >= 0; i--) {
@@ -175,6 +163,6 @@ public class BookStoreManager {
 		}
 		return result;
 	}
-	
-	
+
+
 }
