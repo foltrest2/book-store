@@ -18,11 +18,7 @@ public class Main extends Application {
 	}
 	
 	public static void main(String[] args) {
-<<<<<<< HEAD
-		launch(args);
-=======
 				launch(args);
->>>>>>> 87da7ae574fe92ef8e2356b4df5a0184981ca2d4
 	}
 
 	@Override

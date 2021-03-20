@@ -211,31 +211,6 @@ public class BookStoreManager {
 		}
 	}
 
-<<<<<<< HEAD
-	public void booksToBag(Client client) {
-        for (int i = 0; i < client.getInitialBooksList().size(); i++) {
-            String isbnToFind = client.getInitialBooksList().get(i);
-            if(bookWithGivenIsbn(isbnToFind) != null && existenceWithGivenIsbn(isbnToFind).get(isbnToFind) != 0) {
-                existenceWithGivenIsbn(isbnToFind);
-                client.getToPayBooks().push(bookWithGivenIsbn(isbnToFind));
-                int value = existenceWithGivenIsbn(isbnToFind).get(isbnToFind);
-                existenceWithGivenIsbn(isbnToFind).delete(isbnToFind);
-                existenceWithGivenIsbn(isbnToFind).put(isbnToFind, value-1);
-            }
-        }
-        client.increasePriorityTime();
-    }
-	
-	public HashTable<String,Integer> existenceWithGivenIsbn(String isbn) {
-        HashTable<String, Integer> existenceShelve = null;
-        for (int i = 0; i < shelvesOnStore.size(); i++) {
-            if (shelvesOnStore.get(i).getSlots().contains(isbn)) {
-                existenceShelve = shelvesOnStore.get(i).getBooksExistence();
-            }
-        }
-        return existenceShelve;
-    }
-=======
 	public String booksToBag(Client client) throws InvalidCharacterException {
 		String info = "";
 		for (int i = 0; i < client.getInitialBooksList().size(); i++) {
@@ -253,7 +228,6 @@ public class BookStoreManager {
 		client.increasePriorityTime();
 		return info;
 	}
->>>>>>> 87da7ae574fe92ef8e2356b4df5a0184981ca2d4
 
 	public List<Client> clientCountingSort(List<Client> clientList) throws InvalidCharacterException {
 		Client [] clients = new Client[clientList.size()];
@@ -286,8 +260,6 @@ public class BookStoreManager {
 		return sortedClients;
 	}
 
-<<<<<<< HEAD
-=======
 	public HashTable<String,Integer> existenceWithGivenIsbn(String isbn) {
 		boolean found = false;
 		HashTable<String, Integer> existenceShelve = null;
@@ -300,7 +272,6 @@ public class BookStoreManager {
 		return existenceShelve;
 	}
 
->>>>>>> 87da7ae574fe92ef8e2356b4df5a0184981ca2d4
 	public void timerReset() {
 		timer = 0;
 	}
