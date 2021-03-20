@@ -83,11 +83,21 @@ public class BookStoreManager {
 		}
 		return shelveFound;
 	}
-
-	public ArrayList<String> heaport(ArrayList<String> isbnList) {
-		Book [] books = new Book[isbnList.size()];
-		for (int i = 0; i < isbnList.size(); i++) {
-			books[i] = bookOfShelve(isbnList.get(i));
+    
+    public Book bookWithGivenIsbn(String isbn) {
+        Book shelve = null;
+        for (int i = 0; i < shelvesOnStore.size(); i++) {
+            if (shelvesOnStore.get(i).getSlots().contains(isbn)) {
+                shelve = shelvesOnStore.get(i).getSlots().get(isbn);
+            }
+        }
+        return shelve;
+    }
+	
+	public ArrayList<String> heapSort(List<String> list) {
+		Book [] books = new Book[list.size()];
+		for (int i = 0; i < list.size(); i++) {
+			books[i] = bookWithGivenIsbn(list.get(i));
 		}
 		int size = books.length; 
 		for (int i = size / 2 - 1; i >= 0; i--)
@@ -106,16 +116,13 @@ public class BookStoreManager {
 	}
 
 	void heapify(Book array[], int SizeofHeap, int i) {
-		int largestelement = i; // Set largest element as root
-		int leftChild  = 2*i + 1; // index of left child = 2*i + 1
-		int rightChild  = 2*i + 2; //index of right child  = 2*i + 2
-		// left child is greater than root
+		int largestelement = i; 
+		int leftChild  = 2*i + 1; 
+		int rightChild  = 2*i + 2; 
 		if (leftChild  < SizeofHeap && array[leftChild].getShelveIndicator().compareTo(array[largestelement].getShelveIndicator()) > 0)
 			largestelement = leftChild ;
-		//right child is greater than largest
 		if (rightChild  < SizeofHeap && array[rightChild].getShelveIndicator().compareTo(array[largestelement].getShelveIndicator()) > 0)
 			largestelement = rightChild ;
-		// If largestelement is not root
 		if (largestelement != i) {
 			Book temp = array[i];
 			array[i] = array[largestelement];
@@ -123,7 +130,14 @@ public class BookStoreManager {
 			heapify(array, SizeofHeap, largestelement);
 		}
 	}
-
+	
+	public void booksToBag(Client client) {
+		for (int i = 0; i < client.getInitialBooksList().size(); i++) {
+			client.getToPayBooks().push(bookWithGivenIsbn(client.getInitialBooksList().get(i)));
+		}
+		client.increasePriorityTime();
+	}
+	
 	public int getCashiers() {
 		return cashiers;
 	}
