@@ -1,8 +1,6 @@
 package model;
-import java.io.IOException;
+
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import dataStructures.*;
 import exceptions.InvalidCharacterException;
@@ -97,20 +95,15 @@ public class BookStoreManager {
 	}
 
 	public ArrayList<String> countingSort(ArrayList<String> isbnList) throws InvalidCharacterException {
-
 		Book [] books = new Book[isbnList.size()];
 		for (int i = 0; i < isbnList.size(); i++) {
 			books[i] = bookOfShelve(isbnList.get(i));
 		}
+		int[] counts = new int[127];
 
-		int[] counts = new int[127];//indexes 0 to 4
-
-		//prepare counts array
 		for (int i = 0; i < books.length; i++) {
 			counts[radix128(books[i].getShelveIndicator())]++;
 		}
-
-		//Now make every element in counts array the sum of all the elements to the left of it.
 
 		int sumTillLast = 0;
 		for (int i = 0; i < counts.length; i++) {
@@ -118,12 +111,8 @@ public class BookStoreManager {
 			counts[i] = sumTillLast;
 			sumTillLast = sumTillLast + currentElement;
 		}
-
 		Book[] outputArray = new Book[books.length];
 		ArrayList<String> sortedBooks = new ArrayList<>();
-
-		//Now insert elements into output array
-		//based on their indexes in the counts array
 
 		for (int i = 0; i < books.length; i++) {
 			int positionOfInsert = counts[radix128(books[i].getShelveIndicator())];
