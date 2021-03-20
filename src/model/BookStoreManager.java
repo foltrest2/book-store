@@ -305,6 +305,10 @@ public class BookStoreManager {
 		return info;
 	}
 
+	// ************* Queue algorithms *********************************
+	
+	
+	
 	// **************** Getters and setters *********************** 
 
 	public int getCashiers() {
