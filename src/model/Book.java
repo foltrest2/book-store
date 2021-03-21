@@ -8,7 +8,16 @@ public class Book {
 	private String ISBNCode;
 	private double price;
 	private String shelveIndicator;
-
+	
+	/**
+	 * Book constructor
+	 * @param title is the book's title
+	 * @param initialChapters are the book's initial chapters
+	 * @param criticsAndReviews are the book's critics and reviews
+	 * @param iSBNCode is the book's ISBN code
+	 * @param price is the book's price
+	 * @param shelveIndicator is the shelve where the book are
+	 */
 	public Book(String title, String initialChapters, String criticsAndReviews, String iSBNCode, double price, String shelveIndicator) {
 		this.title = title;
 		this.initialChapters = initialChapters;

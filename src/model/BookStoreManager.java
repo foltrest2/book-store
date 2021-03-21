@@ -9,14 +9,17 @@ public class BookStoreManager {
 
 	private Queue<Client> clientsQueue;
 	private Queue<Client> keepOrder;
-	private List<Client> initialClientsList;
+	private List<Client> clientsList;
 	private ArrayList<Shelve> shelvesOnStore;
 	private Client[] cashiersArray;
 	private int cashiers;
 	private static int timer = 0;
 
+	/**
+	 * BookStoreManager constructor
+	 */
 	public BookStoreManager() {
-		initialClientsList = new ArrayList<>();
+		clientsList = new ArrayList<>();
 		shelvesOnStore = new ArrayList<>();
 		clientsQueue = new Queue<>();
 		keepOrder = new Queue<>();
@@ -24,17 +27,29 @@ public class BookStoreManager {
 
 	// ******* Adding algorithms **************
 
+	/**
+	 * This method adds a client to the client's arraylist
+	 * @param id is the client's id
+	 * @return
+	 */
 	public boolean addClient(String id) {
 		boolean clientAdded = false;
 		if(searchClient(id) == null) {
 			int priorityTime = timer+=1;
 			Client toAdd = new Client(id, priorityTime);	
-			initialClientsList.add(toAdd);
+			clientsList.add(toAdd);
 			clientAdded = true;
 		}
 		return clientAdded;
 	}
 
+	/**
+	 * This method add a shelve to the shelve's arraylist
+	 * @param indicator is the indicator of the shelve
+	 * @param slots is the queantity of slots
+	 * @return if was added or not
+	 * @throws InvalidCharacterException
+	 */
 	public boolean addShelve(String indicator, int slots) throws InvalidCharacterException {
 		boolean shelveAdded = false;
 		if (binaryShelveSearch(indicator) == null) {
@@ -44,6 +59,18 @@ public class BookStoreManager {
 		return shelveAdded;
 	}
 
+	/**
+	 * This method add a book to a shelve
+	 * @param title is the book's title
+	 * @param initialChapters are the book's initial chapters
+	 * @param criticsAndReviews are the book's critics and reviews
+	 * @param iSBNCode is the book's ISBN code
+	 * @param price is the book's price
+	 * @param shelveIndicator is the shelve where the book are
+	 * @param booksQuantity is the book's quantity
+	 * @return if was added or not
+	 * @throws InvalidCharacterException
+	 */
 	public boolean addBookPerShelve(String title, String initialChapters, String criticsAndReviews, String iSBNCode, double price, String shelveIndicator, int booksQuantity) throws InvalidCharacterException {
 
 		boolean bookAdded = false;
@@ -58,6 +85,12 @@ public class BookStoreManager {
 
 	// ******* Sorting algorithms *************
 
+	/**<br>Pre:</br>
+	 * This method sort an array with the counting method
+	 * @param isbnList is the list of isbn
+	 * @return the arraylist sorted
+	 * @throws InvalidCharacterException
+	 */
 	public ArrayList<String> countingSort(ArrayList<String> isbnList) throws InvalidCharacterException {
 
 		Book [] books = new Book[isbnList.size()];
@@ -247,10 +280,10 @@ public class BookStoreManager {
 	public Client searchClient(String id) {
 		boolean found = false;
 		Client clientFound = null;
-		for (int i = 0; i < initialClientsList.size() && !found; i++) {
-			if(initialClientsList.get(i).getId().equals(id)) {
+		for (int i = 0; i < clientsList.size() && !found; i++) {
+			if(clientsList.get(i).getId().equals(id)) {
 				found = true;
-				clientFound = initialClientsList.get(i);
+				clientFound = clientsList.get(i);
 			}	
 		}
 		return clientFound;
@@ -374,12 +407,12 @@ public class BookStoreManager {
 		this.cashiers = cashiers;
 	}
 
-	public List<Client> getInitialClientsList() {
-		return initialClientsList;
+	public List<Client> getClientsList() {
+		return clientsList;
 	}
 
-	public void setInitialClientsList(List<Client> initialClientsList) {
-		this.initialClientsList = initialClientsList;
+	public void setClientsList(List<Client> clientsList) {
+		this.clientsList = clientsList;
 	}
 
 	public Queue<Client> getClientsQueue() {

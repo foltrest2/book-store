@@ -12,6 +12,12 @@ public class Client {
 	private Stack<Book> toPayBooks;
 	private List<String> clientBooksList;
 
+	/**
+	 * Client constructor
+	 * @param id is the client's id
+	 * @param priorityTime is the time that indicates how much time the client take
+	 * to obtains the books he want
+	 */
 	public Client(String id, int priorityTime) {
 		clientBooksList = new ArrayList<>();
 		toPayBooks = new Stack<>(); 
@@ -20,6 +26,9 @@ public class Client {
 		this.pricePaid = 0;
 	}
 	
+	/**
+	 * This method increase the priority time of a client
+	 */
 	public void increasePriorityTime() {
 		priorityTime = priorityTime + toPayBooks.size();
 	}
