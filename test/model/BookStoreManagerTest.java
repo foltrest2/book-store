@@ -114,7 +114,7 @@ public class BookStoreManagerTest {
 		bs.addClient("456"); //3
 		bs.addClient("798"); //6
 		bs.addClient("534"); //5
-		bs.addClient("239"); //5
+		bs.addClient("239"); //No entra por stack vacío
 		bs.addShelve("A", 4);
 		bs.addShelve("B", 5);
 		bs.addShelve("C", 5);
@@ -256,6 +256,7 @@ public class BookStoreManagerTest {
 		assertTrue(bs.getInitialClientsList().get(4).getClientBooksList().isEmpty());
 	}
 	
+	
 	@Test
 	public void clientsToQueueTest_1() throws EmptyQueueException, InvalidCharacterException {
 		setupScenary_7();
@@ -263,7 +264,6 @@ public class BookStoreManagerTest {
 		assertEquals("Test failed", "456", bs.getClientsQueue().dequeue().getId());
 		assertEquals("Test failed", "123", bs.getClientsQueue().dequeue().getId());
 		assertEquals("Test failed", "534", bs.getClientsQueue().dequeue().getId());
-		assertEquals("Test failed", "239", bs.getClientsQueue().dequeue().getId());
 		assertEquals("Test failed", "798", bs.getClientsQueue().dequeue().getId());
 	}
 
