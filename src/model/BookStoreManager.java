@@ -19,6 +19,7 @@ public class BookStoreManager {
 		initialClientsList = new ArrayList<>();
 		shelvesOnStore = new ArrayList<>();
 		clientsQueue = new Queue<>();
+		keepOrder = new Queue<>();
 	}
 
 	// ******* Adding algorithms **************
@@ -311,8 +312,8 @@ public class BookStoreManager {
 		for (int i = 0; i < keepOrder.size();) {
 			Client dequeued = keepOrder.dequeue(); 
 			report += dequeued.getId() + " " + dequeued.getPricePaid() + "\n";
-			for (int j = 0; j < dequeued.getBooks().size();) {
-				report += dequeued.getBooks().pop().getISBNCode() + " ";	
+			for (int j = dequeued.getClientBooksList().size()-1; j >= 0; j--) {
+				report += dequeued.getClientBooksList().get(j) + " ";	
 			}
 			report += "\n";
 		}
@@ -321,16 +322,17 @@ public class BookStoreManager {
 
 	// ************* Queue and Pay algorithms *********************************
 
-	public void clientsToQueue(List <Client> clientsToQueue) throws EmptyQueueException {
+	@SuppressWarnings("unchecked")
+	public void clientsToQueue(List <Client> clientsToQueue) throws EmptyQueueException, CloneNotSupportedException {
 		for (int i = 0; i < clientsToQueue.size(); i++) {
 			if(!clientsToQueue.get(i).getBooks().isEmpty()) {
 				clientsQueue.enqueue(clientsToQueue.get(i));
-				keepOrder.enqueue(clientsToQueue.get(i));
 			}		
 		}
+		keepOrder = (Queue<Client>) clientsQueue.clone();
 	}
 
-	public void payBooks2() throws EmptyQueueException {
+	public void payBooks() throws EmptyQueueException, CloneNotSupportedException {
 		boolean emptyQueue = false, stop = false;
 		cashiersArray = new Client[cashiers];
 		Client client = null;

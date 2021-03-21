@@ -2,7 +2,7 @@ package dataStructures;
 
 import exceptions.EmptyQueueException;
 
-public class Queue<T> implements QueueInterface<T> {
+public class Queue<T> implements QueueInterface<T>, Cloneable {
 
 	@SuppressWarnings("hiding")
 	protected class Node<T> {
@@ -53,6 +53,11 @@ public class Queue<T> implements QueueInterface<T> {
 			size--;
 			return dequeued.data;
 		}
+	}
+	
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+	    return super.clone();
 	}
 
 	@Override

@@ -137,7 +137,7 @@ public class BookStoreManagerTest {
 		bs.booksToBag(bs.getInitialClientsList().get(4));
 	}
 	
-	public void setupScenary_8() throws InvalidCharacterException, EmptyQueueException {
+	public void setupScenary_8() throws InvalidCharacterException, EmptyQueueException, CloneNotSupportedException {
 		bs = new BookStoreManager();
 		bs.timerReset();
 		bs.setCashiers(3);
@@ -167,8 +167,7 @@ public class BookStoreManagerTest {
 		bs.booksToBag(bs.getInitialClientsList().get(3));
 		bs.booksToBag(bs.getInitialClientsList().get(4));
 		bs.clientsToQueue(bs.clientCountingSort(bs.getInitialClientsList()));
-		bs.payBooks2();
-		chupelo();
+		bs.payBooks();
 	}
 	
 	@Test
@@ -290,7 +289,7 @@ public class BookStoreManagerTest {
 	}
 	
 	@Test
-	public void clientsToQueueTest_1() throws EmptyQueueException, InvalidCharacterException {
+	public void clientsToQueueTest_1() throws EmptyQueueException, InvalidCharacterException, CloneNotSupportedException {
 		setupScenary_7();
 		bs.clientsToQueue(bs.clientCountingSort(bs.getInitialClientsList()));
 		assertEquals("Test failed", "456", bs.getClientsQueue().dequeue().getId());
@@ -300,10 +299,10 @@ public class BookStoreManagerTest {
 	}
 
 	@Test
-	public void payBooksTest() throws InvalidCharacterException, EmptyQueueException {
+	public void payBooksTest() throws InvalidCharacterException, EmptyQueueException, CloneNotSupportedException {
 		setupScenary_7();
 		bs.clientsToQueue(bs.clientCountingSort(bs.getInitialClientsList()));
-		bs.payBooks2();
+		bs.payBooks();
 		List<Client> sortedClients = new ArrayList<>();
 		sortedClients = bs.clientCountingSort(bs.getInitialClientsList());
 		assertEquals("Test failed", "456", sortedClients.get(0).getId());
@@ -316,15 +315,5 @@ public class BookStoreManagerTest {
 		assertEquals(2500, sortedClients.get(2).getPricePaid(), "Test failed");
 		assertEquals(0, sortedClients.get(3).getPricePaid(), "Test failed");
 		assertEquals(17500, sortedClients.get(4).getPricePaid(), "Test failed");
-	}
-	
-	@Test
-	public void finalReportTest() throws InvalidCharacterException, EmptyQueueException {
-		setupScenary_8();
-		System.out.println(bs.finalReport());
-	}
-	
-	private void chupelo() throws InvalidCharacterException, EmptyQueueException {
-		System.out.println(bs.finalReport());
 	}
 }
