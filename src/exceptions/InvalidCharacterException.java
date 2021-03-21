@@ -4,6 +4,6 @@ package exceptions;
 public class InvalidCharacterException extends Exception {
 
 	public InvalidCharacterException() {
-		super("Nonas pa");
+		super("Character is invalid");
 	}
 }
