@@ -15,6 +15,7 @@ public class BookStoreManagerTest {
 
 	public void setupScenary_1() throws InvalidCharacterException{
 		bs = new BookStoreManager();
+		bs.timerReset();
 		bs.addShelve("A", 4);
 		bs.addShelve("B", 5);
 		bs.addShelve("C", 5);
@@ -23,6 +24,7 @@ public class BookStoreManagerTest {
 
 	public void setupScenary_2() throws InvalidCharacterException{
 		bs = new BookStoreManager();
+		bs.timerReset();
 		bs.addShelve("A", 4);
 		bs.addShelve("B", 5);
 		bs.addShelve("C", 5);
@@ -74,9 +76,9 @@ public class BookStoreManagerTest {
         bs.addShelve("A", 3);
         bs.addShelve("B", 2);
         bs.addShelve("C", 1);
-        bs.addBookPerShelve("Holi", "Nose", "Ajá", "6545", 15500.0, "C", 5);
-        bs.addBookPerShelve("Holi", "Nose", "Ajá", "9485", 15500.0, "B", 5);
-        bs.addBookPerShelve("Holi", "Nose", "Ajá", "1654", 15500.0, "A", 5);
+        bs.addBookPerShelve("El atardecer renaciente1", "Capitulo 1", "El amor en los tiempos del colera...", "6545", 15500.0, "C", 5);
+        bs.addBookPerShelve("El atardecer renaciente2", "Capitulo 2", "El amor en los tiempos del colera...", "9485", 15500.0, "B", 5);
+        bs.addBookPerShelve("El atardecer renaciente3", "Capitulo 3", "El amor en los tiempos del colera...", "1654", 15500.0, "A", 5);
         bs.addAndCheckBooksToClientBookList(bs.getInitialClientsList().get(0), "6545");
         bs.addAndCheckBooksToClientBookList(bs.getInitialClientsList().get(0), "9485");
         bs.addAndCheckBooksToClientBookList(bs.getInitialClientsList().get(0), "1654");
@@ -258,6 +260,7 @@ public class BookStoreManagerTest {
 		assertEquals("Test failed", "9485", sorted.get(1));
 		assertEquals("Test failed", "6545", sorted.get(2));
 	}	
+	
 	@Test
 	public void sortingClientsTest() throws InvalidCharacterException {
 		setupScenary_6();
