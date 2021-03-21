@@ -27,6 +27,7 @@ public class BookStoreManager {
 			int priorityTime = timer+=1;
 			Client toAdd = new Client(id, priorityTime);	
 			initialClientsList.add(toAdd);
+			clientAdded = true;
 		}
 		return clientAdded;
 	}

@@ -29,7 +29,7 @@ public class Client {
 	}
 	
 	public Stack<Book> getToPayBooks() {
-		return toPayBooks;
+		return toPayBooks; 
 	}
 
 	public String getId() {

@@ -10,7 +10,7 @@ public class Shelve implements Comparable<Shelve>{
 	public Shelve(String ind, int slots) {
 		indicator = ind;
 		this.slots = new HashTable<String, Book>(slots);
-		this.booksExistence =  new HashTable<String, Integer>(slots);
+		this.booksExistence =  new HashTable<String, Integer>(slots); 
 	}
 	
 	public void addBook(String ISBN, Book book, int booksQuantity) {

@@ -16,6 +16,7 @@ public class Book {
 		this.ISBNCode = iSBNCode;
 		this.price = price;
 		this.shelveIndicator = shelveIndicator;
+
 	}
 
 	public String getISBNCode() {
