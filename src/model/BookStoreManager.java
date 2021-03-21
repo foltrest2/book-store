@@ -1,6 +1,5 @@
 package model;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import dataStructures.*;
 import exceptions.EmptyQueueException;
@@ -9,18 +8,18 @@ import exceptions.InvalidCharacterException;
 public class BookStoreManager {
 
 	private Queue<Client> clientsQueue;
+	private Queue<Client> keepOrder;
 	private List<Client> initialClientsList;
 	private ArrayList<Shelve> shelvesOnStore;
+	private Client[] cashiersArray;
 	private int cashiers;
-	private Client [] cashiersArray; 
-	Comparator<String> comp;
 	private static int timer = 0;
 
 	public BookStoreManager() {
 		initialClientsList = new ArrayList<>();
 		shelvesOnStore = new ArrayList<>();
 		clientsQueue = new Queue<>();
-		cashiersArray = new Client[cashiers];
+		keepOrder = new Queue<>();
 	}
 
 	// ******* Adding algorithms **************
@@ -257,7 +256,7 @@ public class BookStoreManager {
 		return clientFound;
 	}
 
-	// *************** Auxiliar algorithms ***********************
+	// *************** Auxiliary algorithms ***********************
 
 	public void booksToBag(Client client) throws InvalidCharacterException {
 		for (int i = 0; i < client.getClientBooksList().size(); i++) {
@@ -308,61 +307,90 @@ public class BookStoreManager {
 		return info;
 	}
 
+	public String finalReport() throws EmptyQueueException {
+		String report = "";
+		for (int i = 0; i < keepOrder.size();) {
+			Client dequeued = keepOrder.dequeue(); 
+			report += dequeued.getId() + " " + dequeued.getPricePaid() + "\n";
+			for (int j = dequeued.getClientBooksList().size()-1; j >= 0; j--) {
+				report += dequeued.getClientBooksList().get(j) + " ";	
+			}
+			report += "\n";
+		}
+		return report;
+	}
+
 	// ************* Queue and Pay algorithms *********************************
 
-	public void clientsToQueue(List <Client> clientsToQueue) {
+	@SuppressWarnings("unchecked")
+	public void clientsToQueue(List <Client> clientsToQueue) throws EmptyQueueException, CloneNotSupportedException {
 		for (int i = 0; i < clientsToQueue.size(); i++) {
 			if(!clientsToQueue.get(i).getBooks().isEmpty()) {
 				clientsQueue.enqueue(clientsToQueue.get(i));
 			}		
-		}	
+		}
+		keepOrder = (Queue<Client>) clientsQueue.clone();
 	}
 
-	public void payBooks() throws EmptyQueueException {
-		boolean cashiersAreEmpty = false;
-
-		while (!cashiersAreEmpty) {
-			
-			for (int i = 0; i < cashiersArray.length; i++) {
-				Client client = clientsQueue.dequeue();
+	public void payBooks() throws EmptyQueueException, CloneNotSupportedException {
+		boolean emptyQueue = false, stop = false;
+		cashiersArray = new Client[cashiers];
+		Client client = null;
+		for (int i = 0; i < cashiersArray.length && !stop; i++) {
+			if (!clientsQueue.isEmpty()) {
+				client = clientsQueue.dequeue();
 				cashiersArray[i] = client;
 			}
-			for (int i = 0; i < cashiersArray.length; i++) {
+			else {
+				stop = true;
+			}
+		}
+		while (!emptyQueue) {      
+			for (int i = 0; i < cashiersArray.length && !emptyQueue; i++) {
 				if(!cashiersArray[i].getBooks().isEmpty()) {
-					double priceToPay =+ cashiersArray[i].getBooks().pop().getPrice();
-					cashiersArray[i].setPricePaid(priceToPay); 		
+					double priceToPay = cashiersArray[i].getBooks().pop().getPrice();
+					cashiersArray[i].setPricePaid(priceToPay);
+				}
+				else {
+					if (!clientsQueue.isEmpty()) {
+						client = clientsQueue.dequeue();
+						cashiersArray[i] = client;
+					}else {
+						if(client.getBooks().isEmpty())
+							emptyQueue = true;	
+					}
 				}
 			}
 		}
 	}
 
-// **************** Getters and setters *********************** 
+	// **************** Getters and setters *********************** 
 
-public int getCashiers() {
-	return cashiers;
-}
+	public int getCashiers() {
+		return cashiers;
+	}
 
-public void setCashiers(int cashiers) {
-	this.cashiers = cashiers;
-}
+	public void setCashiers(int cashiers) {
+		this.cashiers = cashiers;
+	}
 
-public List<Client> getInitialClientsList() {
-	return initialClientsList;
-}
+	public List<Client> getInitialClientsList() {
+		return initialClientsList;
+	}
 
-public void setInitialClientsList(List<Client> initialClientsList) {
-	this.initialClientsList = initialClientsList;
-}
+	public void setInitialClientsList(List<Client> initialClientsList) {
+		this.initialClientsList = initialClientsList;
+	}
 
-public Queue<Client> getClientsQueue() {
-	return clientsQueue;
-}
+	public Queue<Client> getClientsQueue() {
+		return clientsQueue;
+	}
 
-public void setClientsQueue(Queue<Client> clientsQueue) {
-	this.clientsQueue = clientsQueue;
-}
+	public void setClientsQueue(Queue<Client> clientsQueue) {
+		this.clientsQueue = clientsQueue;
+	}
 
-public ArrayList<Shelve> getShelvesOnStore() {
-	return shelvesOnStore;
-}
+	public ArrayList<Shelve> getShelvesOnStore() {
+		return shelvesOnStore;
+	}
 }
