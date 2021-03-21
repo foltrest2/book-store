@@ -11,6 +11,7 @@ public class BookStoreManager {
 	private Queue<Client> keepOrder;
 	private List<Client> initialClientsList;
 	private ArrayList<Shelve> shelvesOnStore;
+	private Client[] cashiersArray;
 	private int cashiers;
 	private static int timer = 0;
 
@@ -305,10 +306,6 @@ public class BookStoreManager {
 		return info;
 	}
 
-	public void keepOrder(Queue<Client> original) throws EmptyQueueException{
-		keepOrder = original;
-	}
-	
 	public String finalReport() throws EmptyQueueException {
 		String report = "";
 		for (int i = 0; i < keepOrder.size();) {
@@ -321,31 +318,40 @@ public class BookStoreManager {
 		}
 		return report;
 	}
-	
+
 	// ************* Queue and Pay algorithms *********************************
 
 	public void clientsToQueue(List <Client> clientsToQueue) throws EmptyQueueException {
 		for (int i = 0; i < clientsToQueue.size(); i++) {
 			if(!clientsToQueue.get(i).getBooks().isEmpty()) {
 				clientsQueue.enqueue(clientsToQueue.get(i));
+				keepOrder.enqueue(clientsToQueue.get(i));
 			}		
 		}
-		keepOrder(clientsQueue);
 	}
 
-	public void payBooks() throws EmptyQueueException {
-		Cashier[] attending = new Cashier[cashiers];
-		boolean finished = false;
-		while (!finished) {
-			int i = 0;
-			for(i = 0; i < attending.length && !finished; i++) {
-				if (clientsQueue.size() == 0) {
-					finished = true;
+	public void payBooks2() throws EmptyQueueException {
+		boolean emptyQueue = false;
+		cashiersArray = new Client[cashiers];
+		Client client = null;
+		for (int i = 0; i < cashiersArray.length; i++) {
+			client = clientsQueue.dequeue();
+			cashiersArray[i] = client;
+		}
+		while (!emptyQueue) {      
+			for (int i = 0; i < cashiersArray.length && !emptyQueue; i++) {
+				if(!cashiersArray[i].getBooks().isEmpty()) {
+					double priceToPay = cashiersArray[i].getBooks().pop().getPrice();
+					cashiersArray[i].setPricePaid(priceToPay);
 				}
 				else {
-					attending[i] = new Cashier(clientsQueue.dequeue());
-					attending[i].charge();
-					attending[i].deleteClient();
+					if (!clientsQueue.isEmpty()) {
+						client = clientsQueue.dequeue();
+						cashiersArray[i] = client;
+					}else {
+						if(client.getBooks().isEmpty())
+							emptyQueue = true;	
+					}
 				}
 			}
 		}

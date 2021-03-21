@@ -137,6 +137,40 @@ public class BookStoreManagerTest {
 		bs.booksToBag(bs.getInitialClientsList().get(4));
 	}
 	
+	public void setupScenary_8() throws InvalidCharacterException, EmptyQueueException {
+		bs = new BookStoreManager();
+		bs.timerReset();
+		bs.setCashiers(3);
+		bs.addClient("123"); //4
+		bs.addClient("456"); //3
+		bs.addClient("798"); //6
+		bs.addClient("534"); //5
+		bs.addClient("239"); //No entra por stack vacío
+		bs.addShelve("A", 4);
+		bs.addShelve("B", 5);
+		bs.addShelve("C", 5);
+		bs.addBookPerShelve("El dia y la noche1", "Capitulo 1: Erase una vez la luna y el sol...", "Buenisimo", "767", 10000, "C", 5);
+		bs.addBookPerShelve("El dia y la noche2", "Capitulo 1: Erase una vez la luna y el sol...", "Buenisimo", "123", 5000, "A", 6);
+		bs.addBookPerShelve("El dia y la noche3", "Capitulo 1: Erase una vez la luna y el sol...", "Buenisimo", "456", 2500, "B", 4);
+		bs.addAndCheckBooksToClientBookList(bs.getInitialClientsList().get(0), "767");
+		bs.addAndCheckBooksToClientBookList(bs.getInitialClientsList().get(0), "767");
+		bs.addAndCheckBooksToClientBookList(bs.getInitialClientsList().get(0), "456");
+		bs.addAndCheckBooksToClientBookList(bs.getInitialClientsList().get(1), "456");
+		bs.addAndCheckBooksToClientBookList(bs.getInitialClientsList().get(2), "456");
+		bs.addAndCheckBooksToClientBookList(bs.getInitialClientsList().get(2), "767");
+		bs.addAndCheckBooksToClientBookList(bs.getInitialClientsList().get(2), "123");
+		bs.addAndCheckBooksToClientBookList(bs.getInitialClientsList().get(3), "456");
+		bs.addAndCheckBooksToClientBookList(bs.getInitialClientsList().get(4), "456");
+		bs.booksToBag(bs.getInitialClientsList().get(0));
+		bs.booksToBag(bs.getInitialClientsList().get(1));
+		bs.booksToBag(bs.getInitialClientsList().get(2));
+		bs.booksToBag(bs.getInitialClientsList().get(3));
+		bs.booksToBag(bs.getInitialClientsList().get(4));
+		bs.clientsToQueue(bs.clientCountingSort(bs.getInitialClientsList()));
+		bs.payBooks2();
+		chupelo();
+	}
+	
 	@Test
 	public void testAddingAndSearchingShelve() throws InvalidCharacterException{
 		setupScenary_1();
@@ -269,7 +303,7 @@ public class BookStoreManagerTest {
 	public void payBooksTest() throws InvalidCharacterException, EmptyQueueException {
 		setupScenary_7();
 		bs.clientsToQueue(bs.clientCountingSort(bs.getInitialClientsList()));
-		bs.payBooks();
+		bs.payBooks2();
 		List<Client> sortedClients = new ArrayList<>();
 		sortedClients = bs.clientCountingSort(bs.getInitialClientsList());
 		assertEquals("Test failed", "456", sortedClients.get(0).getId());
@@ -286,9 +320,11 @@ public class BookStoreManagerTest {
 	
 	@Test
 	public void finalReportTest() throws InvalidCharacterException, EmptyQueueException {
-		setupScenary_7();
-		bs.clientsToQueue(bs.clientCountingSort(bs.getInitialClientsList()));
-		bs.payBooks();
+		setupScenary_8();
+		System.out.println(bs.finalReport());
+	}
+	
+	private void chupelo() throws InvalidCharacterException, EmptyQueueException {
 		System.out.println(bs.finalReport());
 	}
 }

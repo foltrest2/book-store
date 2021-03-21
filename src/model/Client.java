@@ -57,7 +57,7 @@ public class Client {
 	}
 
 	public void setPricePaid(double pricePaid) {
-		this.pricePaid = pricePaid;
+		this.pricePaid += pricePaid;
 	}
 
 	public List<String> getClientBooksList() {
