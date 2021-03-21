@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import dataStructures.*;
+import exceptions.EmptyQueueException;
 import exceptions.InvalidCharacterException;
 
 public class BookStoreManager {
@@ -11,14 +12,18 @@ public class BookStoreManager {
 	private List<Client> initialClientsList;
 	private ArrayList<Shelve> shelvesOnStore;
 	private int cashiers;
+	private Client [] cashiersArray; 
 	Comparator<String> comp;
 	private static int timer = 0;
 
 	public BookStoreManager() {
 		initialClientsList = new ArrayList<>();
 		shelvesOnStore = new ArrayList<>();
-		clientsQueue = new Queue<>(); 
+		clientsQueue = new Queue<>();
+		cashiersArray = new Client[cashiers];
 	}
+
+	// ******* Adding algorithms **************
 
 	public boolean addClient(String id) {
 
@@ -30,18 +35,6 @@ public class BookStoreManager {
 			clientAdded = true;
 		}
 		return clientAdded;
-	}
-
-	public Client searchClient(String id) {
-		boolean found = false; 
-		Client clientFound = null;
-		for (int i = 0; i < initialClientsList.size() && !found; i++) {
-			if(initialClientsList.get(i).getId().equals(id)) {
-				found = true;
-				clientFound = initialClientsList.get(i);
-			}	
-		}
-		return clientFound;
 	}
 
 	public boolean addShelve(String indicator, int slots) throws InvalidCharacterException {
@@ -65,41 +58,7 @@ public class BookStoreManager {
 		return bookAdded;
 	}
 
-	public Shelve binaryShelveSearch(String k) throws InvalidCharacterException {
-		boolean found = false;
-		int toFindShelve = radix128(k);
-		Shelve shelveFound = null;
-		int i = 0;
-		int j = shelvesOnStore.size() - 1;
-		int m = 0;
-		while (i <= j && !found) {
-			m = (i + j) / 2;
-			if (radix128(shelvesOnStore.get(m).getIndicator()) == toFindShelve) {
-				found = true;
-				shelveFound = shelvesOnStore.get(m);
-			} else {
-				if (radix128(shelvesOnStore.get(m).getIndicator()) > toFindShelve) {
-
-					j = m - 1;
-				} else {
-					i = m + 1;
-				}
-			}
-		}
-		return shelveFound;
-	}
-
-	public Book bookWithGivenIsbn(String isbn) {
-		Book shelve = null;
-		boolean found = false;
-		for (int i = 0; i < shelvesOnStore.size() && !found; i++) {
-			if (shelvesOnStore.get(i).getSlots().contains(isbn)) {
-				shelve = shelvesOnStore.get(i).getSlots().get(isbn);
-				found = true;
-			}
-		}
-		return shelve;
-	}
+	// ******* Sorting algorithms *************
 
 	public ArrayList<String> countingSort(ArrayList<String> isbnList) throws InvalidCharacterException {
 
@@ -128,39 +87,10 @@ public class BookStoreManager {
 			outputArray[positionOfInsert] = books[i];
 			counts[radix128(books[i].getShelveIndicator())]++;
 		}
-		for (int i = 0; i < outputArray.length; i++) {
+		for (int i = 0; i < shelvesOnStore.size(); i++) {
 			sortedBooks.add(outputArray[i].getISBNCode());
 		}
 		return sortedBooks;
-	}
-
-	public boolean binarySearchShelve(String indicator) {
-		boolean found = false; 
-		for (int i = 0; i < shelvesOnStore.size(); i++) {
-
-		}
-		return found;
-	}
-
-	public static String binarySearch(int[] array, int k) {
-		boolean found = false;
-		int i = 0;
-		int j = array.length - 1;
-		int m=0;
-		String info = "";
-		while (i <= j && !found) {
-			m = (i + j) / 2;
-			if (array[m] == k) {
-				found = true;
-			} else {
-				if (array[m] > k) {
-					j = m - 1;
-				} else {
-					i = m + 1;
-				}
-			}
-		}
-		return info;
 	}
 
 	public ArrayList<String> heapSort(List<String> list) {
@@ -185,7 +115,7 @@ public class BookStoreManager {
 		return isbnSorted;
 	}
 
-	void heapify(Book array[], int SizeofHeap, int i) {
+	public void heapify(Book array[], int SizeofHeap, int i) {
 		int largestelement = i; 
 		int leftChild  = 2*i + 1; 
 		int rightChild  = 2*i + 2; 
@@ -201,7 +131,7 @@ public class BookStoreManager {
 		}
 	}
 
-	public void insertionSort(ArrayList<String> arr) {
+	public ArrayList<String> insertionSort(ArrayList<String> arr) {
 		for (int j = 1; j < arr.size(); j++) {
 			String current = arr.get(j);
 			int i = j-1;
@@ -211,25 +141,7 @@ public class BookStoreManager {
 			}
 			arr.set(i+1, current);
 		}
-	}
-
-	public String booksToBag(Client client) throws InvalidCharacterException {
-		String info = "";
-
-		for (int i = 0; i < client.getInitialBooksList().size(); i++) {
-			String isbnToFind = client.getInitialBooksList().get(i);
-			if(bookWithGivenIsbn(isbnToFind) != null && existenceWithGivenIsbn(isbnToFind).get(isbnToFind) != 0) {
-				Book save =	bookWithGivenIsbn(isbnToFind);
-				client.getToPayBooks().push(bookWithGivenIsbn(isbnToFind));
-				int value = existenceWithGivenIsbn(isbnToFind).get(isbnToFind);
-				existenceWithGivenIsbn(isbnToFind).delete(isbnToFind);
-				addBookPerShelve(save.getTitle(), save.getInitialChapters(), save.getCriticsAndReviews(), save.getISBNCode(), save.getPrice(), save.getShelveIndicator(), value-1);
-			} else {
-				info += "Book\nISBN code: "+isbnToFind+"\nTitle: "+bookWithGivenIsbn(isbnToFind).getTitle()+"\nThere have no more existence!";
-			}
-		}
-		client.increasePriorityTime();
-		return info;
+		return arr;
 	}
 
 	public List<Client> clientCountingSort(List<Client> clientList) throws InvalidCharacterException {
@@ -263,6 +175,53 @@ public class BookStoreManager {
 		return sortedClients;
 	}
 
+	// ********* Search algorithms ******************
+
+	public static String binarySearch(int[] array, int k) {
+		boolean found = false;
+		int i = 0;
+		int j = array.length - 1;
+		int m=0;
+		String info = "";
+		while (i <= j && !found) {
+			m = (i + j) / 2;
+			if (array[m] == k) {
+				found = true;
+			} else {
+				if (array[m] > k) {
+					j = m - 1;
+				} else {
+					i = m + 1;
+				}
+			}
+		}
+		return info;
+	}
+
+	public Shelve binaryShelveSearch(String k) throws InvalidCharacterException {
+		boolean found = false;
+		int toFindShelve = radix128(k);
+		Shelve shelveFound = null;
+		int i = 0;
+		int j = shelvesOnStore.size() - 1;
+		int m = 0;
+		while (i <= j && !found) {
+			m = (i + j) / 2;
+			if (radix128(shelvesOnStore.get(m).getIndicator()) == toFindShelve) {
+				found = true;
+				shelveFound = shelvesOnStore.get(m);
+			} else {
+				if (radix128(shelvesOnStore.get(m).getIndicator()) > toFindShelve) {
+
+					j = m - 1;
+				} else {
+					i = m + 1;
+				}
+			}
+		}
+		return shelveFound;
+	}
+
 	public HashTable<String,Integer> existenceWithGivenIsbn(String isbn) {
 		boolean found = false;
 		HashTable<String, Integer> existenceShelve = null;
@@ -275,11 +234,45 @@ public class BookStoreManager {
 		return existenceShelve;
 	}
 
+	public Book bookWithGivenIsbn(String isbn) {
+		Book shelve = null;
+		boolean found = false;
+		for (int i = 0; i < shelvesOnStore.size() && !found; i++) {
+			if (shelvesOnStore.get(i).getSlots().contains(isbn)) {
+				shelve = shelvesOnStore.get(i).getSlots().get(isbn);
+				found = true;
+			}
+		}
+		return shelve;
+	}
+
+	public Client searchClient(String id) {
+		boolean found = false;
+		Client clientFound = null;
+		for (int i = 0; i < initialClientsList.size() && !found; i++) {
+			if(initialClientsList.get(i).getId().equals(id)) {
+				found = true;
+				clientFound = initialClientsList.get(i);
+			}	
+		}
+		return clientFound;
+	}
+
+	// *************** Auxiliar algorithms ***********************
+
+	public void booksToBag(Client client) throws InvalidCharacterException {
+		for (int i = 0; i < client.getClientBooksList().size(); i++) {
+			Book bookToAdd = bookWithGivenIsbn(client.getClientBooksList().get(i));
+			client.getBooks().push(bookToAdd);
+		}
+		client.increasePriorityTime();
+	}
+
 	public void timerReset() {
 		timer = 0;
 	}
 
-	public static int radix128(String x) throws InvalidCharacterException{
+	public int radix128(String x) throws InvalidCharacterException{
 		int result = 0;
 		int cont = 0;
 		for (int i = x.length()-1; i >= 0; i--) {
@@ -294,6 +287,57 @@ public class BookStoreManager {
 		}
 		return result;
 	}
+
+	public String addAndCheckBooksToClientBookList(Client client, String isbnCode) throws InvalidCharacterException{
+		String info = "";
+		Book book = bookWithGivenIsbn(isbnCode);
+		if (book != null) {
+			Shelve bookShelve =	binaryShelveSearch(book.getShelveIndicator());
+			boolean added = false;
+			for (int i = 0; i <bookShelve.getBooksExistence().size() && !added; i++) {
+				if(bookShelve.getBooksExistence().get(isbnCode) > 0) {
+					client.addInitialBooksList(isbnCode);
+					int value = bookShelve.getBooksExistence().get(isbnCode) - 1; //Less one due previous added
+					bookShelve.getBooksExistence().delete(isbnCode);
+					addBookPerShelve(book.getTitle(), book.getInitialChapters(), book.getCriticsAndReviews(), book.getISBNCode(), book.getPrice(), book.getShelveIndicator(), value);
+					added = true;
+				} else {
+					info += "Book\nISBN code: "+isbnCode+"\nTitle: "+bookWithGivenIsbn(isbnCode).getTitle()+"\nThere have no more existence!\n";
+				}
+			}
+		}
+		return info;
+	}
+
+	// ************* Queue and Pay algorithms *********************************
+
+	public void clientsToQueue(List <Client> clientsToQueue) {
+		for (int i = 0; i < clientsToQueue.size(); i++) {
+			if(!clientsToQueue.get(i).getBooks().isEmpty()) {
+				clientsQueue.enqueue(clientsToQueue.get(i));
+			}		
+		}	
+	}
+
+	public void payBooks() throws EmptyQueueException {
+		boolean cashiersAreEmpty = false;
+
+		while (!cashiersAreEmpty) {
+
+			for (int i = 0; i < cashiersArray.length; i++) {
+				Client client = clientsQueue.dequeue();
+				cashiersArray[i] = client;
+			}
+			for (int i = 0; i < cashiersArray.length; i++) {
+				if(!cashiersArray[i].getBooks().isEmpty()) {
+					double priceToPay =+ cashiersArray[i].getBooks().pop().getPrice();
+					cashiersArray[i].setPricePaid(priceToPay); 		
+				}
+			}
+		}
+	}
+
+	// **************** Getters and setters *********************** 
 
 	public int getCashiers() {
 		return cashiers;
@@ -321,15 +365,5 @@ public class BookStoreManager {
 
 	public ArrayList<Shelve> getShelvesOnStore() {
 		return shelvesOnStore;
-	}
-
-	public Book bookOfShelve(String isbn) {
-		Book shelve = null;
-		for (int i = 0; i < shelvesOnStore.size(); i++) {
-			if (shelvesOnStore.get(i).getSlots().contains(isbn)) {
-				shelve = shelvesOnStore.get(i).getSlots().get(isbn);
-			}
-		}
-		return shelve;
 	}
 }

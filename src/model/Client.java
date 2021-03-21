@@ -10,19 +10,15 @@ public class Client {
 	private int priorityTime;
 	private double pricePaid;
 	private Stack<Book> toPayBooks;
-	private List<String> initialBooksList;
+	private List<String> clientBooksList;
 
 	public Client(String id, int priorityTime) {
-		initialBooksList = new ArrayList<>();
+		clientBooksList = new ArrayList<>();
 		toPayBooks = new Stack<>(); 
 		this.id = id;
 		this.priorityTime = priorityTime;
 		this.pricePaid = 0;
 	}
-
-	public void addBookCodeToInitialList(String ISBN) {
-		initialBooksList.add(ISBN);
-	} 
 	
 	public void increasePriorityTime() {
 		priorityTime = priorityTime + toPayBooks.size();
@@ -64,12 +60,12 @@ public class Client {
 		this.pricePaid = pricePaid;
 	}
 
-	public List<String> getInitialBooksList() {
-		return initialBooksList;
+	public List<String> getClientBooksList() {
+		return clientBooksList;
 	}
 
 	public void addInitialBooksList(String ISBNcode) {
-		initialBooksList.add(ISBNcode);
+		clientBooksList.add(ISBNcode);
 	}
 
 }
