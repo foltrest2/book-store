@@ -26,13 +26,6 @@ class HashTableTest {
 		ht.put(10, "value10");
 	}
 	public void setupScenary3() {
-		ht.put(2, "value2");
-		ht.put(4, "value4");
-		ht.put(6, "value6");
-		ht.put(8, "value8");
-		ht.put(10, "value10");
-	}
-	public void setupScenary4() {
 		ht = new HashTable<>();
 		ht.put(123, "value1");
 		ht.put(345, "value2");
@@ -104,18 +97,8 @@ class HashTableTest {
 	}
 	
 	@Test
-	public void hashTest1() {
-		setupScenary4();
-		assertEquals("value1", ht.get(123), "Fail test");
-		assertEquals("value2", ht.get(345), "Fail test");
-		assertEquals("value3", ht.get(678), "Fail test");
-		assertEquals("value4", ht.get(91011), "Fail test");
-		assertEquals("value5", ht.get(111213), "Fail test");
-	}
-	
-	@Test
 	public void containsTest1() {
-		setupScenary4();
+		setupScenary3();
 		assertEquals("value1", ht.get(123), "Fail test");
 		assertEquals("value2", ht.get(345), "Fail test");
 		assertEquals("value3", ht.get(678), "Fail test");
@@ -123,6 +106,7 @@ class HashTableTest {
 		assertEquals("value5", ht.get(111213), "Fail test");
 		assertTrue(ht.contains(123));
 		ht.put(123, "valuexd");
+		assertEquals("value1", ht.get(123), "Fail test");
 	}
 	
 }
