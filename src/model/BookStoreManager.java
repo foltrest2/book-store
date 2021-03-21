@@ -322,7 +322,7 @@ public class BookStoreManager {
 		boolean cashiersAreEmpty = false;
 
 		while (!cashiersAreEmpty) {
-			
+
 			for (int i = 0; i < cashiersArray.length; i++) {
 				Client client = clientsQueue.dequeue();
 				cashiersArray[i] = client;
@@ -336,33 +336,33 @@ public class BookStoreManager {
 		}
 	}
 
-// **************** Getters and setters *********************** 
+	// **************** Getters and setters *********************** 
 
-public int getCashiers() {
-	return cashiers;
-}
+	public int getCashiers() {
+		return cashiers;
+	}
 
-public void setCashiers(int cashiers) {
-	this.cashiers = cashiers;
-}
+	public void setCashiers(int cashiers) {
+		this.cashiers = cashiers;
+	}
 
-public List<Client> getInitialClientsList() {
-	return initialClientsList;
-}
+	public List<Client> getInitialClientsList() {
+		return initialClientsList;
+	}
 
-public void setInitialClientsList(List<Client> initialClientsList) {
-	this.initialClientsList = initialClientsList;
-}
+	public void setInitialClientsList(List<Client> initialClientsList) {
+		this.initialClientsList = initialClientsList;
+	}
 
-public Queue<Client> getClientsQueue() {
-	return clientsQueue;
-}
+	public Queue<Client> getClientsQueue() {
+		return clientsQueue;
+	}
 
-public void setClientsQueue(Queue<Client> clientsQueue) {
-	this.clientsQueue = clientsQueue;
-}
+	public void setClientsQueue(Queue<Client> clientsQueue) {
+		this.clientsQueue = clientsQueue;
+	}
 
-public ArrayList<Shelve> getShelvesOnStore() {
-	return shelvesOnStore;
-}
+	public ArrayList<Shelve> getShelvesOnStore() {
+		return shelvesOnStore;
+	}
 }
