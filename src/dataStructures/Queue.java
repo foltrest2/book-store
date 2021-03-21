@@ -106,5 +106,4 @@ public class Queue<T> implements QueueInterface<T>, Cloneable {
 	public int size() {
 		return size;
 	}
-
 }
