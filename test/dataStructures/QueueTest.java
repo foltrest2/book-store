@@ -9,7 +9,7 @@ import exceptions.EmptyQueueException;
 class QueueTest {
 
 	Queue<Integer> q;
-	
+
 	public void setupScenary1() {
 		q = new Queue<>();
 		q.enqueue(1);
@@ -17,24 +17,24 @@ class QueueTest {
 		q.enqueue(3);
 		q.enqueue(4);
 	}
-	
+
 	public void setupScenary2() {
 		Integer [] testList = {1, 2, 3, 4};
 		q = new Queue<>(testList);
 	}
-	
+
 	@Test
 	public void enqueueTest1() {
 		setupScenary1();
 		assertEquals(1, q.peek(), "Fail test");
 	}
-	
+
 	@Test
 	public void enqueueTest2() {
 		setupScenary2();
 		assertEquals(1, q.peek(), "Fail test");
 	}
-	
+
 	@Test
 	public void dequeueTest1() {
 		setupScenary1();
@@ -57,7 +57,7 @@ class QueueTest {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Test
 	public void dequeueTest2() {
 		setupScenary1();
@@ -80,7 +80,7 @@ class QueueTest {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Test
 	public void sizeTest() {
 		setupScenary1();

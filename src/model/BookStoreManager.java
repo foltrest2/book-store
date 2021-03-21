@@ -331,12 +331,17 @@ public class BookStoreManager {
 	}
 
 	public void payBooks2() throws EmptyQueueException {
-		boolean emptyQueue = false;
+		boolean emptyQueue = false, stop = false;
 		cashiersArray = new Client[cashiers];
 		Client client = null;
-		for (int i = 0; i < cashiersArray.length; i++) {
-			client = clientsQueue.dequeue();
-			cashiersArray[i] = client;
+		for (int i = 0; i < cashiersArray.length && !stop; i++) {
+			if (!clientsQueue.isEmpty()) {
+				client = clientsQueue.dequeue();
+				cashiersArray[i] = client;
+			}
+			else {
+				stop = true;
+			}
 		}
 		while (!emptyQueue) {      
 			for (int i = 0; i < cashiersArray.length && !emptyQueue; i++) {
