@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
+
+import exceptions.EmptyQueueException;
 import exceptions.InvalidCharacterException;
 
 public class BookStoreManagerTest {
@@ -107,11 +109,11 @@ public class BookStoreManagerTest {
 	public void setupScenary_7() throws InvalidCharacterException {
 		bs = new BookStoreManager();
 		bs.timerReset();
-		bs.addClient("123");
-		bs.addClient("456");
-		bs.addClient("798");
-		bs.addClient("534");
-		bs.addClient("239");
+		bs.addClient("123"); //4
+		bs.addClient("456"); //3
+		bs.addClient("798"); //6
+		bs.addClient("534"); //5
+		bs.addClient("239"); //No entra por stack vacío
 		bs.addShelve("A", 4);
 		bs.addShelve("B", 5);
 		bs.addShelve("C", 5);
@@ -251,4 +253,15 @@ public class BookStoreManagerTest {
 		assertEquals("Test failed", new Integer(0), bs.getShelvesOnStore().get(1).getBooksExistence().get("456"));
 		assertTrue(bs.getInitialClientsList().get(4).getClientBooksList().isEmpty());
 	}
+	
+	@Test
+	public void clientsToQueueTest_1() throws EmptyQueueException, InvalidCharacterException {
+		setupScenary_7();
+		bs.clientsToQueue(bs.clientCountingSort(bs.getInitialClientsList()));
+		assertEquals("Test failed", "456", bs.getClientsQueue().dequeue().getId());
+		assertEquals("Test failed", "123", bs.getClientsQueue().dequeue().getId());
+		assertEquals("Test failed", "534", bs.getClientsQueue().dequeue().getId());
+		assertEquals("Test failed", "798", bs.getClientsQueue().dequeue().getId());
+	}
+
 }
