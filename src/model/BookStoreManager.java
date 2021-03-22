@@ -174,28 +174,6 @@ public class BookStoreManager {
 	}
 
 	/**
-	 * This method create a max heap
-	 * @param array Array to make a heap
-	 * @param SizeofHeap means how many positions will convert into a heap
-	 * @param i initial position
-	 */
-	public void heapify(Book array[], int SizeofHeap, int i) {
-		int largestelement = i; 
-		int leftChild  = 2*i + 1; 
-		int rightChild  = 2*i + 2; 
-		if (leftChild  < SizeofHeap && array[leftChild].getShelveIndicator().compareTo(array[largestelement].getShelveIndicator()) > 0)
-			largestelement = leftChild ;
-		if (rightChild  < SizeofHeap && array[rightChild].getShelveIndicator().compareTo(array[largestelement].getShelveIndicator()) > 0)
-			largestelement = rightChild ;
-		if (largestelement != i) {
-			Book temp = array[i];
-			array[i] = array[largestelement];
-			array[largestelement] = temp;
-			heapify(array, SizeofHeap, largestelement);
-		}
-	}
-
-	/**
 	 * This method sort an array with the insertion method
 	 * @param arr array to sort
 	 * @return
