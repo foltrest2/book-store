@@ -1,6 +1,8 @@
 package ui;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import exceptions.InvalidCharacterException;
 import javafx.collections.FXCollections;
@@ -22,7 +24,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.shape.Rectangle;
-import model.Book;
 import model.BookStoreManager;
 import model.Client;
 import model.Progressitem;
@@ -46,15 +47,11 @@ public class BookStoreGUI {
 	@FXML
 	private Button nextButton;
 	@FXML
-	private TextField ShelveCodeTxt;
-	@FXML
-	private TextField PriceTxt;
-	@FXML
 	private TextField QuantityTxt;
 	@FXML
 	private TextField IDTxt;
 	@FXML
-	private TextField BookCodeTxt;
+	private TextField BookCodeTxt1;
 	@FXML
 	private Label percentprogresslabel;
 	@FXML
@@ -79,22 +76,21 @@ public class BookStoreGUI {
 	private TableColumn<Client,String> ClientIdC; 
 	@FXML
 	private TableColumn<Client,Integer> PriorC;
-    @FXML
-    private TableColumn<?, ?> TitleC;
-    @FXML
-    private TableColumn<?, ?> PriceC;
-    @FXML
-    private TableColumn<?, ?> ShelveC;
-    @FXML
-    private TableColumn<?, ?> ISBNC;
-    @FXML
-    private TableView<Book> BooksWithoutSortTable;
-
+	@FXML
+	private TableColumn<Client, String> ClientC;
+	@FXML
+	private TableColumn<Client,List<String>> BooksWSC;
+	@FXML
+	private TableView<Client> BooksWithoutSortTable;
+	@FXML
+	private Label clientSelectedIdLabel;
+	private String saveId;
 
 	public BookStoreGUI(BookStoreManager bo) {
 		b = bo;
 		pi = new Progressitem(); 
 		s= 0 ;
+
 	}
 
 	@FXML
@@ -123,6 +119,7 @@ public class BookStoreGUI {
 			showAlertWhenCharacterisInvalid();
 		}
 		showAlertWhenShelveIsAdded();
+		cleanBasicInfo1Text();
 
 	}
 
@@ -131,6 +128,7 @@ public class BookStoreGUI {
 
 		int checkers = Integer.parseInt(checkersTxt.getText());
 		showAlertWhenCheckersAreAdded();
+		cleanCashersText();
 
 	}
 
@@ -144,27 +142,33 @@ public class BookStoreGUI {
 		String review = ReviewTxt.getText();
 		String shelvI = ShelveIndicatorTxt.getText();
 		int quantity = Integer.parseInt(QuantityTxt.getText());
+		boolean operation = false;
 
 		try {
-			b.addBookPerShelve(title, ichapt, review, isbncode, price, shelvI, quantity);
+			operation = b.addBookPerShelve(title, ichapt, review, isbncode, price, shelvI, quantity);
 
 		} catch (InvalidCharacterException e) {
 
 			showAlertWhenCharacterisInvalid();
 		}
 
-		if(!b.addBookPerShelve(title, ichapt, review, isbncode, price, shelvI, quantity)) {
+		if(operation == false) {
 
 			showAlertWhenShelveIsInvalid();
 		}else {
 			showAlertWhenBookIsAdded();
 		}
+		cleanBasicInfo2Text();
 	}
 
 	@FXML
 	void selectClientToAddBook(MouseEvent event) {
-		
-		String s = ClientTable.getSelectionModel().getSelectedItem().getId();
+
+		if(ClientTable.getSelectionModel().getSelectedItem() != null) {
+			String s = ClientTable.getSelectionModel().getSelectedItem().getId();
+			clientSelectedIdLabel.setText(s);
+			saveId = s;
+		}
 	}
 
 	@FXML
@@ -175,13 +179,47 @@ public class BookStoreGUI {
 		}else {
 			showAlertWhenClientIsAdded();
 			updateClientsTable();
-		}   	
+
+		}
+		cleanBasicInfo3IDText();
+	}
+
+	public void updateTableWithInitialBooks() {
+
+		ObservableList <Client> ob;
+		ob = FXCollections.observableList(b.getClientsList());
+		BooksWithoutSortTable.setItems(ob);
+		ClientC.setCellValueFactory(new PropertyValueFactory<Client,String>("id"));
+		BooksWSC.setCellValueFactory(new PropertyValueFactory<Client,List<String>>("clientBooksList"));
+
 	}
 
 	@FXML
-	void addBI3B(ActionEvent event) {
+	void addBI3B(ActionEvent event) throws InvalidCharacterException {
 
-	}
+		String s = BookCodeTxt1.getText();
+		String id = saveId;
+		Client c = b.searchClient(id);
+		String info = "";
+
+		try {
+			info = b.addAndCheckBooksToClientBookList(c, s);
+
+		} catch (InvalidCharacterException e) {
+			showAlertWhenCharacterisInvalid();
+		}
+		if(info.equalsIgnoreCase("")) { 
+
+			BooksWithoutSortTable.refresh();
+			showAlertWhenInitialBookAddedToClient();
+			updateTableWithInitialBooks();
+
+		}else {
+			showAlertWhenBookIsNotAvailable();
+		}
+		cleanBasicInfo3BookCodeText();
+	} 
+
 	public void loadBasicInfo1() throws IOException {
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("addBookMenu.fxml"));
 		fxmlLoader.setController(this);
@@ -245,7 +283,7 @@ public class BookStoreGUI {
 		ClientIdC.setCellValueFactory(new PropertyValueFactory<Client, String>("id"));
 		PriorC.setCellValueFactory(new PropertyValueFactory<Client,Integer>("priorityTime"));
 		ObservableList <Client> oblist;
-		oblist = FXCollections.observableList(b.getInitialClientsList());
+		oblist = FXCollections.observableList(b.getClientsList());
 		ClientTable.setItems(oblist);
 	}
 
@@ -322,5 +360,54 @@ public class BookStoreGUI {
 		alert.showAndWait();
 
 	}
+	public void showAlertWhenInitialBookAddedToClient() {
 
+		Alert alert= new Alert(AlertType.CONFIRMATION);
+		alert.setHeaderText("CODE ADDED");
+		alert.setContentText("Book code was succesfully added to client Initial list");
+		alert.showAndWait();
+
+	}
+	public void showAlertWhenBookIsNotAvailable() {
+
+		Alert alert= new Alert(AlertType.ERROR);
+		alert.setHeaderText("Unexisting Book ERROR");
+		alert.setContentText("The book you are trying to add to your list is not available or doesn't even exist on the bookstore, check it");
+		alert.showAndWait();
+
+	}
+
+	public void cleanCashersText() {
+
+		checkersTxt.clear();
+	}
+
+	public void cleanBasicInfo1Text() {
+
+		ShelvesTxt.clear();
+		SlotsTxt.clear();
+	}
+
+	public void cleanBasicInfo2Text() {
+
+		ShelveIndicatorTxt.clear();
+		Pricetxt.clear();
+		QuantityTxt.clear();
+		ISBNCodetxt.clear();
+		TitleTxt.clear();
+		InitialChaptTxT.clear();
+		ReviewTxt.clear();
+
+	}
+
+	public void cleanBasicInfo3IDText() {
+
+		IDTxt.clear();
+
+	}
+
+	public void cleanBasicInfo3BookCodeText() {
+
+		BookCodeTxt1.clear();
+	}
 }

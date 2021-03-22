@@ -1,6 +1,5 @@
 package model;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import dataStructures.*;
 import exceptions.EmptyQueueException;
@@ -9,34 +8,49 @@ import exceptions.InvalidCharacterException;
 public class BookStoreManager {
 
 	private Queue<Client> clientsQueue;
-	private List<Client> initialClientsList;
+	private Queue<Client> keepOrder;
+	private List<Client> clientsList;
 	private ArrayList<Shelve> shelvesOnStore;
+	private Client[] cashiersArray;
 	private int cashiers;
-	private Client [] cashiersArray; 
-	Comparator<String> comp;
 	private static int timer = 0;
 
+	/**
+	 * BookStoreManager constructor
+	 */
 	public BookStoreManager() {
-		initialClientsList = new ArrayList<>();
+		clientsList = new ArrayList<>();
 		shelvesOnStore = new ArrayList<>();
 		clientsQueue = new Queue<>();
-		cashiersArray = new Client[cashiers];
+		keepOrder = new Queue<>();
 	}
 
 	// ******* Adding algorithms **************
 
+	/**
+	 * This method adds a client to the client's arraylist
+	 * @param id is the client's id
+	 * @return
+	 */
 	public boolean addClient(String id) {
 
 		boolean clientAdded = false;
 		if(searchClient(id) == null) {
 			int priorityTime = timer+=1;
 			Client toAdd = new Client(id, priorityTime);	
-			initialClientsList.add(toAdd);
+			clientsList.add(toAdd);
 			clientAdded = true;
 		}
 		return clientAdded;
 	}
 
+	/**
+	 * This method add a shelve to the shelve's arraylist
+	 * @param indicator is the indicator of the shelve
+	 * @param slots is the queantity of slots
+	 * @return if was added or not
+	 * @throws InvalidCharacterException
+	 */
 	public boolean addShelve(String indicator, int slots) throws InvalidCharacterException {
 		boolean shelveAdded = false;
 		if (binaryShelveSearch(indicator) == null) {
@@ -44,8 +58,20 @@ public class BookStoreManager {
 			shelvesOnStore.add(new Shelve(indicator, slots));
 		}
 		return shelveAdded;
-	}
+	} 
 
+	/**
+	 * This method add a book to a shelve
+	 * @param title is the book's title
+	 * @param initialChapters are the book's initial chapters
+	 * @param criticsAndReviews are the book's critics and reviews
+	 * @param iSBNCode is the book's ISBN code
+	 * @param price is the book's price
+	 * @param shelveIndicator is the shelve where the book are
+	 * @param booksQuantity is the book's quantity
+	 * @return if was added or not
+	 * @throws InvalidCharacterException
+	 */
 	public boolean addBookPerShelve(String title, String initialChapters, String criticsAndReviews, String iSBNCode, double price, String shelveIndicator, int booksQuantity) throws InvalidCharacterException {
 
 		boolean bookAdded = false;
@@ -60,6 +86,12 @@ public class BookStoreManager {
 
 	// ******* Sorting algorithms *************
 
+	/**<br>Pre:</br>
+	 * This method sort an array with the counting method
+	 * @param isbnList is the list of isbn
+	 * @return the arraylist sorted
+	 * @throws InvalidCharacterException
+	 */
 	public ArrayList<String> countingSort(ArrayList<String> isbnList) throws InvalidCharacterException {
 
 		Book [] books = new Book[isbnList.size()];
@@ -249,16 +281,16 @@ public class BookStoreManager {
 	public Client searchClient(String id) {
 		boolean found = false;
 		Client clientFound = null;
-		for (int i = 0; i < initialClientsList.size() && !found; i++) {
-			if(initialClientsList.get(i).getId().equals(id)) {
+		for (int i = 0; i < clientsList.size() && !found; i++) {
+			if(clientsList.get(i).getId().equals(id)) {
 				found = true;
-				clientFound = initialClientsList.get(i);
+				clientFound = clientsList.get(i);
 			}	
 		}
 		return clientFound;
 	}
 
-	// *************** Auxiliar algorithms ***********************
+	// *************** Auxiliary algorithms ***********************
 
 	public void booksToBag(Client client) throws InvalidCharacterException {
 		for (int i = 0; i < client.getClientBooksList().size(); i++) {
@@ -305,33 +337,65 @@ public class BookStoreManager {
 					info += "Book\nISBN code: "+isbnCode+"\nTitle: "+bookWithGivenIsbn(isbnCode).getTitle()+"\nThere have no more existence!\n";
 				}
 			}
+		}else if(book == null){
+			
+			info= "invalido";
 		}
 		return info;
 	}
 
+	public String finalReport() throws EmptyQueueException {
+		String report = "";
+		for (int i = 0; i < keepOrder.size();) {
+			Client dequeued = keepOrder.dequeue(); 
+			report += dequeued.getId() + " " + dequeued.getPricePaid() + "\n";
+			for (int j = dequeued.getClientBooksList().size()-1; j >= 0; j--) {
+				report += dequeued.getClientBooksList().get(j) + " ";	
+			}
+			report += "\n";
+		}
+		return report;
+	}
+
 	// ************* Queue and Pay algorithms *********************************
 
-	public void clientsToQueue(List <Client> clientsToQueue) {
+	@SuppressWarnings("unchecked")
+	public void clientsToQueue(List <Client> clientsToQueue) throws EmptyQueueException, CloneNotSupportedException {
 		for (int i = 0; i < clientsToQueue.size(); i++) {
 			if(!clientsToQueue.get(i).getBooks().isEmpty()) {
 				clientsQueue.enqueue(clientsToQueue.get(i));
 			}		
-		}	
+		}
+		keepOrder = (Queue<Client>) clientsQueue.clone();
 	}
 
-	public void payBooks() throws EmptyQueueException {
-		boolean cashiersAreEmpty = false;
-
-		while (!cashiersAreEmpty) {
-
-			for (int i = 0; i < cashiersArray.length; i++) {
-				Client client = clientsQueue.dequeue();
+	public void payBooks() throws EmptyQueueException, CloneNotSupportedException {
+		boolean emptyQueue = false, stop = false;
+		cashiersArray = new Client[cashiers];
+		Client client = null;
+		for (int i = 0; i < cashiersArray.length && !stop; i++) {
+			if (!clientsQueue.isEmpty()) {
+				client = clientsQueue.dequeue();
 				cashiersArray[i] = client;
 			}
-			for (int i = 0; i < cashiersArray.length; i++) {
+			else {
+				stop = true;
+			}
+		}
+		while (!emptyQueue) {      
+			for (int i = 0; i < cashiersArray.length && !emptyQueue; i++) {
 				if(!cashiersArray[i].getBooks().isEmpty()) {
-					double priceToPay =+ cashiersArray[i].getBooks().pop().getPrice();
-					cashiersArray[i].setPricePaid(priceToPay); 		
+					double priceToPay = cashiersArray[i].getBooks().pop().getPrice();
+					cashiersArray[i].setPricePaid(priceToPay);
+				}
+				else {
+					if (!clientsQueue.isEmpty()) {
+						client = clientsQueue.dequeue();
+						cashiersArray[i] = client;
+					}else {
+						if(client.getBooks().isEmpty())
+							emptyQueue = true;	
+					}
 				}
 			}
 		}
@@ -347,12 +411,12 @@ public class BookStoreManager {
 		this.cashiers = cashiers;
 	}
 
-	public List<Client> getInitialClientsList() {
-		return initialClientsList;
+	public List<Client> getClientsList() {
+		return clientsList;
 	}
 
-	public void setInitialClientsList(List<Client> initialClientsList) {
-		this.initialClientsList = initialClientsList;
+	public void setClientsList(List<Client> clientsList) {
+		this.clientsList = clientsList;
 	}
 
 	public Queue<Client> getClientsQueue() {

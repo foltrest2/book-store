@@ -91,12 +91,10 @@
                   <Font name="Poor Richard" size="24.0" />
                </font>
             </Button>
-            <TableView fx:id="BooksWithoutSortTable" layoutX="90.0" layoutY="39.0" prefHeight="348.0" prefWidth="295.0">
+            <TableView fx:id="BooksWithoutSortTable" layoutX="80.0" layoutY="37.0" prefHeight="348.0" prefWidth="263.0">
               <columns>
-                <TableColumn fx:id="TitleC" prefWidth="75.0" text="Title" />
-                <TableColumn fx:id="PriceC" prefWidth="75.0" text="Price" />
-                  <TableColumn fx:id="ShelveC" prefWidth="75.0" text="Shelve" />
-                  <TableColumn fx:id="ISBNC" prefWidth="75.0" text="ISBN Code" />
+                <TableColumn fx:id="ClientC" prefWidth="75.0" text="Client" />
+                  <TableColumn fx:id="BooksWSC" prefWidth="2000.0" text="Books ISBN" />
               </columns>
             </TableView>
             <TextField fx:id="BookCodeTxt1" layoutX="443.0" layoutY="155.0">
@@ -123,7 +121,17 @@
                   <Font name="Poor Richard" size="12.0" />
                </font>
             </Button>
-            <Label layoutX="473.0" layoutY="103.0" prefHeight="41.0" prefWidth="90.0" text="Book Code">
+            <Label layoutX="482.0" layoutY="112.0" prefHeight="41.0" prefWidth="90.0" text="Book Code">
+               <font>
+                  <Font name="Papyrus" size="12.0" />
+               </font>
+            </Label>
+            <Label layoutX="410.0" layoutY="41.0" prefHeight="41.0" prefWidth="195.0" text="You have selected a client with Id:">
+               <font>
+                  <Font name="Papyrus" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="clientSelectedIdLabel" layoutX="455.0" layoutY="71.0" prefHeight="41.0" prefWidth="82.0">
                <font>
                   <Font name="Papyrus" size="12.0" />
                </font>
