@@ -10,12 +10,19 @@ public class ProgressLoadingThread extends Thread{
 	private Progressitem progi;
 	private BookStoreGUI gui;
 
-	
+	/**
+	 * ProgressLoadingThread constructor
+	 * @param bar the progress item
+	 * @param bs the gui
+	 */
 	public ProgressLoadingThread(Progressitem bar, BookStoreGUI bs) {
 		progi = bar;
 		gui= bs;
 	}
 	
+	/**
+	 * This method make the progress bar advance
+	 */
 	public void run() {
 		while (progi.isLoading()) {
 			progi.advance();
@@ -32,6 +39,4 @@ public class ProgressLoadingThread extends Thread{
 		}
 				
 	}
-
-
 }

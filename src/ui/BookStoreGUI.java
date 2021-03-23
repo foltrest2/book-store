@@ -280,7 +280,7 @@ public class BookStoreGUI {
 		s = 4;
 		booksToBag();
 		updateClients();
-		
+
 	} 
 
 	public void booksToBag() throws InvalidCharacterException {
@@ -388,11 +388,10 @@ public class BookStoreGUI {
 
 	@FXML
 	void Simulate(ActionEvent event) throws EmptyQueueException, CloneNotSupportedException, InvalidCharacterException {
-	
+
 		b.clientsToQueue(b.getClientsList());
 		b.payBooks();
 		Report.setText(b.finalReport());
-
 	}	
 
 	@FXML

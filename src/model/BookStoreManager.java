@@ -67,7 +67,7 @@ public class BookStoreManager {
 	 * @param criticsAndReviews are the book's critics and reviews
 	 * @param iSBNCode is the book's ISBN code
 	 * @param price is the book's price
-	 * @param shelveIndicator is the shelve where the book are
+	 * @param shelveIndicator is the shelve where the book is
 	 * @param booksQuantity is the book's quantity
 	 * @return if was added or not
 	 * @throws InvalidCharacterException
@@ -86,7 +86,7 @@ public class BookStoreManager {
 
 	// ******* Sorting algorithms *************
 
-	/**<br>Pre:</br>
+	/**
 	 * This method sort an array with the counting method
 	 * @param list is the list of isbn
 	 * @return the arraylist sorted
@@ -119,12 +119,19 @@ public class BookStoreManager {
 			outputArray[positionOfInsert] = books[i];
 			counts[radix128(books[i].getShelveIndicator())]++;
 		}
-		for (int i = 0; i < outputArray.length; i++) {
+
+		for (int i = 0; i < books.length; i++) {
+
 			sortedBooks.add(outputArray[i].getISBNCode());
 		}
 		return sortedBooks;
 	}
 
+	/**
+	 * This method sort an array with the heap sort method
+	 * @param list is the list of isbn
+	 * @return
+	 */
 	public ArrayList<String> heapSort(List<String> list) {
 		Book [] books = new Book[list.size()];
 		for (int i = 0; i < list.size(); i++) {
@@ -147,6 +154,12 @@ public class BookStoreManager {
 		return isbnSorted;
 	}
 
+	/**
+	 * This method create a max heap
+	 * @param array Array to make a heap
+	 * @param SizeofHeap means how many positions will convert into a heap
+	 * @param i initial position
+	 */
 	public void heapify(Book array[], int SizeofHeap, int i) {
 		int largestelement = i; 
 		int leftChild  = 2*i + 1; 
@@ -163,19 +176,32 @@ public class BookStoreManager {
 		}
 	}
 
+
+	
+	/**
+	 * This method sort an array with the insertion method
+	 * @param list array to sort
+	 * @return
+	 */
 	public List<String> insertionSort(List<String> list) {
 		for (int j = 1; j < list.size(); j++) {
 			String current = list.get(j);
 			int i = j-1;
 			while ((i > -1) && (list.get(i).compareTo(current)>0)) {
 				list.set(i+1,list.get(i));
-				i--;
+				i--;  
 			}
 			list.set(i+1, current);
 		}
 		return list;
 	}
 
+	/**<br>Pre:</br> The id of the client can't be greater than 100000000
+	 * This method sort an array with the counting method
+	 * @param clientList is the list of clients
+	 * @return
+	 * @throws InvalidCharacterException
+	 */
 	public List<Client> clientCountingSort(List<Client> clientList) throws InvalidCharacterException {
 		Client [] clients = new Client[clientList.size()];
 		for (int i = 0; i < clientList.size(); i++) {
@@ -209,27 +235,12 @@ public class BookStoreManager {
 
 	// ********* Search algorithms ******************
 
-	public static String binarySearch(int[] array, int k) {
-		boolean found = false;
-		int i = 0;
-		int j = array.length - 1;
-		int m=0;
-		String info = "";
-		while (i <= j && !found) {
-			m = (i + j) / 2;
-			if (array[m] == k) {
-				found = true;
-			} else {
-				if (array[m] > k) {
-					j = m - 1;
-				} else {
-					i = m + 1;
-				}
-			}
-		}
-		return info;
-	}
-
+	/**
+	 * This method search a shelve using the binary search method
+	 * @param k is the shelve indicator
+	 * @return
+	 * @throws InvalidCharacterException
+	 */
 	public Shelve binaryShelveSearch(String k) throws InvalidCharacterException {
 		boolean found = false;
 		int toFindShelve = radix128(k);
@@ -254,6 +265,11 @@ public class BookStoreManager {
 		return shelveFound;
 	}
 
+	/**
+	 * This method search the hash table where a book is
+	 * @param isbn the book's ISBN 
+	 * @return
+	 */
 	public HashTable<String,Integer> existenceWithGivenIsbn(String isbn) {
 		boolean found = false;
 		HashTable<String, Integer> existenceShelve = null;
@@ -266,18 +282,28 @@ public class BookStoreManager {
 		return existenceShelve;
 	}
 
+	/**
+	 * This method search a book in the store shelves
+	 * @param isbn The book's ISBN
+	 * @return
+	 */
 	public Book bookWithGivenIsbn(String isbn) {
-		Book shelve = null;
+		Book book = null;
 		boolean found = false;
 		for (int i = 0; i < shelvesOnStore.size() && !found; i++) {
 			if (shelvesOnStore.get(i).getSlots().contains(isbn)) {
-				shelve = shelvesOnStore.get(i).getSlots().get(isbn);
+				book = shelvesOnStore.get(i).getSlots().get(isbn);
 				found = true;
 			}
 		}
-		return shelve;
+		return book;
 	}
 
+	/**
+	 * This method search a client in the client list
+	 * @param id
+	 * @return
+	 */
 	public Client searchClient(String id) {
 		boolean found = false;
 		Client clientFound = null;
@@ -292,6 +318,11 @@ public class BookStoreManager {
 
 	// *************** Auxiliary algorithms ***********************
 
+	/**
+	 * This method passes a client to a queue 
+	 * @param client is a client
+	 * @throws InvalidCharacterException
+	 */
 	public void booksToBag(Client client) throws InvalidCharacterException {
 		for (int i = 0; i < client.getClientBooksList().size(); i++) {
 			Book bookToAdd = bookWithGivenIsbn(client.getClientBooksList().get(i));
@@ -300,10 +331,19 @@ public class BookStoreManager {
 		client.increasePriorityTime();
 	}
 
+	/**
+	 * This method resets the timer
+	 */
 	public void timerReset() {
 		timer = 0;
 	}
 
+	/**
+	 * This method makes a String into an int
+	 * @param x the string to transform
+	 * @return
+	 * @throws InvalidCharacterException 
+	 */ 
 	public int radix128(String x) throws InvalidCharacterException{
 		int result = 0;
 		int cont = 0;
@@ -320,6 +360,13 @@ public class BookStoreManager {
 		return result;
 	}
 
+	/**
+	 * This method verifies if the book to add to a client's list can be added
+	 * @param client is a client
+	 * @param isbnCode is the book's isbn
+	 * @return
+	 * @throws InvalidCharacterException
+	 */
 	public String addAndCheckBooksToClientBookList(Client client, String isbnCode) throws InvalidCharacterException{
 		String info = "";
 		Book book = bookWithGivenIsbn(isbnCode);
@@ -344,6 +391,11 @@ public class BookStoreManager {
 		return info;
 	}
 
+	/**
+	 * This method obtains the final information after all the day's activity
+	 * @return
+	 * @throws EmptyQueueException
+	 */
 	public String finalReport() throws EmptyQueueException {
 		String report = "";
 		for (int i = 0; i < keepOrder.size();) {
@@ -359,6 +411,12 @@ public class BookStoreManager {
 
 	// ************* Queue and Pay algorithms *********************************
 
+	/**
+	 * This method makes the client's list into a queue
+	 * @param clientsToQueue the client list
+	 * @throws EmptyQueueException
+	 * @throws CloneNotSupportedException
+	 */
 	@SuppressWarnings("unchecked")
 	public void clientsToQueue(List <Client> clientsToQueue) throws EmptyQueueException, CloneNotSupportedException {
 		for (int i = 0; i < clientsToQueue.size(); i++) {
@@ -369,6 +427,11 @@ public class BookStoreManager {
 		keepOrder = (Queue<Client>) clientsQueue.clone();
 	}
 
+	/**
+	 * This method charge to all the clients the books they carry off
+	 * @throws EmptyQueueException
+	 * @throws CloneNotSupportedException
+	 */
 	public void payBooks() throws EmptyQueueException, CloneNotSupportedException {
 		boolean emptyQueue = false, stop = false;
 		cashiersArray = new Client[cashiers];

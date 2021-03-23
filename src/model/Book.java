@@ -16,7 +16,7 @@ public class Book {
 	 * @param criticsAndReviews are the book's critics and reviews
 	 * @param iSBNCode is the book's ISBN code
 	 * @param price is the book's price
-	 * @param shelveIndicator is the shelve where the book are
+	 * @param shelveIndicator is the shelve where the book is
 	 */
 	public Book(String title, String initialChapters, String criticsAndReviews, String iSBNCode, double price, String shelveIndicator) {
 		this.title = title;
