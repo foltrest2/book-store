@@ -18,12 +18,7 @@ public class Main extends Application {
 	}
 	
 	public static void main(String[] args) {
-//				launch(args);
-		System.out.println(123%11);
-		System.out.println(345%11);
-		System.out.println(678%11);
-		System.out.println(91011%11);
-		System.out.println(111213%11);
+			launch(args);
 	}
 	
 	@Override

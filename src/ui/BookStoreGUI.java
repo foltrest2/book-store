@@ -1,10 +1,7 @@
 package ui;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-
-import dataStructures.Stack;
 import exceptions.EmptyQueueException;
 import exceptions.InvalidCharacterException;
 import javafx.collections.FXCollections;
@@ -27,7 +24,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.shape.Rectangle;
-import model.Book;
 import model.BookStoreManager;
 import model.Client;
 import model.Progressitem;
@@ -278,8 +274,6 @@ public class BookStoreGUI {
 		Parent basicinfo3 = fxmlLoader.load();
 		basePane.setCenter(basicinfo3);
 		s = 4;
-		booksToBag();
-		updateClients();
 
 	} 
 
@@ -385,11 +379,10 @@ public class BookStoreGUI {
 		}
 	}
 
-
 	@FXML
 	void Simulate(ActionEvent event) throws EmptyQueueException, CloneNotSupportedException, InvalidCharacterException {
-
-		b.clientsToQueue(b.getClientsList());
+		booksToBag();
+		b.clientsToQueue(b.clientCountingSort(b.getClientsList()));
 		b.payBooks();
 		Report.setText(b.finalReport());
 	}	

@@ -446,7 +446,7 @@ public class BookStoreManager {
 			}
 		}
 		while (!emptyQueue) {      
-			for (int i = 0; i < cashiersArray.length && !emptyQueue; i++) {
+			for (int i = 0; i<cashiersArray.length-1 && !emptyQueue; i++) {
 				if(!cashiersArray[i].getBooks().isEmpty()) {
 					double priceToPay = cashiersArray[i].getBooks().pop().getPrice();
 					cashiersArray[i].setPricePaid(priceToPay);
