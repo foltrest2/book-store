@@ -92,7 +92,6 @@ public class BookStoreManager {
 	 * @throws InvalidCharacterException
 	 */
 	public ArrayList<String> countingSort(ArrayList<String> isbnList) throws InvalidCharacterException {
-
 		Book [] books = new Book[isbnList.size()];
 		for (int i = 0; i < isbnList.size(); i++) {
 			books[i] = bookWithGivenIsbn(isbnList.get(i));
