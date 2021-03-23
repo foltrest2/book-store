@@ -118,7 +118,7 @@ public class BookStoreManager {
 			outputArray[positionOfInsert] = books[i];
 			counts[radix128(books[i].getShelveIndicator())]++;
 		}
-		for (int i = 0; i < shelvesOnStore.size(); i++) {
+		for (int i = 0; i < books.length; i++) {
 			sortedBooks.add(outputArray[i].getISBNCode());
 		}
 		return sortedBooks;

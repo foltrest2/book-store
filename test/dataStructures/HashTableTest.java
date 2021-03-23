@@ -99,11 +99,6 @@ class HashTableTest {
 	@Test
 	public void containsTest1() {
 		setupScenary3();
-		assertEquals("value1", ht.get(123), "Fail test");
-		assertEquals("value2", ht.get(345), "Fail test");
-		assertEquals("value3", ht.get(678), "Fail test");
-		assertEquals("value4", ht.get(91011), "Fail test");
-		assertEquals("value5", ht.get(111213), "Fail test");
 		assertTrue(ht.contains(123));
 		ht.put(123, "valuexd");
 		assertEquals("value1", ht.get(123), "Fail test");
