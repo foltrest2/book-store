@@ -398,12 +398,11 @@ public class BookStoreManager {
 		String report = "";
 		for (int i = 0; i < keepOrder.size();) {
 			Client dequeued = keepOrder.dequeue(); 
-
 			report += "Client Id " +dequeued.getId() +" Total Payed: "+ dequeued.getPricePaid() + "\n";
 			for (int j = dequeued.getClientBooksList().size()-1; j >= 0; j--) {
 				report += dequeued.getClientBooksList().get(j) + " ";	
 			}
-			report += "\n";
+			report += "\n"; 
 		}
 		return report;
 	}
