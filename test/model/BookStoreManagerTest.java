@@ -43,6 +43,8 @@ public class BookStoreManagerTest {
 		bs.addClient("1236");
 
 	}
+	
+	
 
 	public void setupScenary_4() throws InvalidCharacterException {
 		bs = new BookStoreManager();
@@ -161,7 +163,7 @@ public class BookStoreManagerTest {
 		bs.addAndCheckBooksToClientBookList(bs.getClientsList().get(0), "456");
 		bs.addAndCheckBooksToClientBookList(bs.getClientsList().get(1), "456");
 		bs.addAndCheckBooksToClientBookList(bs.getClientsList().get(2), "456");
-		bs.addAndCheckBooksToClientBookList(bs.getClientsList().get(2), "767");
+		bs.addAndCheckBooksToClientBookList(bs.getClientsList().get(2), "767"); 
 		bs.addAndCheckBooksToClientBookList(bs.getClientsList().get(2), "123");
 		bs.addAndCheckBooksToClientBookList(bs.getClientsList().get(3), "456");
 		bs.addAndCheckBooksToClientBookList(bs.getClientsList().get(4), "456");

@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import dataStructures.Stack;
+import exceptions.EmptyQueueException;
 import exceptions.InvalidCharacterException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,6 +15,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -24,6 +27,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.shape.Rectangle;
+import model.Book;
 import model.BookStoreManager;
 import model.Client;
 import model.Progressitem;
@@ -85,6 +89,21 @@ public class BookStoreGUI {
 	@FXML
 	private Label clientSelectedIdLabel;
 	private String saveId;
+	@FXML
+	private TableView<Client> SimulationTable;
+	@FXML
+	private TableColumn<Client, String> ReportC;
+	@FXML
+	private CheckBox insertionSortCheckBox;
+	@FXML
+	private CheckBox heapSortCheckBox;
+	@FXML
+	private CheckBox countingSortCheckBox;
+	@FXML
+	private TextField clientToSort;
+	@FXML
+	private Label Report;
+
 
 	public BookStoreGUI(BookStoreManager bo) {
 		b = bo;
@@ -113,7 +132,7 @@ public class BookStoreGUI {
 		String ind = ShelvesTxt.getText();
 		int slots = Integer.parseInt(SlotsTxt.getText());
 		try {
-			b.addShelve(ind, slots);
+			b.addShelve(ind, slots); 
 		} catch (InvalidCharacterException e) {
 
 			showAlertWhenCharacterisInvalid();
@@ -127,6 +146,7 @@ public class BookStoreGUI {
 	void AddBIB(ActionEvent event) {
 
 		int checkers = Integer.parseInt(checkersTxt.getText());
+		b.setCashiers(checkers);
 		showAlertWhenCheckersAreAdded();
 		cleanCashersText();
 
@@ -235,25 +255,34 @@ public class BookStoreGUI {
 		basePane.setCenter(basicinfo2);
 		s= 2;   	
 	}
-	public void loadBasicInfo3() throws IOException {
+	public void loadBasicInfo3() throws IOException, InvalidCharacterException {
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("BasicInfo3.fxml"));
 		fxmlLoader.setController(this);
 		Parent basicinfo3 = fxmlLoader.load();
 		basePane.setCenter(basicinfo3);
 		s= 3;
 
+
 	}
 
-	public void loadSimulation() throws IOException {
+	public void updateClients() throws InvalidCharacterException {
+
+		List<Client> c = b.clientCountingSort(b.getClientsList());
+		b.setClientsList(c);
+
+	}
+
+	public void loadSimulation() throws IOException, InvalidCharacterException {
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Show.fxml"));
 		fxmlLoader.setController(this);
 		Parent basicinfo3 = fxmlLoader.load();
 		basePane.setCenter(basicinfo3);
 		s = 4; 	
+		updateClients();
 	} 
 
 	@FXML
-	void next(ActionEvent event) throws IOException {
+	void next(ActionEvent event) throws IOException, InvalidCharacterException {
 		if(s == 1) {	
 			loadBasicInfo2();
 		}else if(s ==2) {
@@ -280,12 +309,80 @@ public class BookStoreGUI {
 
 	public void updateClientsTable() {
 
-		ClientIdC.setCellValueFactory(new PropertyValueFactory<Client, String>("id"));
-		PriorC.setCellValueFactory(new PropertyValueFactory<Client,Integer>("priorityTime"));
 		ObservableList <Client> oblist;
 		oblist = FXCollections.observableList(b.getClientsList());
 		ClientTable.setItems(oblist);
+		ClientIdC.setCellValueFactory(new PropertyValueFactory<Client, String>("id"));
+		PriorC.setCellValueFactory(new PropertyValueFactory<Client,Integer>("priorityTime"));
+
 	}
+
+	@FXML
+	void sortByCounting(ActionEvent event) throws InvalidCharacterException {
+		if(countingSortCheckBox.isSelected()) {
+
+			Client c = b.searchClient(clientToSort.getText());
+			sortByCountingISBN(c);
+			heapSortCheckBox.setDisable(true);
+			insertionSortCheckBox.setDisable(true);
+
+		}else {
+			heapSortCheckBox.setDisable(false);
+			countingSortCheckBox.setDisable(false);		
+		}
+	}
+
+	public void sortByCountingISBN(Client c) throws InvalidCharacterException {
+		c.setClientBooksList(b.countingSort(c.getClientBooksList()));
+
+	}
+
+	public void sortByInsertionISBN(Client c) throws InvalidCharacterException {
+		c.setClientBooksList(b.insertionSort(c.getClientBooksList()));
+	}
+	public void sortByHeapISBN(Client c) throws InvalidCharacterException {
+		c.setClientBooksList(b.heapSort(c.getClientBooksList()));
+
+	}
+
+	@FXML
+	void sortByHeap(ActionEvent event) throws InvalidCharacterException {
+		if(heapSortCheckBox.isSelected()) {
+
+			Client c = b.searchClient(clientToSort.getText());
+			sortByHeapISBN(c);
+			countingSortCheckBox.setDisable(true);
+			insertionSortCheckBox.setDisable(true);
+		}else {
+
+			insertionSortCheckBox.setDisable(false);
+			countingSortCheckBox.setDisable(false);
+		}
+	}
+
+	@FXML
+	void sortByInsertion(ActionEvent event) throws InvalidCharacterException {
+		if(insertionSortCheckBox.isSelected()) {
+
+			Client c = b.searchClient(clientToSort.getText());
+			sortByInsertionISBN(c);
+			countingSortCheckBox.setDisable(true);
+			heapSortCheckBox.setDisable(true);
+		}else {
+
+			heapSortCheckBox.setDisable(false);
+			countingSortCheckBox.setDisable(false);
+		}
+	}
+
+
+	@FXML
+	void Simulate(ActionEvent event) throws EmptyQueueException, CloneNotSupportedException {
+		b.clientsToQueue(b.getClientsList());
+		b.payBooks();
+		Report.setText(b.finalReport());
+
+	}	
 
 	@FXML
 	void Return(ActionEvent event) throws IOException {
