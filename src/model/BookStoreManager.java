@@ -177,7 +177,7 @@ public class BookStoreManager {
 	}
 
 
-	
+
 	/**
 	 * This method sort an array with the insertion method
 	 * @param list array to sort
@@ -385,7 +385,7 @@ public class BookStoreManager {
 				}
 			}
 		}else if(book == null){
-			
+
 			info= "invalido";
 		}
 		return info;
@@ -400,6 +400,7 @@ public class BookStoreManager {
 		String report = "";
 		for (int i = 0; i < keepOrder.size();) {
 			Client dequeued = keepOrder.dequeue(); 
+
 			report += "Client Id " +dequeued.getId() +" Total Payed: "+ dequeued.getPricePaid() + "\n";
 			for (int j = dequeued.getClientBooksList().size()-1; j >= 0; j--) {
 				report += dequeued.getClientBooksList().get(j) + " ";	
@@ -408,7 +409,7 @@ public class BookStoreManager {
 		}
 		return report;
 	}
- 
+
 	// ************* Queue and Pay algorithms *********************************
 
 	/**
@@ -446,7 +447,7 @@ public class BookStoreManager {
 			}
 		}
 		while (!emptyQueue) {      
-			for (int i = 0; i<cashiersArray.length && !emptyQueue; i++) {
+			for (int i = 0; i < cashiersArray.length && !emptyQueue; i++) {
 				if(!cashiersArray[i].getBooks().isEmpty()) {
 					double priceToPay = cashiersArray[i].getBooks().pop().getPrice();
 					cashiersArray[i].setPricePaid(priceToPay);

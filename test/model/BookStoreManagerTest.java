@@ -44,6 +44,8 @@ public class BookStoreManagerTest {
 
 	}
 
+
+
 	public void setupScenary_4() throws InvalidCharacterException {
 		bs = new BookStoreManager();
 		bs.timerReset();
@@ -262,6 +264,7 @@ public class BookStoreManagerTest {
 		assertEquals("Fail test", 1, bs.getClientsList().get(0).getPriorityTime());
 		assertEquals("Fail test", 2, bs.getClientsList().get(1).getPriorityTime());
 		assertEquals("Fail test", 3, bs.getClientsList().get(2).getPriorityTime());
+
 	}
 
 	@Test
@@ -271,7 +274,6 @@ public class BookStoreManagerTest {
 		assertEquals("Test failed", "767", bs.getClientsList().get(1).getBooks().top().getISBNCode());
 		assertEquals("Test failed", "123", bs.getClientsList().get(2).getBooks().top().getISBNCode());
 	}
-
 	@Test
 	public void heapSortTest() throws InvalidCharacterException {
 		setupScenary_5();

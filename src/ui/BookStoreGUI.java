@@ -104,6 +104,7 @@ public class BookStoreGUI {
 		b = bo;
 		pi = new Progressitem(); 
 		s= 0 ;
+
 	}
 
 	@FXML
@@ -234,6 +235,7 @@ public class BookStoreGUI {
 		cleanBasicInfo3BookCodeText();
 	} 
 
+
 	public void loadBasicInfo1() throws IOException {
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("addBookMenu.fxml"));
 		fxmlLoader.setController(this);
@@ -315,7 +317,7 @@ public class BookStoreGUI {
 		ClientIdC.setCellValueFactory(new PropertyValueFactory<Client, String>("id"));
 		PriorC.setCellValueFactory(new PropertyValueFactory<Client,Integer>("priorityTime"));
 
-	}
+	} 
 
 	@FXML
 	void sortByCounting(ActionEvent event) throws InvalidCharacterException {
@@ -324,7 +326,7 @@ public class BookStoreGUI {
 			Client c = b.searchClient(clientToSort.getText());
 			sortByCountingISBN(c);
 			heapSortCheckBox.setDisable(true);
-			insertionSortCheckBox.setDisable(true);
+			insertionSortCheckBox.setDisable(true); 
 
 		}else {
 			heapSortCheckBox.setDisable(false);
@@ -334,6 +336,7 @@ public class BookStoreGUI {
 
 	public void sortByCountingISBN(Client c) throws InvalidCharacterException {
 		c.setClientBooksList(b.countingSort(c.getClientBooksList()));
+
 
 	}
 
@@ -363,7 +366,6 @@ public class BookStoreGUI {
 	@FXML
 	void sortByInsertion(ActionEvent event) throws InvalidCharacterException {
 		if(insertionSortCheckBox.isSelected()) {
-
 			Client c = b.searchClient(clientToSort.getText());
 			sortByInsertionISBN(c);
 			countingSortCheckBox.setDisable(true);
@@ -380,8 +382,9 @@ public class BookStoreGUI {
 		booksToBag();
 		b.clientsToQueue(b.clientCountingSort(b.getClientsList()));
 		b.payBooks();
-		String s = b.finalReport();
+		String s = b.finalReport(); 
 		Report.setText(s);
+
 	}	
 
 	@FXML
@@ -454,6 +457,7 @@ public class BookStoreGUI {
 		alert.setHeaderText("CLIENT ADDED");
 		alert.setContentText("Client was added succesfully");
 		alert.showAndWait();
+
 	}
 	public void showAlertWhenInitialBookAddedToClient() {
 
@@ -461,6 +465,7 @@ public class BookStoreGUI {
 		alert.setHeaderText("CODE ADDED");
 		alert.setContentText("Book code was succesfully added to client Initial list");
 		alert.showAndWait();
+
 	}
 	public void showAlertWhenBookIsNotAvailable() {
 
