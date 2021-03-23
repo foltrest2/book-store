@@ -6,11 +6,10 @@ public final static int MAX = 300;
 
 	private int numberOfProgress;
 	private boolean isLoading;
-<<<<<<< HEAD
 
-=======
-	
->>>>>>> Alejandro
+	/**
+	 * Constructor of progress item
+	 */
 	public Progressitem() {
 		numberOfProgress = 0;
 		isLoading = true;
@@ -20,6 +19,9 @@ public final static int MAX = 300;
 		return numberOfProgress;
 	}
 	
+	/**
+	 * This method increase the indicator of progress
+	 */
 	public void advance() {
 		if(numberOfProgress>=MAX) {
 			isLoading = false;

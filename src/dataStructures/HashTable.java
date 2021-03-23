@@ -9,12 +9,14 @@ public class HashTable <K, V> implements HashTableInterface<K, V> {
 		private Entry<?,?> next;
 		private Entry<?,?> prev;
 
+		/**
+		 * HashTable entry constructor
+		 * @param key
+		 * @param value
+		 */
 		public Entry(K key, V value) {
 			this.key = key;
 			this.value = value;
-		}
-		public String toString() {
-			return "[ " + key + ", " + value + " ]";
 		}
 	}
 
@@ -22,11 +24,18 @@ public class HashTable <K, V> implements HashTableInterface<K, V> {
 	private int size;
 	public static final int DEFAULT_CAPACITY = 11;
 
+	/**
+	 * HashTable constructor without given initial capacity, a default capacity is assign
+	 */
 	public HashTable() {
 		elements = new Entry<?,?>[DEFAULT_CAPACITY];
 		size = DEFAULT_CAPACITY;
 	}
 
+	/**
+	 * HashTable constructor with initial capacity
+	 * @param initialCapacity
+	 */
 	public HashTable(int initialCapacity)  {
 		if (initialCapacity < 0) {
 			throw new IllegalArgumentException("xd bro?");
@@ -37,10 +46,18 @@ public class HashTable <K, V> implements HashTableInterface<K, V> {
 		}
 	}
 
+	/**
+	 * This method obtains the location of an entry
+	 * @param key is the identifier of an entry
+	 * @return a int with the location in the table
+	 */
 	public int hashFunction(K key) {
 		return key.hashCode() % this.size;
 	}
 
+	/**
+	 * This method put an entry into the table
+	 */
 	@Override
 	public void put(K key, V value) {
 		if(!contains(key)) {
@@ -60,6 +77,9 @@ public class HashTable <K, V> implements HashTableInterface<K, V> {
 		}
 	}
 
+	/**
+	 * This method deletes an entry and returns it's value
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public V delete(K key) {
@@ -99,11 +119,19 @@ public class HashTable <K, V> implements HashTableInterface<K, V> {
 		return vFound;
 	}
 
+	/**
+	 * This method returns the size of the hashTable
+	 */
 	@Override
 	public int size() {
 		return this.size;
 	}
 
+	/**
+	 * This method verifies if a key is inside the table
+	 * @param key a key
+	 * @return is the table contains the key or not
+	 */
 	public boolean contains(K key) {
 		Entry<?, ?> current = elements[hashFunction(key)];
 		boolean found = false;
@@ -116,7 +144,9 @@ public class HashTable <K, V> implements HashTableInterface<K, V> {
 		return found;
 	}
 
-
+	/**
+	 * This method gets the value associated to one key
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public V get(K key) {

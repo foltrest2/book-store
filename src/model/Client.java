@@ -6,30 +6,35 @@ import dataStructures.*;
 
 public class Client {
 
-	private String id;
+	private String id; 
 	private int priorityTime;
 	private double pricePaid;
 	private Stack<Book> toPayBooks;
-	private List<String> initialBooksList;
+	private List<String> clientBooksList;
 
+	/**
+	 * Client constructor
+	 * @param id is the client's id
+	 * @param priorityTime is the time that indicates how much time the client take
+	 * to obtains the books he want
+	 */
 	public Client(String id, int priorityTime) {
-		initialBooksList = new ArrayList<>();
+		clientBooksList = new ArrayList<>();
 		toPayBooks = new Stack<>(); 
 		this.id = id;
 		this.priorityTime = priorityTime;
 		this.pricePaid = 0;
 	}
-
-	public void addBookCodeToInitialList(String ISBN) {
-		initialBooksList.add(ISBN);
-	}
 	
+	/**
+	 * This method increase the priority time of a client
+	 */
 	public void increasePriorityTime() {
 		priorityTime = priorityTime + toPayBooks.size();
 	}
 	
 	public Stack<Book> getToPayBooks() {
-		return toPayBooks;
+		return toPayBooks; 
 	}
 
 	public String getId() {
@@ -61,15 +66,21 @@ public class Client {
 	}
 
 	public void setPricePaid(double pricePaid) {
-		this.pricePaid = pricePaid;
+		this.pricePaid += pricePaid;
 	}
 
-	public List<String> getInitialBooksList() {
-		return initialBooksList;
+	public List<String> getClientBooksList() {
+		return clientBooksList;
+	}
+	
+	public void setClientBooksList(List<String> isbn) {
+	   
+		clientBooksList = isbn;
+		
 	}
 
 	public void addInitialBooksList(String ISBNcode) {
-		initialBooksList.add(ISBNcode);
+		clientBooksList.add(ISBNcode);
 	}
 
 }
