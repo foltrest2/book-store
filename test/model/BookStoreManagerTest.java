@@ -14,6 +14,7 @@ public class BookStoreManagerTest {
 	private BookStoreManager bs;
 
 	public void setupScenary_1() throws InvalidCharacterException{
+
 		bs = new BookStoreManager();
 		bs.timerReset();
 		bs.addShelve("A", 4);
@@ -32,7 +33,7 @@ public class BookStoreManagerTest {
 		bs.addBookPerShelve("El dia y la noche2", "Capitulo 1: Erase una vez la luna y el sol...", "Buenisimo", "123", 50000, "A", 4);
 		bs.addBookPerShelve("El dia y la noche3", "Capitulo 1: Erase una vez la luna y el sol...", "Buenisimo", "456", 50000, "B", 3);
 	}
-	
+
 	public void setupScenary_3() throws InvalidCharacterException{
 		bs = new BookStoreManager();
 		bs.timerReset();
@@ -40,8 +41,10 @@ public class BookStoreManagerTest {
 		bs.addClient("1234");
 		bs.addClient("1235");
 		bs.addClient("1236");
-		
+
 	}
+
+
 
 	public void setupScenary_4() throws InvalidCharacterException {
 		bs = new BookStoreManager();
@@ -68,22 +71,23 @@ public class BookStoreManagerTest {
 		bs.booksToBag(bs.getClientsList().get(1));
 		bs.booksToBag(bs.getClientsList().get(2));
 	}
-	
+
 	public void setupScenary_5() throws InvalidCharacterException {
 		bs = new BookStoreManager();
 		bs.timerReset();
-        bs.addClient("123");
-        bs.addShelve("A", 3);
-        bs.addShelve("B", 2);
-        bs.addShelve("C", 1);
-        bs.addBookPerShelve("El atardecer renaciente1", "Capitulo 1", "El amor en los tiempos del colera...", "6545", 15500.0, "C", 5);
-        bs.addBookPerShelve("El atardecer renaciente2", "Capitulo 2", "El amor en los tiempos del colera...", "9485", 15500.0, "B", 5);
-        bs.addBookPerShelve("El atardecer renaciente3", "Capitulo 3", "El amor en los tiempos del colera...", "1654", 15500.0, "A", 5);
-        bs.addAndCheckBooksToClientBookList(bs.getClientsList().get(0), "6545");
-        bs.addAndCheckBooksToClientBookList(bs.getClientsList().get(0), "9485");
-        bs.addAndCheckBooksToClientBookList(bs.getClientsList().get(0), "1654");
-    }
-	
+
+		bs.addClient("123");
+		bs.addShelve("A", 3);
+		bs.addShelve("B", 2);
+		bs.addShelve("C", 1);
+		bs.addBookPerShelve("El atardecer renaciente1", "Capitulo 1", "El amor en los tiempos del colera...", "6545", 15500.0, "C", 5);
+		bs.addBookPerShelve("El atardecer renaciente2", "Capitulo 2", "El amor en los tiempos del colera...", "9485", 15500.0, "B", 5);
+		bs.addBookPerShelve("El atardecer renaciente3", "Capitulo 3", "El amor en los tiempos del colera...", "1654", 15500.0, "A", 5);
+		bs.addAndCheckBooksToClientBookList(bs.getClientsList().get(0), "6545");
+		bs.addAndCheckBooksToClientBookList(bs.getClientsList().get(0), "9485");
+		bs.addAndCheckBooksToClientBookList(bs.getClientsList().get(0), "1654");
+	}
+
 	public void setupScenary_6() throws InvalidCharacterException {
 		bs = new BookStoreManager();
 		bs.timerReset();
@@ -107,7 +111,7 @@ public class BookStoreManagerTest {
 		bs.booksToBag(bs.getClientsList().get(1));
 		bs.booksToBag(bs.getClientsList().get(2));
 	}
-	
+
 	public void setupScenary_7() throws InvalidCharacterException {
 		bs = new BookStoreManager();
 		bs.timerReset();
@@ -138,11 +142,11 @@ public class BookStoreManagerTest {
 		bs.booksToBag(bs.getClientsList().get(3));
 		bs.booksToBag(bs.getClientsList().get(4));
 	}
-	
+
 	public void setupScenary_8() throws InvalidCharacterException, EmptyQueueException, CloneNotSupportedException {
 		bs = new BookStoreManager();
 		bs.timerReset();
-		bs.setCashiers(3);
+		bs.setCashiers(5);
 		bs.addClient("123"); //4
 		bs.addClient("456"); //3
 		bs.addClient("798"); //6
@@ -159,7 +163,7 @@ public class BookStoreManagerTest {
 		bs.addAndCheckBooksToClientBookList(bs.getClientsList().get(0), "456");
 		bs.addAndCheckBooksToClientBookList(bs.getClientsList().get(1), "456");
 		bs.addAndCheckBooksToClientBookList(bs.getClientsList().get(2), "456");
-		bs.addAndCheckBooksToClientBookList(bs.getClientsList().get(2), "767");
+		bs.addAndCheckBooksToClientBookList(bs.getClientsList().get(2), "767"); 
 		bs.addAndCheckBooksToClientBookList(bs.getClientsList().get(2), "123");
 		bs.addAndCheckBooksToClientBookList(bs.getClientsList().get(3), "456");
 		bs.addAndCheckBooksToClientBookList(bs.getClientsList().get(4), "456");
@@ -171,7 +175,7 @@ public class BookStoreManagerTest {
 		bs.clientsToQueue(bs.clientCountingSort(bs.getClientsList()));
 		bs.payBooks();
 	}
-	
+
 	@Test
 	public void testAddingAndSearchingShelve() throws InvalidCharacterException{
 		setupScenary_1();
@@ -187,7 +191,7 @@ public class BookStoreManagerTest {
 		assertEquals("Fail test", "El dia y la noche", bs.binaryShelveSearch("C").getSlots().get("767").getTitle());
 		assertEquals("Fail test", new Integer(3), bs.binaryShelveSearch("C").getBooksExistence().get("767"));
 	}
-	
+
 	@Test
 	public void testCountingSort() throws InvalidCharacterException{
 		setupScenary_2();
@@ -196,12 +200,14 @@ public class BookStoreManagerTest {
 		noSortedBooks.add("767");
 		noSortedBooks.add("123");
 		noSortedBooks.add("456");
+		noSortedBooks.add("767");
 		sortedBooks = bs.countingSort(noSortedBooks);
 		assertEquals("Fail test", "123", sortedBooks.get(0));
 		assertEquals("Fail test", "456", sortedBooks.get(1));
 		assertEquals("Fail test", "767", sortedBooks.get(2));
+		assertEquals("Fail test", "767", sortedBooks.get(3));
 	}
-	
+
 	@Test
 	public void testCountingSort_2() throws InvalidCharacterException{
 		setupScenary_2();
@@ -217,7 +223,7 @@ public class BookStoreManagerTest {
 		assertEquals("Fail test", "767", sortedBooks.get(2));
 		assertEquals("Fail test", "767", sortedBooks.get(3));
 	}
-	
+
 	@Test
 
 	public void testInsertionSort() throws InvalidCharacterException{
@@ -248,7 +254,7 @@ public class BookStoreManagerTest {
 		assertEquals("Fail test", "457", ns.get(9));
 		assertEquals("Fail test", "767", ns.get(10));
 		assertEquals("Fail test", "987", ns.get(11));
-		
+
 	}
 
 	public void testAddingClient() throws InvalidCharacterException{
@@ -258,8 +264,9 @@ public class BookStoreManagerTest {
 		assertEquals("Fail test", 1, bs.getClientsList().get(0).getPriorityTime());
 		assertEquals("Fail test", 2, bs.getClientsList().get(1).getPriorityTime());
 		assertEquals("Fail test", 3, bs.getClientsList().get(2).getPriorityTime());
+
 	}
-	
+
 	@Test
 	public void booksToBagTest() throws InvalidCharacterException {
 		setupScenary_4();
@@ -267,7 +274,6 @@ public class BookStoreManagerTest {
 		assertEquals("Test failed", "767", bs.getClientsList().get(1).getBooks().top().getISBNCode());
 		assertEquals("Test failed", "123", bs.getClientsList().get(2).getBooks().top().getISBNCode());
 	}
-	
 	@Test
 	public void heapSortTest() throws InvalidCharacterException {
 		setupScenary_5();
@@ -275,8 +281,9 @@ public class BookStoreManagerTest {
 		assertEquals("Test failed", "1654", sorted.get(0));
 		assertEquals("Test failed", "9485", sorted.get(1));
 		assertEquals("Test failed", "6545", sorted.get(2));
-	}	
-	
+
+	}
+
 	@Test
 	public void sortingClientsTest() throws InvalidCharacterException {
 		setupScenary_6();
@@ -297,7 +304,7 @@ public class BookStoreManagerTest {
 		assertEquals("Test failed", new Integer(4), bs.getShelvesOnStore().get(0).getBooksExistence().get("123"));
 		assertEquals("Test failed", new Integer(1), bs.getShelvesOnStore().get(1).getBooksExistence().get("456"));
 	}
-	
+
 	@Test
 	public void decreaseBooksQuantityTest_2() throws InvalidCharacterException {
 		setupScenary_7();
@@ -306,7 +313,7 @@ public class BookStoreManagerTest {
 		assertEquals("Test failed", new Integer(0), bs.getShelvesOnStore().get(1).getBooksExistence().get("456"));
 		assertTrue(bs.getClientsList().get(4).getClientBooksList().isEmpty());
 	}
-	
+
 	@Test
 	public void clientsToQueueTest_1() throws EmptyQueueException, InvalidCharacterException, CloneNotSupportedException {
 		setupScenary_7();
@@ -314,7 +321,7 @@ public class BookStoreManagerTest {
 		assertEquals("Test failed", "456", bs.getClientsQueue().dequeue().getId());
 		assertEquals("Test failed", "123", bs.getClientsQueue().dequeue().getId());
 		assertEquals("Test failed", "534", bs.getClientsQueue().dequeue().getId());
-		assertEquals("Test failed", "798", bs.getClientsQueue().dequeue().getId());
+		assertEquals("Test failed", "798", bs.getClientsQueue().dequeue().getId()); 
 	}
 
 	@Test

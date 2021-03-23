@@ -24,7 +24,8 @@ public class Book {
 		this.criticsAndReviews = criticsAndReviews;
 		this.ISBNCode = iSBNCode;
 		this.price = price;
-		this.shelveIndicator = shelveIndicator;
+		this.shelveIndicator = shelveIndicator; 
+
 	}
 
 	public String getISBNCode() {

@@ -2,8 +2,9 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.effect.Blend?>
 <?import javafx.scene.effect.DisplacementMap?>
 <?import javafx.scene.effect.DropShadow?>
@@ -17,9 +18,9 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="399.0" prefWidth="602.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<Pane layoutX="500.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <AnchorPane fx:id="menuPane" layoutY="-2.0" prefHeight="399.0" prefWidth="600.0">
+      <AnchorPane fx:id="menuPane" layoutX="-250.0" layoutY="3.0" prefHeight="456.0" prefWidth="1029.0">
          <children>
             <Label layoutX="121.0" layoutY="44.0" prefHeight="55.0" prefWidth="374.0" text="Basic Information III(Clients)" textAlignment="CENTER" textFill="#128d43" textOverrun="CENTER_WORD_ELLIPSIS">
                <font>
@@ -37,32 +38,6 @@
                   <Font name="Papyrus" size="12.0" />
                </font>
             </Label>
-            <TextField fx:id="ClientsNumberTxt" layoutX="172.0" layoutY="153.0">
-               <effect>
-                  <InnerShadow color="#f7ff14">
-                     <input>
-                        <Lighting>
-                           <bumpInput>
-                              <Shadow />
-                           </bumpInput>
-                           <light>
-                              <Light.Distant />
-                           </light>
-                        </Lighting>
-                     </input>
-                  </InnerShadow>
-               </effect>
-            </TextField>
-            <Label layoutX="65.0" layoutY="138.0" prefHeight="55.0" prefWidth="127.0" text="Clients Number">
-               <font>
-                  <Font name="Papyrus" size="12.0" />
-               </font>
-            </Label>
-            <Label layoutX="347.0" layoutY="180.0" prefHeight="41.0" prefWidth="90.0" text="Book Code">
-               <font>
-                  <Font name="Papyrus" size="12.0" />
-               </font>
-            </Label>
             <Button layoutX="247.0" layoutY="246.0" mnemonicParsing="false" onAction="#addBI3" prefHeight="25.0" prefWidth="75.0" text="Add">
                <effect>
                   <DropShadow color="#1cd725" />
@@ -71,33 +46,9 @@
                   <Font name="Poor Richard" size="12.0" />
                </font>
             </Button>
-            <Button fx:id="nextButton" layoutX="453.0" layoutY="313.0" mnemonicParsing="false" onAction="#next" prefHeight="49.0" prefWidth="127.0" text="Next">
-               <effect>
-                  <DropShadow color="#09d016" />
-               </effect>
-               <font>
-                  <Font name="Poor Richard" size="24.0" />
-               </font>
-            </Button>
-            <TextField fx:id="IDTxt" layoutX="172.0" layoutY="188.0" onAction="#next">
+            <TextField fx:id="IDTxt" layoutX="172.0" layoutY="188.0">
                <effect>
                   <InnerShadow color="#fffb00">
-                     <input>
-                        <Lighting>
-                           <bumpInput>
-                              <Shadow />
-                           </bumpInput>
-                           <light>
-                              <Light.Distant />
-                           </light>
-                        </Lighting>
-                     </input>
-                  </InnerShadow>
-               </effect>
-            </TextField>
-            <TextField fx:id="BookCodeTxt" layoutX="421.0" layoutY="188.0">
-               <effect>
-                  <InnerShadow color="#e7ff13">
                      <input>
                         <Lighting>
                            <bumpInput>
@@ -124,11 +75,68 @@
             </Blend>
          </effect>
       </AnchorPane>
-      <ToggleButton layoutX="-131.0" layoutY="-27.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="81.0" text="ToggleButton" />
+      <AnchorPane layoutX="359.0" layoutY="3.0" prefHeight="422.0" prefWidth="628.0">
+         <children>
+            <TableView fx:id="ClientTable" layoutX="-157.0" layoutY="41.0" onMouseClicked="#selectClientToAddBook" prefHeight="342.0" prefWidth="217.0">
+              <columns>
+                <TableColumn fx:id="ClientIdC" prefWidth="123.0" text="Client ID" />
+                  <TableColumn fx:id="PriorC" prefWidth="173.0" text="Priority Time" />
+              </columns>
+            </TableView>
+            <Button fx:id="nextButton" layoutX="418.0" layoutY="311.0" mnemonicParsing="false" onAction="#next" prefHeight="49.0" prefWidth="127.0" text="Next">
+               <effect>
+                  <DropShadow color="#09d016" />
+               </effect>
+               <font>
+                  <Font name="Poor Richard" size="24.0" />
+               </font>
+            </Button>
+            <TableView fx:id="BooksWithoutSortTable" layoutX="80.0" layoutY="37.0" prefHeight="348.0" prefWidth="263.0">
+              <columns>
+                <TableColumn fx:id="ClientC" prefWidth="75.0" text="Client" />
+                  <TableColumn fx:id="BooksWSC" prefWidth="2000.0" text="Books ISBN" />
+              </columns>
+            </TableView>
+            <TextField fx:id="BookCodeTxt1" layoutX="443.0" layoutY="155.0">
+               <effect>
+                  <InnerShadow color="#e7ff13">
+                     <input>
+                        <Lighting>
+                           <bumpInput>
+                              <Shadow />
+                           </bumpInput>
+                           <light>
+                              <Light.Distant />
+                           </light>
+                        </Lighting>
+                     </input>
+                  </InnerShadow>
+               </effect>
+            </TextField>
+            <Button layoutX="480.0" layoutY="188.0" mnemonicParsing="false" onAction="#addBI3B" prefHeight="25.0" prefWidth="75.0" text="Add">
+               <effect>
+                  <DropShadow color="#1cd725" />
+               </effect>
+               <font>
+                  <Font name="Poor Richard" size="12.0" />
+               </font>
+            </Button>
+            <Label layoutX="482.0" layoutY="112.0" prefHeight="41.0" prefWidth="90.0" text="Book Code">
+               <font>
+                  <Font name="Papyrus" size="12.0" />
+               </font>
+            </Label>
+            <Label layoutX="410.0" layoutY="41.0" prefHeight="41.0" prefWidth="195.0" text="You have selected a client with Id:">
+               <font>
+                  <Font name="Papyrus" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="clientSelectedIdLabel" layoutX="455.0" layoutY="71.0" prefHeight="41.0" prefWidth="82.0">
+               <font>
+                  <Font name="Papyrus" size="12.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
    </children>
-<<<<<<< HEAD
 </Pane>
-=======
-</Pane>
-	
->>>>>>> Alejandro
