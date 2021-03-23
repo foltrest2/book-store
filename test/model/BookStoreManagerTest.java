@@ -196,10 +196,12 @@ public class BookStoreManagerTest {
 		noSortedBooks.add("767");
 		noSortedBooks.add("123");
 		noSortedBooks.add("456");
+		noSortedBooks.add("767");
 		sortedBooks = bs.countingSort(noSortedBooks);
 		assertEquals("Fail test", "123", sortedBooks.get(0));
 		assertEquals("Fail test", "456", sortedBooks.get(1));
 		assertEquals("Fail test", "767", sortedBooks.get(2));
+		assertEquals("Fail test", "767", sortedBooks.get(3));
 	}
 	
 	@Test
