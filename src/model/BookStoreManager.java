@@ -92,14 +92,12 @@ public class BookStoreManager {
 	 * @return the arraylist sorted
 	 * @throws InvalidCharacterException
 	 */
-	public ArrayList<String> countingSort(List<String> list) throws InvalidCharacterException {
-
-		Book [] books = new Book[list.size()];
-		for (int i = 0; i < list.size(); i++) {
-			books[i] = bookWithGivenIsbn(list.get(i));
+	public ArrayList<String> countingSort(ArrayList<String> isbnList) throws InvalidCharacterException {
+		Book [] books = new Book[isbnList.size()];
+		for (int i = 0; i < isbnList.size(); i++) {
+			books[i] = bookWithGivenIsbn(isbnList.get(i));
 		}
-
-		int[] counts = new int[127];
+			int[] counts = new int[127];
 
 		for (int i = 0; i < books.length; i++) {
 			counts[radix128(books[i].getShelveIndicator())]++;
