@@ -175,21 +175,37 @@ public class BookStoreManagerTest {
 	@Test
 	public void testAddingAndSearchingShelve() throws InvalidCharacterException{
 		setupScenary_1();
-		assertEquals("Fail test SEARCHING THIRD STUDENT", "A", bs.binaryShelveSearch("A").getIndicator());
+		assertEquals("Fail test", "A", bs.binaryShelveSearch("A").getIndicator());
 		assertNull(bs.binaryShelveSearch("D"));
 	}
 
 	@Test
 	public void testAddingBooksToShelve() throws InvalidCharacterException{
 		setupScenary_1();
-		assertEquals("Fail test SEARCHING THIRD STUDENT", "C", bs.binaryShelveSearch("C").getIndicator());
+		assertEquals("Fail test", "C", bs.binaryShelveSearch("C").getIndicator());
 		assertTrue(bs.addBookPerShelve("El dia y la noche", "Capitulo 1: Erase una vez la luna y el sol...", "Buenisimo", "767", 50000, "C", 3));
-		assertEquals("Fail test SEARCHING THIRD STUDENT", "El dia y la noche", bs.binaryShelveSearch("C").getSlots().get("767").getTitle());
-		assertEquals("Fail test SEARCHING THIRD STUDENT", new Integer(3), bs.binaryShelveSearch("C").getBooksExistence().get("767"));
+		assertEquals("Fail test", "El dia y la noche", bs.binaryShelveSearch("C").getSlots().get("767").getTitle());
+		assertEquals("Fail test", new Integer(3), bs.binaryShelveSearch("C").getBooksExistence().get("767"));
 	}
 	
 	@Test
 	public void testCountingSort() throws InvalidCharacterException{
+		setupScenary_2();
+		ArrayList<String> noSortedBooks = new ArrayList<>();
+		ArrayList<String> sortedBooks = new ArrayList<>();
+		noSortedBooks.add("767");
+		noSortedBooks.add("123");
+		noSortedBooks.add("456");
+		noSortedBooks.add("767");
+		sortedBooks = bs.countingSort(noSortedBooks);
+		assertEquals("Fail test", "123", sortedBooks.get(0));
+		assertEquals("Fail test", "456", sortedBooks.get(1));
+		assertEquals("Fail test", "767", sortedBooks.get(2));
+		assertEquals("Fail test", "767", sortedBooks.get(3));
+	}
+	
+	@Test
+	public void testCountingSort_2() throws InvalidCharacterException{
 		setupScenary_2();
 		ArrayList<String> noSortedBooks = new ArrayList<>();
 		ArrayList<String> sortedBooks = new ArrayList<>();
