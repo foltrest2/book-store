@@ -277,9 +277,19 @@ public class BookStoreGUI {
 		fxmlLoader.setController(this);
 		Parent basicinfo3 = fxmlLoader.load();
 		basePane.setCenter(basicinfo3);
-		s = 4; 	
+		s = 4;
+		booksToBag();
 		updateClients();
+		
 	} 
+
+	public void booksToBag() throws InvalidCharacterException {
+
+		for(int i = 0; i<b.getClientsList().size();i++) {
+
+			b.booksToBag(b.getClientsList().get(i));
+		}
+	}
 
 	@FXML
 	void next(ActionEvent event) throws IOException, InvalidCharacterException {
@@ -377,7 +387,8 @@ public class BookStoreGUI {
 
 
 	@FXML
-	void Simulate(ActionEvent event) throws EmptyQueueException, CloneNotSupportedException {
+	void Simulate(ActionEvent event) throws EmptyQueueException, CloneNotSupportedException, InvalidCharacterException {
+	
 		b.clientsToQueue(b.getClientsList());
 		b.payBooks();
 		Report.setText(b.finalReport());
@@ -386,7 +397,6 @@ public class BookStoreGUI {
 
 	@FXML
 	void Return(ActionEvent event) throws IOException {
-
 		loadBasicInfo1();
 
 	}
