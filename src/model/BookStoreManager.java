@@ -33,6 +33,7 @@ public class BookStoreManager {
 	 * @return
 	 */
 	public boolean addClient(String id) {
+
 		boolean clientAdded = false;
 		if(searchClient(id) == null) {
 			int priorityTime = timer+=1;
@@ -57,7 +58,7 @@ public class BookStoreManager {
 			shelvesOnStore.add(new Shelve(indicator, slots));
 		}
 		return shelveAdded;
-	}
+	}  
 
 	/**
 	 * This method add a book to a shelve
@@ -87,15 +88,15 @@ public class BookStoreManager {
 
 	/**
 	 * This method sort an array with the counting method
-	 * @param isbnList is the list of isbn
+	 * @param list is the list of isbn
 	 * @return the arraylist sorted
 	 * @throws InvalidCharacterException
 	 */
-	public ArrayList<String> countingSort(ArrayList<String> isbnList) throws InvalidCharacterException {
+	public ArrayList<String> countingSort(List<String> list) throws InvalidCharacterException {
 
-		Book [] books = new Book[isbnList.size()];
-		for (int i = 0; i < isbnList.size(); i++) {
-			books[i] = bookWithGivenIsbn(isbnList.get(i));
+		Book [] books = new Book[list.size()];
+		for (int i = 0; i < list.size(); i++) {
+			books[i] = bookWithGivenIsbn(list.get(i));
 		}
 
 		int[] counts = new int[127];
@@ -118,7 +119,9 @@ public class BookStoreManager {
 			outputArray[positionOfInsert] = books[i];
 			counts[radix128(books[i].getShelveIndicator())]++;
 		}
+
 		for (int i = 0; i < books.length; i++) {
+
 			sortedBooks.add(outputArray[i].getISBNCode());
 		}
 		return sortedBooks;
@@ -173,22 +176,24 @@ public class BookStoreManager {
 		}
 	}
 
+
+
 	/**
 	 * This method sort an array with the insertion method
-	 * @param arr array to sort
+	 * @param list array to sort
 	 * @return
 	 */
-	public ArrayList<String> insertionSort(ArrayList<String> arr) {
-		for (int j = 1; j < arr.size(); j++) {
-			String current = arr.get(j);
+	public List<String> insertionSort(List<String> list) {
+		for (int j = 1; j < list.size(); j++) {
+			String current = list.get(j);
 			int i = j-1;
-			while ((i > -1) && (arr.get(i).compareTo(current)>0)) {
-				arr.set(i+1,arr.get(i));
-				i--;
+			while ((i > -1) && (list.get(i).compareTo(current)>0)) {
+				list.set(i+1,list.get(i));
+				i--;  
 			}
-			arr.set(i+1, current);
+			list.set(i+1, current);
 		}
-		return arr;
+		return list;
 	}
 
 	/**<br>Pre:</br> The id of the client can't be greater than 100000000
@@ -337,8 +342,8 @@ public class BookStoreManager {
 	 * This method makes a String into an int
 	 * @param x the string to transform
 	 * @return
-	 * @throws InvalidCharacterException
-	 */
+	 * @throws InvalidCharacterException 
+	 */ 
 	public int radix128(String x) throws InvalidCharacterException{
 		int result = 0;
 		int cont = 0;
@@ -379,6 +384,9 @@ public class BookStoreManager {
 					info += "Book\nISBN code: "+isbnCode+"\nTitle: "+bookWithGivenIsbn(isbnCode).getTitle()+"\nThere have no more existence!\n";
 				}
 			}
+		}else if(book == null){
+
+			info= "invalido";
 		}
 		return info;
 	}
@@ -392,7 +400,8 @@ public class BookStoreManager {
 		String report = "";
 		for (int i = 0; i < keepOrder.size();) {
 			Client dequeued = keepOrder.dequeue(); 
-			report += dequeued.getId() + " " + dequeued.getPricePaid() + "\n";
+
+			report += "Client Id " +dequeued.getId() +" Total Payed: "+ dequeued.getPricePaid() + "\n";
 			for (int j = dequeued.getClientBooksList().size()-1; j >= 0; j--) {
 				report += dequeued.getClientBooksList().get(j) + " ";	
 			}

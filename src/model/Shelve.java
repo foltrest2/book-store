@@ -15,7 +15,7 @@ public class Shelve {
 	public Shelve(String ind, int slots) {
 		indicator = ind;
 		this.slots = new HashTable<String, Book>(slots);
-		this.booksExistence =  new HashTable<String, Integer>(slots);
+		this.booksExistence =  new HashTable<String, Integer>(slots);  
 	}
 	
 	/**
@@ -37,7 +37,7 @@ public class Shelve {
 	public String getIndicator() {
 		return indicator;
 	}
-
+	
 	public void setIndicator(String ind) {
 		indicator = ind;
 	}

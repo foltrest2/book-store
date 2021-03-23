@@ -6,7 +6,7 @@ import dataStructures.*;
 
 public class Client {
 
-	private String id;
+	private String id; 
 	private int priorityTime;
 	private double pricePaid;
 	private Stack<Book> toPayBooks;
@@ -34,7 +34,7 @@ public class Client {
 	}
 	
 	public Stack<Book> getToPayBooks() {
-		return toPayBooks;
+		return toPayBooks; 
 	}
 
 	public String getId() {
@@ -71,6 +71,12 @@ public class Client {
 
 	public List<String> getClientBooksList() {
 		return clientBooksList;
+	}
+	
+	public void setClientBooksList(List<String> isbn) {
+	   
+		clientBooksList = isbn;
+		
 	}
 
 	public void addInitialBooksList(String ISBNcode) {

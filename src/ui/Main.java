@@ -18,14 +18,9 @@ public class Main extends Application {
 	}
 	
 	public static void main(String[] args) {
-//				launch(args);
-		System.out.println(123%11);
-		System.out.println(345%11);
-		System.out.println(678%11);
-		System.out.println(91011%11);
-		System.out.println(111213%11);
+			launch(args);
 	}
-
+	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("basePane.fxml"));
@@ -37,5 +32,4 @@ public class Main extends Application {
 		primaryStage.setTitle("Book Store");
 		primaryStage.show();
 	}
-
 }
